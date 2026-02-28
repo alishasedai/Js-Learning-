@@ -6,15 +6,24 @@
 //     console.log("Done");
 //   }
 // });
+// const fs = require("fs");
+// fs.appendFile(
+//   "hey.txt",
+//   " Hi i am fine but i dont remeber you who are you",
+//   function (err) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       console.log("Done");
+//     }
+//   },
+// );
+
 const fs = require("fs");
-fs.appendFile(
-  "hey.txt",
-  " Hi i am fine but i dont remeber you who are you",
-  function (err) {
+fs.copyFile("hey.txt","./copy/a.txt", function(err){
     if (err) {
       console.log(err);
     } else {
       console.log("Done");
     }
-  },
-);
+})
