@@ -34,9 +34,14 @@
 //     else console.log("Remove Done")
 // })
 
-const fs = require("fs");
+// const fs = require("fs");
 
-fs.rmdir("./copy",{recursive:true},function(err){
+// fs.rmdir("./copy",{recursive:true},function(err){
+//     if(err) console.log(err);
+//     else console.log("Removed the file")
+// })
+const fs = require("fs");
+fs.mkdir("./copy",function(err){
     if(err) console.log(err);
-    else console.log("Removed the file")
+    else console.log("Copy folder name created")
 })
