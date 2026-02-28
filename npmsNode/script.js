@@ -28,8 +28,15 @@
 //     }
 // })
 
+// const fs = require("fs");
+// fs.unlink("hey.txt",function(err){
+//     if(err) console.log(err);
+//     else console.log("Remove Done")
+// })
+
 const fs = require("fs");
-fs.unlink("hey.txt",function(err){
+
+fs.rmdir("./copy",{recursive:true},function(err){
     if(err) console.log(err);
-    else console.log("Done")
+    else console.log("Removed the file")
 })
