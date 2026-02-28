@@ -41,7 +41,14 @@
 //     else console.log("Removed the file")
 // })
 const fs = require("fs");
-fs.mkdir("./copy",function(err){
-    if(err) console.log(err);
-    else console.log("Copy folder name created")
-})
+// fs.mkdir("./copy",function(err){
+//     if(err) console.log(err);
+//     else console.log("Copy folder name created")
+// })
+
+//reading the file from the folder
+
+fs.readFile("./copy/index.html", "utf8", function (err, data) {
+  if (err) console.log(err);
+  else console.log(data);
+});
