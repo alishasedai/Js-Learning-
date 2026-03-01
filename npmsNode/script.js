@@ -61,6 +61,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const fs = require("fs");
+const { render } = require("ejs");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -84,6 +85,13 @@ app.get("/file/:filename", function (req, res) {
   })
 });
 
+app.get("/edit/:filename",function(req,res){
+  res.render("edit" ,{fileName : req.params.filename});
+})
+app.post("/edit", function (req, res) {
+  fs.rename(`./files/${req.body.previous}`,`./files/${req.params.new}`);
+  res.redirect("/")
+});
 app.post("/create", function(req, res) {
     
     fs.writeFile
@@ -93,10 +101,6 @@ app.post("/create", function(req, res) {
         res.redirect("/");
       }
     );
-    console.log(req.body);
-
-// Start server
-
 })
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");

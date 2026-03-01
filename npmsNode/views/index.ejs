@@ -13,7 +13,7 @@
         <div class="form p-4 text-white">
             <form action="/create" method="post">
                 <input type="text" name="title" class="block w-full rounded-md px-3 py-5 bg-zinc-900" placeholder="Title Goes Here:">
-                <textarea name="details" class="block px-3 py-5 bg-zinc-900 w-full h-100 mt-2" placeholder="Write task details here: " ></textarea>
+                <textarea name="details" class="block px-3 py-5 bg-zinc-900 w-full h-90 mt-1" placeholder="Write task details here: " ></textarea>
                 <input type="submit" class="bg-blue-600 px-5 rounded py-2 mt-2 " value="create task">
             </form>
         </div>
@@ -22,8 +22,10 @@
                 <% fileAlisha.forEach(val => { %>
                 <div class="task w-72 px-3 py-4 rounded-md bg-zinc-800">
                 <h2 class="text-white text-2xl tracking-tighter"><%= val %></h2>
-                <a href="/file/<%= val %>" class="text-blue-400 mt-5 inline-block">Read More.</a>
-                
+               <div class="flex w-full justify-between mt-2 py-2">
+                 <a href="/file/<%= val %>" class="text-blue-400  inline-block">Read More.</a>
+                <a href="/edit/<%= val %>" class="text-zinc-500 ">edit</a>
+               </div>
             </div>
            <% }); %>
                 <% } else {%>

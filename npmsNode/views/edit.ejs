@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+    <div class="main w-full min-h-screen bg-zinc-700 text-white ">
+        <a class="text-blue-500 text-2xl inline-block mb-5" href="/">Go Back To Home</a>
+        <form action="/create" method="post">
+                <input type="text" name="title" class="block m-6 w-1/4 rounded-md px-3 py-5 bg-zinc-900 d" placeholder="<%= fileName %>" name="Previous">
+                <input name="details" class="block px-3 m-6 py-5 w-1/4 rounded bg-zinc-900 " placeholder="new name " name="newName"></textarea>
+                <input type="submit" class="bg-blue-600 px-5 m-6 mt-1 rounded py-2" value="create task">
+            </form>
+       
+    </div>
+</body>
+</html>
