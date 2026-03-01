@@ -77,7 +77,16 @@ app.get("/", function (req, res) {
   });
 });
 app.post("/create", function(req, res) {
-    console.log(req.body)
+    
+    fs.writeFile
+      (path.join(__dirname, "files",req.body.title.split(" ").join("")+".txt"),
+      req.body.details,
+      function (err) {
+        res.redirect("/");
+      }
+    );
+    console.log(req.body);
+
 // Start server
 
 })
