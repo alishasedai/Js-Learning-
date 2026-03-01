@@ -40,7 +40,6 @@
 //     if(err) console.log(err);
 //     else console.log("Removed the file")
 // })
-const fs = require("fs");
 // fs.mkdir("./copy",function(err){
 //     if(err) console.log(err);
 //     else console.log("Copy folder name created")
@@ -53,31 +52,35 @@ const fs = require("fs");
 //   else console.log(data);
 // });
 
-
 // const http = require("http");
 // const server = http.createServer(function(req,res){
 //     res.end("hello Alisha");
 // })
-// server.listen(3000);\
+// server.listen(3000);
 const express = require("express");
 const app = express();
 const path = require("path");
+const fs = require("fs");
 
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
-app.use(express.static(path.join(__dirname,'public')));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.set("view engine", "ejs")
+app.set("view engine", "ejs");
 
-app.get("/",function(req,res){
-    res.render("index")
-})
-app.get("/profile/:username",function (req, res){
-    res.send(`Welcome, ${req.params.username}`)
-})
-
-app.get("/author/:username/:age", function (req, res) {
-  res.send(`Welcome, ${req.params.username} of age ${req.params.age}`);
+// ✅ Root route
+app.get("/", function (req, res) {
+  // Use __dirname for safe absolute path
+  fs.readdir(path.join(__dirname, "files"), function (err, fil) {
+  
+    res.render("index", { files: fil});
+  });
 });
+app.post("/create", function(req, res) {
+    console.log(req.body)
+// Start server
 
-app.listen("3000");
+})
+app.listen(3000, () => {
+  console.log("Server running on http://localhost:3000");
+});
