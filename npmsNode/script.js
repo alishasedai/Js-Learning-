@@ -88,12 +88,17 @@ app.get("/file/:filename", function (req, res) {
 app.get("/edit/:filename",function(req,res){
   res.render("edit" ,{fileName : req.params.filename});
 })
+
 app.post("/edit", function (req, res) {
-  fs.rename(`./files/${req.body.previous}`,`./files/${req.params.new}`);
-  res.redirect("/")
+  const oldPath = path.join(__dirname, "files", req.body.previous);
+  const newPath = path.join(__dirname, "files", req.body.new)
+  fs.rename(oldPath,newPath,function(err){
+   
+  res.redirect("/");
+    
+  });
 });
 app.post("/create", function(req, res) {
-    
     fs.writeFile
       (path.join(__dirname, "files",req.body.title.split(" ").join("")+".txt"),
       req.body.details,
