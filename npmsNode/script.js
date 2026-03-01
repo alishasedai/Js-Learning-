@@ -54,8 +54,22 @@ const fs = require("fs");
 // });
 
 
-const http = require("http");
-const server = http.createServer(function(req,res){
-    res.end("hello Alisha");
+// const http = require("http");
+// const server = http.createServer(function(req,res){
+//     res.end("hello Alisha");
+// })
+// server.listen(3000);\
+const express = require("express");
+const app = express();
+const path = require("path");
+
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+app.use(express.static(path.join(__dirname,'public')));
+
+app.set("view engine", "ejs")
+
+app.get("/",function(req,res){
+    res.render("index")
 })
-server.listen(3000);
+app.listen("3000");
