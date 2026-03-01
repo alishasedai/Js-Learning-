@@ -18,11 +18,11 @@
             </form>
         </div>
         <div class="tasks flex gap-3 flex-wrap p-4">
-            <% if(files.length > 0) {%>
-                <% files.forEach(val => { %>
+            <% if(fileAlisha.length > 0) {%>
+                <% fileAlisha.forEach(val => { %>
                 <div class="task w-72 px-3 py-4 rounded-md bg-zinc-800">
                 <h2 class="text-white text-2xl tracking-tighter"><%= val %></h2>
-                <a href="" class="text-blue-400 mt-5 inline-block">Read More.</a>
+                <a href="/file/<%= val %>" class="text-blue-400 mt-5 inline-block">Read More.</a>
                 
             </div>
            <% }); %>

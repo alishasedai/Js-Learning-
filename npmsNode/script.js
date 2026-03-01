@@ -73,9 +73,17 @@ app.get("/", function (req, res) {
   // Use __dirname for safe absolute path
   fs.readdir(path.join(__dirname, "files"), function (err, fil) {
   
-    res.render("index", { files: fil});
+    res.render("index", { fileAlisha: fil});
   });
 });
+
+app.get("/file/:filename", function (req, res) {
+  fs.readFile(`./files/${req.params.filename}`, "utf-8", function(err,filedata){
+    console.log(filedata);
+    res.render("show", {fileLelo :req.params.filename, filedata : filedata})
+  })
+});
+
 app.post("/create", function(req, res) {
     
     fs.writeFile
