@@ -22,5 +22,9 @@ app.get("/read", async function (req, res) {
   let readUser = await userModel.find();
   res.send(readUser);
 });
+app.get("/delete",async function(req,res){
+    let deletedUser = await userModel.findOneAndDelete({name:"Anu Dahal"});
+    res.send(deletedUser)
+})
 
 app.listen(3000);
