@@ -18,12 +18,12 @@ app.get("/read",async (req,res) =>{
     res.render("read",{users:allusers})
 })
 app.get("/delete/:id",async(req,res) =>{
-   let users = await userModel.findOne({_id:req.params.id})
+   let users = await userModel.findOneAndDelete({_id:req.params.id})
     res.redirect("/read")
 })
 app.get("/edit/:id",async(req,res) =>{
     let updateUser = await userModel.findOneAndUpdate({_id:req.params.id})
-    res.render("edit", { updateUser });
+    res.render("edit", { updateUser }); //yo edit vanney page ma chai updateUser pathako xam ni ta tei vayera yo page ma hamle updateUser.name vanera data access garnu sakxum
 })
 app.post("/update/:id",async(req,res) =>{
     let {name,email,image_url} = req.body;
