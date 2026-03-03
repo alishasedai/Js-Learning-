@@ -7,12 +7,14 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
   <body>
+   
     <div class="w-full min-h-screen bg-zinc-900 p-10 text-white" >
-        <h1 class="text-3xl tracking-tighter">Create User</h1>
-        <form action="" class="p-4">
-            <input class="outline-none px-5 py-2 border-2 border-zinc-500 rounded-lg mr-4" type="text" placeholder="name">
-            <input class="outline-none px-5 py-2 border-2 border-zinc-500 rounded-lg mr-4" type="text" placeholder="email">
-            <input class="outline-none px-5 py-2 border-2 border-zinc-500 rounded-lg mr-4" type="text" placeholder="image_url">
+         <a class="text-blue-900 text-2xl bg-yellow-400 rounded-lg px-3 py-1 " href="/read">Read Users</a>
+        <h1 class="text-3xl tracking-tighter mt-6 ">Create User</h1>
+        <form action="/create" method="post" class="p-4">
+            <input class="outline-none px-5 py-2 border-2 border-zinc-500 rounded-lg mr-4" type="text" name="name" placeholder="name">
+            <input class="outline-none px-5 py-2 border-2 border-zinc-500 rounded-lg mr-4" type="text" name="email" placeholder="email">
+            <input class="outline-none px-5 py-2 border-2 border-zinc-500 rounded-lg mr-4" type="text" name="image_url" placeholder="image_url">
             <input class="bg-blue-500 px-4 py-1 rounded-lg text-2xl"  type="submit" value="create">
         </form>
     </div>
