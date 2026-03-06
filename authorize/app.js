@@ -27,9 +27,36 @@ app.post("/create",function(req,res){
               password :hash,
               age,
             });
-            res.send("Done")
+            let token = jwt.sign({email},"shh");
+            res.cookie("token",token)
+
+            res.render("login")
         })
     })
 
+})
+//login
+
+app.get("/login",function(req,res){
+    res.render("login")
+})
+app.post("/login",async function(req,res){
+   
+    let user =await userModel.findOne({email:req.body.email});
+    if(!user) return res.send("Something is wrong");
+    console.log(user.password, req.body.password)
+    bcrypt.compare(req.body.password,user.password, function(err,result){
+        if(result) {
+            let token = jwt.sign({email:user.email},"shh")
+            res.cookie("token",token)
+            res.send("yes you can login");
+        }
+        else res.send("Something is wrong")
+    })
+    
+})
+app.get("/logout",function(req,res){
+    res.cookie("token","");
+    res.send("No cookies okay")
 })
 app.listen(3000);
