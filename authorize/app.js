@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const userModel = require("./models/users")
 const app = express();
 const path = require("path");
+const bcrypt = require("bcrypt")
 
 app.set("view engine","ejs");
 app.use(express.static(path.join(__dirname,"public")));
@@ -18,7 +19,17 @@ app.get("/",function(req,res){
 })
 app.post("/create",function(req,res){
     let {username,email,password,age} = req.body
-    let create = userModel.create();
+    bcrypt.genSalt(10,(err,salt) => {
+        bcrypt.hash(password,salt, async function(err,hash){
+            let create = await userModel.create({
+              username,
+              email,
+              password :hash,
+              age,
+            });
+            res.send("Done")
+        })
+    })
 
 })
 app.listen(3000);
