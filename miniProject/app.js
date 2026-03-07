@@ -14,10 +14,13 @@ app.use(express.urlencoded({extended:true}));
 app.get("/",function(req,res){
     res.render("index");
 })
+app.get("/login", function (req, res) {
+  res.render("login");
+});
 app.post("/register",async function(req,res){
      let {email,username,name,password,age} =req.body;
      let user =await userModel.findOne({email});
-     if(user) return res.status(500).send("User already registered");
+     if(!user) return res.status(500).send("User already registered");
     
      bcrypt.genSalt(10,function(err,salt){
         bcrypt.hash(password,salt, async function(err,hash){
@@ -32,6 +35,17 @@ app.post("/register",async function(req,res){
 
      })
 });
+
+app.post("/login",async function(req,res){
+     let {email,username,name,password,age} =req.body;
+     let user =await userModel.findOne({email});
+     if(!user) return res.status(500).send("User already registered");
+     bcrypt.compare(password,user.password,function(err,result){
+        if(result) res.status(200).send("You can loggin")
+            else res.redirect("/login")
+     });
+
+})
 
 
 app.listen(3000)
