@@ -14,7 +14,7 @@ app.use(cookieParser());
 app.get("/",function(req,res){
     res.render("index");
 })
-app.get("/login", function (req, res) {
+app.get("/login",isLoggedIn, function (req, res) {
   res.render("login");
 });
 app.post("/register",async function(req,res){
@@ -47,11 +47,16 @@ app.post("/login",async function(req,res){
         if(result) res.status(200).send("You can loggin")
             else res.redirect("/login")
      });
+     let token = jwt.sign({email:user.email,userid:user._id},"shh");
+     res.cookie("token","")
 
 })
 app.get("/logout",function(req,res){
     res.cookie("token","");
-    res.send("You are logged out")
+    res.redirect("/login");
 })
 
+function isLoggedIn(req,res,next){
+     console.log(req.cookies)
+}
 app.listen(3000)
