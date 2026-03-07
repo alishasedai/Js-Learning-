@@ -37,7 +37,6 @@ app.get("/",function(req,res){
    let token =  jwt.sign({email:"alisha@gmail.com"},"secret")
    console.log(token);
    res.cookie("token",token);
-
    res.send("hello hehe")
 })
 
