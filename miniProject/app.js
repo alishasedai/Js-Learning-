@@ -4,6 +4,7 @@ const postModel = require("./models/post")
 const cookieParser = require("cookie-parser")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const user = require("./models/user");
 const app = express();
 
 app.set("view engine","ejs");
@@ -39,18 +40,21 @@ app.post("/register", async function(req,res){
             res.send(createUser)
         })    
     })
-    
-    
 })
-app.post("/login",async function(req,res){
+app.get("/profile",isLoggedIn,function(req,res){
+    console.log(req.user)
+    res.send("You profile")
+})
+app.post("/login",isLoggedIn,async function(req,res){
     let {email,password} = req.body;
     let data =await userModel.findOne({email});
       if (!data) {
         return res.send("data not found");
       }
-    console.log(data)
     bcrypt.compare(password,data.password,function(err,result){
        if(result){
+        let token = jwt.sign({email:email,userid:data._id},"se");
+        res.cookie("token",token)
         res.send("You are login");
         
        }else{
@@ -60,6 +64,15 @@ app.post("/login",async function(req,res){
 })
 app.get("/logout",function(req,res){
     res.cookie("token","");
-    res.send("Alisha Cookie deleted ")
-})
+    res.redirect("/login")})
+
+    function isLoggedIn(req,res,next){
+        if(req.cookies.token === "") return res.send("You must be logged in..");
+        else{
+          let data =  jwt.verify(req.cookies.token,"se")
+          req.user = data;
+          next()
+        }
+        next();
+    }
 app.listen(3000)
