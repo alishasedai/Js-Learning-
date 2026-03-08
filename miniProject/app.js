@@ -42,7 +42,7 @@ app.get("/login",function(req,res){
 })
 app.get("/profile",isLoggedIn,function(req,res){
     console.log(req.user);
-    res.render("login")
+    res.render("profile")
 })
 app.post("/login",async function(req,res){
     let {email,password} =req.body;
@@ -53,7 +53,7 @@ app.post("/login",async function(req,res){
         if(result)  {
             let token = jwt.sign({email:email,userid:user._id},"shh");
             res.cookie("token",token)
-            res.status(200).send("You can login");}
+            res.status(200).redirect("/profile");}
         else{
             res.send("Your password is incorrect");
         }
@@ -66,7 +66,7 @@ app.get("/logout",function(req,res){
     res.redirect("/login")
 });
 function isLoggedIn(req,res,next){
-    if(req.cookies.token === "") return res.send("You must be logged in");
+    if(req.cookies.token === "") return res.redirect("/login");
     else{
       let data = jwt.verify(req.cookies.token,"shh") ;
       req.user = data
