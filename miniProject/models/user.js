@@ -1,15 +1,14 @@
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://127.0.0.1:27017/miniP");
-
-const userSchema = mongoose.Schema({
-    username:String,
+mongoose.connect("mongodb://127.0.0.1:27017/mini");
+const userSChema = mongoose.Schema({
     name:String,
-    age:Number,
+    username:String,
     email:String,
     password:String,
-    posts :[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref:'post'
+    age:Number,
+    post:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"post"
     }]
 })
-module.exports = mongoose.model("user",userSchema)
+module.exports = mongoose.model("user",userSChema);
