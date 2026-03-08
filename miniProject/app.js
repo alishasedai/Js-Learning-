@@ -1,8 +1,9 @@
 const express = require("express");
 const userModel = require("./models/user");
+const postModel = require("./models/post")
 const cookieParser = require("cookie-parser")
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
 
 const app = express();
 app.use(express.json());
@@ -46,6 +47,21 @@ app.get("/profile",isLoggedIn,async function(req,res){
     res.render("profile",{data});
     
 })
+app.post("/post",isLoggedIn,async function(req,res){
+    let users = await userModel.findOne({email:req.user.email});
+    let {content} =req.body;
+    let data =await postModel.create({
+       user : users._id ,
+        content :content,
+    })
+    users.post.push(data._id);
+   await users.save();
+   let populatedUser = await userModel
+     .findOne({ email: req.user.email })
+     .populate("post");
+   res.render("profile",{data:populatedUser});
+   console.log(req.body);
+});
 app.post("/login",async function(req,res){
     let {email,password} =req.body;
     let user =await userModel.findOne({email});
