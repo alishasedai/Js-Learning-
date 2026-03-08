@@ -40,9 +40,11 @@ app.post("/register",async function(req,res){
 app.get("/login",function(req,res){
     res.render("login")
 })
-app.get("/profile",isLoggedIn,function(req,res){
-    console.log(req.user);
-    res.render("profile")
+app.get("/profile",isLoggedIn,async function(req,res){
+    let data =await userModel.findOne({email:req.user.email});
+    console.log(data);
+    res.render("profile",{data});
+    
 })
 app.post("/login",async function(req,res){
     let {email,password} =req.body;
