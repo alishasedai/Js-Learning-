@@ -42,7 +42,7 @@ app.get("/login",function(req,res){
     res.render("login")
 })
 app.get("/profile",isLoggedIn,async function(req,res){
-    let data =await userModel.findOne({email:req.user.email});
+    let data =await userModel.findOne({email:req.user.email}).populate("post");
     console.log(data);
     res.render("profile",{data});
     
@@ -56,10 +56,8 @@ app.post("/post",isLoggedIn,async function(req,res){
     })
     users.post.push(data._id);
    await users.save();
-   let populatedUser = await userModel
-     .findOne({ email: req.user.email })
-     .populate("post");
-   res.render("profile",{data:populatedUser});
+   
+   res.render("profile",{data});
    console.log(req.body);
 });
 app.post("/login",async function(req,res){
