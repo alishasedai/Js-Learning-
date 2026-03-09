@@ -20,39 +20,29 @@
             <input class="bg-blue-600 px-5 w-50 py-3 rounded-lg block mt-5" type="submit" value="Create New Post">
         </form>
         </div>
-        <div class="posts mt-25">
-            <h2 class="text-3xl text-zinc-300">Your posts</h2>
-            <div class="postContainer mt-4">
-                <div class="w-150 mb-5 rounded-lg p-5 bg-zinc-800 border-2 border-zinc-700">
-                    <h2 class="text-blue-400 mb-3">@alishasedai</h2>
-                    <p class="text-sm tracking-tight">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis veritatis rerum pariatur ducimus esse dolorum velit, tempora culpa ex perferendis perspiciatis magni. Quo sint, facilis magni beatae deserunt est minus.</p>
-                    <div class="btn flex justify-ends gap-20 mt-5">
-                        <a class="text-b;ue-500" href="/like">Like</a>
-                        <a class="text-zinc-500" href="/edit">Edit</a>
-                    </div>
-                </div>
+       <div class="posts mt-6">
+    <h2 class="text-3xl text-zinc-300">Your posts</h2>
+
+   
+
+    <div class="postContainer mt-4">
+         <% data.post.forEach(function(post){ %>
+        <div class="w-140 rounded-lg mb-5 p-5 bg-zinc-800 border-2 border-zinc-700">
+
+            <h2 class="text-blue-400 mb-3">@<%= post._id %></h2>
+            <p class="text-sm tracking-tight"><%= post.content %></p>
+
+            <div class="btn flex justify-content gap-20 mt-5">
+                <a class="text-blue-500" href="/like/<%= post._id %>">Like</a>
+                <a class="text-zinc-500" href="/edit">Edit</a>
             </div>
-             <div class="postContainer mt-2">
-                <div class="w-150 rounded-lg mb-5 p-5 bg-zinc-800 border-2 border-zinc-700">
-                    <h2 class="text-blue-400 mb-3">@alishasedai</h2>
-                    <p class="text-sm tracking-tight">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis veritatis rerum pariatur ducimus esse dolorum velit, tempora culpa ex perferendis perspiciatis magni. Quo sint, facilis magni beatae deserunt est minus.</p>
-                    <div class="btn flex justify-ends gap-20 mt-5">
-                        <a class="text-b;ue-500" href="/like">Like</a>
-                        <a class="text-zinc-500" href="/edit">Edit</a>
-                    </div>
-                </div>
-            </div>
-             <div class="postContainer mt-2">
-                <div class="w-150 rounded-lg mb-5 p-5 bg-zinc-800 border-2 border-zinc-700">
-                    <h2 class="text-blue-400 mb-3">@alishasedai</h2>
-                    <p class="text-sm tracking-tight">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis veritatis rerum pariatur ducimus esse dolorum velit, tempora culpa ex perferendis perspiciatis magni. Quo sint, facilis magni beatae deserunt est minus.</p>
-                    <div class="btn flex justify-ends gap-20 mt-5">
-                        <a class="text-b;ue-500" href="/like">Like</a>
-                        <a class="text-zinc-500" href="/edit">Edit</a>
-                    </div>
-                </div>
-            </div>
+
         </div>
+            <% }) %>
+    </div>
+
+
+</div>
     </div>
     
 </body>
