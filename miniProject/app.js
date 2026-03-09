@@ -46,13 +46,22 @@ app.get("/profile",isLoggedIn,async function(req,res){
     let data = await userModel
       .findOne({ email: req.user.email })
       .populate("post");;
-    console.log(data);
+    // console.log(data);
     res.render("profile",{data});
     
 })
-app.get("/login/:id",isLoggedIn,function(req,res){
-    let postLike = postModel.findOne({id:req.params.id}).populate("user");
-    post.likes.push()
+app.get("/like/:id",isLoggedIn,async function(req,res){
+    let postLike =await postModel.findOne({_id:req.params.id}).populate("user");
+    if(postLike.likes.indexOf(req.user.userid) === -1){
+         postLike.likes.push(req.user.userid);
+    }else{
+        postLike.likes.splice(postLike.likes.push(req.user.userid),1);
+    }
+   
+    await postLike.save();
+    console.log(postLike)
+    res.redirect("/profile")
+
 })
 app.post("/post",isLoggedIn,async function(req,res){
     let users = await userModel.findOne({email:req.user.email});
@@ -64,7 +73,7 @@ app.post("/post",isLoggedIn,async function(req,res){
     users.post.push(data._id);
    await users.save();
    
-    console.log(data); // this will print in terminal
+    // console.log(data); // this will print in terminal
     res.redirect("/profile");
 });
 app.post("/login",async function(req,res){
