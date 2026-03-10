@@ -8,13 +8,14 @@ const post = require("./models/post");
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
 const path = require("path")
-
+const multerconfig = require("./config/multerconfig")
 
 const app = express();
 app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname,"public")))
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -33,7 +34,7 @@ const upload = multer({ storage: storage });
 
 app.get("/",function(req,res) {
     res.render("index")
-})
+});
 //create the account
 app.post("/register",async function(req,res){
     let {email,password,name,username,age} = req.body;
@@ -93,11 +94,11 @@ app.get("/like/:id",isLoggedIn,async function(req,res){
 app.get("/edit/:id",isLoggedIn,async function(req,res){
     let editPost = await postModel.findOne({_id:req.params.id}).populate("user")
     
-    res.render("edit",{editPost})
+    res.render("edit",{editPost});
 });
 app.post("/update/:id",isLoggedIn,async function(req,res){
     let updatePost = await postModel.findOneAndUpdate({_id:req.params.id},{content:req.body.content})
-    res.redirect("/profile")
+    res.redirect("/profile");
 })
 
 app.post("/post",isLoggedIn,async function(req,res){

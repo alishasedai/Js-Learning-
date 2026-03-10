@@ -9,6 +9,10 @@ const userSChema = mongoose.Schema({
     post:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"post"
-    }]
+    }],
+    profile :{
+        type:String,
+        default:"download.jpeg"
+    }
 })
 module.exports = mongoose.model("user",userSChema);
