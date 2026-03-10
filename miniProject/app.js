@@ -8,7 +8,7 @@ const post = require("./models/post");
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
 const path = require("path")
-const multerconfig = require("./config/multerconfig")
+const upload = require("./config/multerconfig")
 
 const app = express();
 app.set("view engine", "ejs");
@@ -17,20 +17,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname,"public")))
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./public/images/uploads");
-  },
-  filename: function (req, file, cb) {
-    crypto.randomBytes(12, function (err, bytes) {
-      const fn =bytes.toString("hex") +path.extname(file.originalname) 
-      cb(null, fn);
-    });
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "./public/images/uploads");
+//   },
+//   filename: function (req, file, cb) {
+//     crypto.randomBytes(12, function (err, bytes) {
+//       const fn =bytes.toString("hex") +path.extname(file.originalname) 
+//       cb(null, fn);
+//     });
     
-  },
-});
+//   },
+// });
 
-const upload = multer({ storage: storage });
+// const upload = multer({ storage: storage });
 
 app.get("/",function(req,res) {
     res.render("index")
@@ -62,10 +62,20 @@ app.post("/register",async function(req,res){
 app.get("/test",function(req,res){
     res.render("test")
 })
+app.post("/upload",isLoggedIn,upload.single("image"),async function(req,res){
+    let user = await userModel.findOne({email:req.user.email});
+     user.profile =req.file.filename;
+   await user.save();
+    console.log(user);
+    res.redirect("/profile")
+
+})
+app.get("/profile/upload",function(req,res){
+    res.render("profileUpload")
+})
 app.post("/upload",upload.single("image"),function(req,res){
     console.log(req.file)
 })
-
 app.get("/login",function(req,res){
     res.render("login")
 })
