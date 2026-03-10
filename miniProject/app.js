@@ -64,6 +64,16 @@ app.get("/like/:id",isLoggedIn,async function(req,res){
     res.redirect("/profile")
 
 })
+app.get("/edit/:id",isLoggedIn,async function(req,res){
+    let editPost = await postModel.findOne({_id:req.params.id}).populate("user")
+    
+    res.render("edit",{editPost})
+});
+app.post("/update/:id",isLoggedIn,async function(req,res){
+    let updatePost = await postModel.findOneAndUpdate({_id:req.params.id},{content:req.body.content})
+    res.redirect("/profile")
+})
+
 app.post("/post",isLoggedIn,async function(req,res){
     let users = await userModel.findOne({email:req.user.email});
     let {content} =req.body;
