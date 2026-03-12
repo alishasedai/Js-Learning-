@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema({
     default: [],
   },
   orders: {
-    types: Array,
+    type: Array,
     default: [],
   },
   contact: Number,

@@ -10,6 +10,9 @@ router.get("/",function(req,res){
   res.send("hey its working form userRouter")  
 });
 
-router.post("/register",registerUser)
+router.post("/register",registerUser);
+router.post("/login",function(req,res){
+  res.send("Login router i am hehhe")
+})
   
 module.exports = router
