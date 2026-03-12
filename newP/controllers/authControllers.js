@@ -1,0 +1,27 @@
+const userModel = require("../models/user-model");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const {generateToken} =require("../utils/generateTokens");
+
+module.exports.registerUser = async (req,res) =>{
+    try{
+        let {email,password,fullname} =req.body;
+
+        let findUser = await userModel.findOne({email});
+        if(findUser) {return res.status(401).send("You already have an account please login")}
+
+        bcrypt.genSalt(10,function(err,salt){
+            bcrypt.hash(password,async function(err,hash){
+                let createdUser = await userModel.create({
+                    email,password:hash,fullname
+                })
+               let token =  generateToken(createdUser);
+                res.cookie("token",token)
+                res.send("User created successfully")
+            })
+        })
+    }
+    catch(err){
+        res.send(err.message)
+    }
+}
