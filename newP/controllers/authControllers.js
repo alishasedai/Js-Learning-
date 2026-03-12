@@ -32,15 +32,10 @@ module.exports.loginUser =async (req,res) =>{
      let findUser=    await userModel.findOne({email:email});
      if(!user){
         return res.send("Email or password incorrects");
-        
+
      }
         bcrypt.compare(password,findUser.password,function(err,result){
-            if(result){
-                return res.send("password is correct");
-            }
-            else{
-                res.send("passwor is not correct")
-            }
+            res.send(result)
         })
     }
     catch(err){
