@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+const config = require("config");
 const debug = require("debug")("development:mongoose")
 mongoose
-.connect("mongodb://127.0.0.1:27017/project")
+.connect(`${config.get("MONGODB_URI")}/project`)
 .then(function(){
     debug("Connected");
 })
