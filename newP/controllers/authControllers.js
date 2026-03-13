@@ -6,7 +6,7 @@ const {generateToken} =require("../utils/generateTokens");
 module.exports.registerUser = async (req,res) =>{
     try{
         let {email,password,fullname} =req.body;
-
+        console.log(req.body)
         let findUser = await userModel.findOne({email});
         if(findUser) {return res.status(401).send("You already have an account please login")}
 
@@ -20,22 +20,27 @@ module.exports.registerUser = async (req,res) =>{
                 res.send(createdUser)
             })
         })
-    }
+        }
     catch(err){
         res.send(err.message)
     }
 }
 module.exports.loginUser =async (req,res) =>{
-    let {email,password} = req,body;
-
+    
     try{
-     let findUser=    await userModel.findOne({email:email});
-     if(!user){
+        let { email, password } = req.body;
+        console.log(req.body)
+     let findUser = await userModel.findOne({email:email});
+     if(!findUser){
         return res.send("Email or password incorrects");
 
      }
         bcrypt.compare(password,findUser.password,function(err,result){
-            res.send(result)
+           if(result){
+            let token = generateToken(findUser);
+            res.cookie("token",token);
+            res.send("You are login")
+           }
         })
     }
     catch(err){

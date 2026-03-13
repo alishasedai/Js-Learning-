@@ -1,7 +1,13 @@
 const express = require("express");
 const router = express.Router();
-router.get("/",function(req,res){
-    res.send("Hey its working from the index router")
-})
+const isLoggedIn = require("../middlewares/isLoggedIn");
 
+router.get("/",function(req,res){
+    let error = req.flash("error");
+    res.render("index",{ error })
+})
+router.get("/shop",isLoggedIn,function(req,res){
+    res.render("shop")
+})
 module.exports = router;
+
