@@ -4,18 +4,18 @@ const isLoggedIn = require("../middlewares/isLoggedIn");
 
 router.get("/",function(req,res){
     let error = req.flash("error");
-    res.render("index",{ error })
+    res.render("index",{ error ,isLoggedIn:false})
 })
 
 
-router.get("/shop", isLoggedIn,  function (req, res) {
-//   let products = await productModel.find();
+router.get("/shop", isLoggedIn, async function (req, res) {
+  
   res.render("shop");
 });
-router.get("/logout", isLoggedIn, async function (req, res) {
-  //   let products = await productModel.find();
-  res.render("shop");
-});
+// router.get("/logout", isLoggedIn, async function (req, res) {
+//   //   let products = await productModel.find();
+//   res.render("shop");
+// });
 
 
 module.exports = router;
