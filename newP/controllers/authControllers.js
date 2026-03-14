@@ -38,15 +38,21 @@ module.exports.loginUser =async (req,res) =>{
 
      }
         bcrypt.compare(password,findUser.password,async function(err,result){
-           if(result){
-            let token = generateToken(findUser);
-            console.log("TOKEN:", token);
-            res.cookie("token",token);
-            let products = await productModel.find()
-            res.render("shop",{products})
+        //    if(result){
+        //     let token = generateToken(findUser);
+        //     console.log("TOKEN:", token);
+        //     res.cookie("token",token);
+            
+        //     let products = await productModel.find()
+        //     res.render("shop",{products})
+        if(result){
+    let token = generateToken(findUser);
+    res.cookie("token", token);
+    res.redirect("/shop"); // ← this changes the browser URL
+}
             // res.render("/shop")
-           }
-        })
+            //  res.redirect("/shop"); 
+           })
         
     }
     catch(err){
