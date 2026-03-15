@@ -2,18 +2,26 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const router = require("./routes/index")
 
 const connectDB = require("./config/connectDb");
 
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({extended : true }))
 
+const PORT = process.env.PORT || 8080;
 app.get("/", function (req, res) {
   res.json({
     message: "i a running",
   });
 });
 
-const PORT = process.env.PORT || 8080;
+//api endpoints
+app.use("/api",router)
+
+
+
 
 connectDB().then(() => {
   app.listen(PORT, () => {
