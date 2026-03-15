@@ -13,7 +13,7 @@ app.use(express.urlencoded({extended : true }))
 const PORT = process.env.PORT || 8080;
 app.get("/", function (req, res) {
   res.json({
-    message: "i a running",
+    message: "i am running",
   });
 });
 

@@ -8,7 +8,7 @@ async function registerUser(req,res){
         console.log(req.body);
         const checkEmail = await userModel.findOne({email});
 
-        
+
         if(checkEmail){
             return res.status(400).json({
                 message : "Already User exists.",
@@ -40,7 +40,6 @@ async function registerUser(req,res){
         })
 
     }
-
 }
 
 module.exports = registerUser
