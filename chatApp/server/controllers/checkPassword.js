@@ -2,6 +2,7 @@ const userModel = require("../models/userModel");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken")
 async function checkPassword(req,res){
+    
     try{
         const {password ,userid} = req.body;
         console.log(req.body)
@@ -15,7 +16,7 @@ async function checkPassword(req,res){
         const verifyPassword = await bcryptjs.compare(password,user.password);
         
         if(!verifyPassword){
-            return res.status(200).json({
+            return res.status(400).json({
                 message : "Password didnt match",
                 error : true
             })
@@ -26,15 +27,15 @@ async function checkPassword(req,res){
         }
 
         const cookieOptions = {
-            
-            secure : true
-        }
+          httpOnly: true,
+          secure: false,
+        };
         const token =await jwt.sign(tokenData, process.env.JWT_SECRET_KEY,{expiresIn : '1d'});
         
 
         return res.cookie('token',token,cookieOptions).status(200).json({
             message : "Login Successfully",
-            data : user,
+            token : token,
             success : true
         })
         
