@@ -30,7 +30,7 @@ async function checkPassword(req,res){
           httpOnly: true,
           secure: false,
         };
-        const token =await jwt.sign(tokenData, process.env.JWT_SECRET_KEY,{expiresIn : '1d'});
+        const token =await jwt.sign(tokenData, process.env.JWT_SECRET_KEY);
         
 
         return res.cookie('token',token,cookieOptions).status(200).json({
@@ -47,4 +47,3 @@ async function checkPassword(req,res){
     }
 }
 module.exports = checkPassword
-
