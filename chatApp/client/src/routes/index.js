@@ -5,33 +5,49 @@ import RegisterPage from "../pages/RegisterPage";
 import CheckEmail from "../pages/CheckEmail";
 import CheckPassword from "../pages/CheckPassword";
 import MessagePage from "../components/MessagePage";
+import AuthLayouts from "../layout/AuthLayouts";
 const router = createBrowserRouter([
-    {
-        path : "/",
-        element : <App/>,
-        children : [{
-            path : "register",
-            element : <RegisterPage/>
-        },
-        {
-           path : "email",
-           element : <CheckEmail/> 
-        },
-        {
-            path : "password",
-            element : <CheckPassword/>
-        },
-        {
-            path : "",
-            element : <Home/>,
-            children : [
-                {
-                    path : ":userId",
-                    element : <MessagePage/>
-                }
-            ]
-        }]
-    }
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        path: "register",
+        element: (
+          <AuthLayouts>
+            <RegisterPage />
+          </AuthLayouts>
+        ),
+      },
+      {
+        path: "email",
+        element: (
+          <AuthLayouts>
+           
+            <CheckEmail />
+          </AuthLayouts>
+        ),
+      },
+      {
+        path: "password",
+        element: (
+          <AuthLayouts>
+            <CheckPassword />
+          </AuthLayouts>
+        ),
+      },
+      {
+        path: "",
+        element: <Home />,
+        children: [
+          {
+            path: ":userId",
+            element: <MessagePage />,
+          },
+        ],
+      },
+    ],
+  },
 ]);
 
 export default router
