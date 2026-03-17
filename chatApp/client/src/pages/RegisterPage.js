@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { IoCloseSharp } from "react-icons/io5";
+import { Link } from "react-router";
 
 
 const RegisterPage = () => {
@@ -25,12 +26,22 @@ const RegisterPage = () => {
 
     setUploadPhoto(file)
   }
-  console.log('Upload Photo',uploadPhoto)
+  const handleClearUploadPhoto = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setUploadPhoto(null)
+    
+  }
+    const handleSubmit =(e) => {
+      e.preventDefault();
+      e.stopPropagation()
+    }
+
   return (
     <div className="mt-5">
-      <div className="bg-white w-full max-w-sm mx-2 rounded overflow-hidden p-4">
+      <div className="bg-white w-full max-w-sm mx-2 rounded overflow-hidden p-4 mx-auto">
         <h3>Welcome to Chat App!</h3>
-        <form className="grid gap-4 mt-5">
+        <form className="grid gap-4 mt-5" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-1">
             <label htmlFor="name">Name:</label>
             <input
@@ -74,11 +85,19 @@ const RegisterPage = () => {
             <label htmlFor="profile_pic">
               Photo:
               <div className="h-14 bg-slate-200 flex justify-center items-center border hover:border-blue-300 rounded">
-                <p className='text-sm'>
-                  {
-                    uploadPhoto.name ? uploadPhoto?.name : "Upload Profile Photo"
-                  }</p>
-                  <button><IoCloseSharp/></button>
+                <p className="text-sm">
+                  {uploadPhoto?.name
+                    ? uploadPhoto?.name
+                    : "Upload Profile Photo"}
+                </p>
+               { uploadPhoto?.name && (
+                <button
+                  className="text-lg ml-2 hover:text-red-500"
+                  onClick={handleClearUploadPhoto}
+                >
+                  <IoCloseSharp />
+                </button>
+                )}
               </div>
             </label>
             <input
@@ -87,10 +106,13 @@ const RegisterPage = () => {
               id="profile_pic"
               onChange={handleUploadPhoto}
               className="bg-slate-100 px-2 py-1 focus:outline-blue-300 h-10 hidden cursor-pointer"
-
             />
           </div>
+          <button className='bg-blue-300 text-lg px-4 py-1 hover:bg-blue-400 rounded mt-4 font-bold text-white leading-relaxed tracking-wide'>
+            Register
+          </button>
         </form>
+        <p className='my-3 text-center' >Already have an account ? <Link to={"/email"} className='hover:text-blue-400  font-semibold'>Login</Link></p>
       </div>
     </div>
   );
