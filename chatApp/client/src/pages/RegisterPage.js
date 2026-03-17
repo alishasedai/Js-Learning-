@@ -8,6 +8,7 @@ const RegisterPage = () => {
     password : "",
     profile_pic : ""
   })
+  const [uploadPhoto, setUploadPhoto] = useState("")
   const handleOnChange = (e) => {
     const {name,value} = e.target;
     setData((prev) => {
@@ -17,6 +18,13 @@ const RegisterPage = () => {
       }
     })
   }
+
+  const handleUploadPhoto = (e) => {
+    const file = e.target.files[0];
+
+    setUploadPhoto(file)
+  }
+  console.log('Upload Photo',uploadPhoto)
   return (
     <div className="mt-5">
       <div className="bg-white w-full max-w-sm mx-2 rounded overflow-hidden p-4">
@@ -59,6 +67,25 @@ const RegisterPage = () => {
               onChange={handleOnChange}
               required
               className="bg-slate-100 px-2 py-1 focus:outline-blue-300 h-10"
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="profile_pic">
+              Photo:
+              <div className="h-14 bg-slate-200 flex justify-center items-center border hover:border-blue-300 rounded">
+                <p className='text-sm'>
+                  {
+                    uploadPhoto.name ? uploadPhoto?.name : "Upload Profile Photo"
+                  }</p>
+              </div>
+            </label>
+            <input
+              type="file"
+              name="profile_pic"
+              id="profile_pic"
+              onChange={handleUploadPhoto}
+              className="bg-slate-100 px-2 py-1 focus:outline-blue-300 h-10 hidden cursor-pointer"
+
             />
           </div>
         </form>
