@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import { IoCloseSharp } from "react-icons/io5";
 
 
 const RegisterPage = () => {
@@ -77,6 +78,7 @@ const RegisterPage = () => {
                   {
                     uploadPhoto.name ? uploadPhoto?.name : "Upload Profile Photo"
                   }</p>
+                  <button><IoCloseSharp/></button>
               </div>
             </label>
             <input
