@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import { IoCloseSharp } from "react-icons/io5";
 import { Link } from "react-router";
 import uploadFile from '../helpers/uploadFile';
+import axios from "axios";
 
 
 const RegisterPage = () => {
@@ -23,13 +24,19 @@ const RegisterPage = () => {
   }
 
 
-  const handleUploadPhoto =async (e) => {
+  const handleUploadPhoto = async (e) => {
     const file = e.target.files[0];
-    const uploadPhoto = await uploadFile(file);
-    console.log("Upload photo",uploadPhoto);
-    
-    setUploadPhoto(file)
-  }
+
+    const response = await uploadFile(file); // rename (important)
+    console.log("Upload photo", response);
+
+    setUploadPhoto(file);
+
+    setData((prev) => ({
+      ...prev,
+      profile_pic: response?.url,
+    }));
+  };
 
   const handleClearUploadPhoto = (e) => {
     e.stopPropagation();
@@ -37,10 +44,18 @@ const RegisterPage = () => {
     setUploadPhoto(null)
     
   }
-    const handleSubmit =(e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault();
-      e.stopPropagation()
-    }
+      e.stopPropagation();
+      const URL = `${process.env.REACT_APP_BACKEND_URL}/api/register`;
+      console.log(process.env.REACT_APP_BACKEND_URL)
+      try {
+        const response = await axios.post(URL, data);
+        console.log("response",response)
+      } catch (err) {
+        console.log("error",err)
+      }
+    };
     console.log(data)
   return (
     <div className="mt-5">
