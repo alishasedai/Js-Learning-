@@ -27,6 +27,7 @@ const RegisterPage = () => {
     const file = e.target.files[0];
     const uploadPhoto = await uploadFile(file);
     console.log("Upload photo",uploadPhoto);
+    
     setUploadPhoto(file)
   }
 
