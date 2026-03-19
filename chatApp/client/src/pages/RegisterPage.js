@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { IoCloseSharp } from "react-icons/io5";
 import { Link } from "react-router";
+import uploadFile from '../helpers/uploadFile';
 
 
 const RegisterPage = () => {
@@ -21,10 +22,19 @@ const RegisterPage = () => {
     })
   }
 
-  const handleUploadPhoto = (e) => {
-    const file = e.target.files[0];
 
-    setUploadPhoto(file)
+  const handleUploadPhoto = async(e) => {
+    const file = e.target.files[0];
+    const uploadPhoto = await uploadFile(file)
+    
+    setUploadPhoto(file);
+    setData((preve) => {
+      return {
+        ...preve,
+        profile_pic : uploadFile?.url
+      }
+    })
+    
   }
   const handleClearUploadPhoto = (e) => {
     e.stopPropagation();
@@ -36,7 +46,7 @@ const RegisterPage = () => {
       e.preventDefault();
       e.stopPropagation()
     }
-
+    console.log(data)
   return (
     <div className="mt-5">
       <div className="bg-white w-full max-w-sm mx-2 rounded overflow-hidden p-4 mx-auto">
