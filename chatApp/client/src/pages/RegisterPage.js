@@ -23,19 +23,13 @@ const RegisterPage = () => {
   }
 
 
-  const handleUploadPhoto = async(e) => {
+  const handleUploadPhoto =async (e) => {
     const file = e.target.files[0];
-    const uploadPhoto = await uploadFile(file)
-    
-    setUploadPhoto(file);
-    setData((preve) => {
-      return {
-        ...preve,
-        profile_pic : uploadFile?.url
-      }
-    })
-    
+    const uploadPhoto = await uploadFile(file);
+    console.log("Upload photo",uploadPhoto);
+    setUploadPhoto(file)
   }
+
   const handleClearUploadPhoto = (e) => {
     e.stopPropagation();
     e.preventDefault();
