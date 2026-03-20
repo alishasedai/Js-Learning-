@@ -1,11 +1,18 @@
 
 import { Outlet } from "react-router";
+import toast, { Toaster } from "react-hot-toast";
 import "./App.css";
 
 function App() {
-  return <main>
-    <Outlet/>
-    </main>;
+  return (
+    <>
+    <Toaster/>
+      <main>
+        <Outlet />
+      </main>
+      ;
+    </>
+  );
     
 }
 export default App;

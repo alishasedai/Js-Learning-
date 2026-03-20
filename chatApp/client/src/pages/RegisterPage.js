@@ -3,7 +3,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import { Link } from "react-router";
 import uploadFile from '../helpers/uploadFile';
 import axios from "axios";
-
+import toast from 'react-hot-toast';
 
 const RegisterPage = () => {
   const [data,setData] = useState({
@@ -52,7 +52,9 @@ const RegisterPage = () => {
       try {
         const response = await axios.post(URL, data);
         console.log("response",response)
+        toast.success(response.data.message)
       } catch (err) {
+        toast.error(err?.response?.data?.message)
         console.log("error",err)
       }
     };
