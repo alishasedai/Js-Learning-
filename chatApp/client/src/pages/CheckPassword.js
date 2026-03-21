@@ -8,11 +8,13 @@ import toast from "react-hot-toast";
 import Avatar from "../components/Avatar";
 
 const CheckPassword = () => {
+   const navigate = useNavigate();
+   const location = useLocation();
   const [data, setData] = useState({
     password: "",
+    userid: location?.state?._id,
   });
-  const navigate = useNavigate();
-  const location =useLocation();
+ 
   console.log("location",location)
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -28,10 +30,20 @@ const CheckPassword = () => {
     e.preventDefault();
     e.stopPropagation();
     const URL = `${process.env.REACT_APP_BACKEND_URL}/api/password`;
+    
     console.log(process.env.REACT_APP_BACKEND_URL);
     try {
-      const response = await axios.post(URL, data);
+      const response = await axios({
+        method : "post",
+        url: URL,
+        data: {
+          userid: location?.state?._id,
+          password: data.password,
+        },
+        withCredentials : true
+      });
       console.log("response", response);
+      console.log("DATA:", response.data);
       toast.success(response.data.message);
       if (response.data.success) {
         setData({
@@ -79,7 +91,7 @@ const CheckPassword = () => {
         </form>
         <p className="my-3 text-center">
           
-          <Link to={"/register"} className="hover:text-blue-400  font-semibold">
+          <Link to={"/forgot-password"} className="hover:text-blue-400  font-semibold">
             Forgot Password
           </Link>
         </p>
