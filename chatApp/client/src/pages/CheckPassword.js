@@ -49,10 +49,9 @@ const CheckPassword = () => {
       console.log("DATA:", response.data);
       toast.success(response.data.message);
 
-      if(response.data.success){
-        dispatch(setToken(response?.data?.token))
-      }
       if (response.data.success) {
+        dispatch(setToken(response?.data?.token));
+        localStorage.setItem("token", response?.data?.token);
         setData({
           password: "",
         });
