@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import { IoCloseSharp } from "react-icons/io5";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import uploadFile from '../helpers/uploadFile';
 import axios from "axios";
 import toast from 'react-hot-toast';
@@ -12,7 +12,8 @@ const RegisterPage = () => {
     password : "",
     profile_pic : ""
   })
-  const [uploadPhoto, setUploadPhoto] = useState("")
+  const [uploadPhoto, setUploadPhoto] = useState("");
+  const navigate = useNavigate()
   const handleOnChange = (e) => {
     const {name,value} = e.target;
     setData((prev) => {
@@ -53,6 +54,16 @@ const RegisterPage = () => {
         const response = await axios.post(URL, data);
         console.log("response",response)
         toast.success(response.data.message)
+        if(response.data.success){
+          setData({
+            name: "",
+            email: "",
+            password: "",
+            profile_pic: "",
+          });
+          navigate('/email')
+        }
+
       } catch (err) {
         toast.error(err?.response?.data?.message)
         console.log("error",err)
