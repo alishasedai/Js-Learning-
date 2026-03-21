@@ -38,7 +38,9 @@ const CheckEmail = () => {
         setData({
           email: ""
         });
-        navigate("/password");
+        navigate("/password",{
+          state : response?.data?.data
+        });
       }
     } catch (err) {
       toast.error(err?.response?.data?.message);
@@ -53,7 +55,7 @@ const CheckEmail = () => {
           <FaRegCircleUser  size={50}/>
         </div>
         <h3>Welcome to Chat App!</h3>
-        <form className="grid gap-4 mt-5" onSubmit={handleSubmit}>
+        <form className="grid gap-4 mt-3" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-1">
             <label htmlFor="email">Email:</label>
             <input
@@ -69,7 +71,7 @@ const CheckEmail = () => {
           </div>
 
           <button className="bg-blue-300 text-lg px-4 py-1 hover:bg-blue-400 rounded mt-4 font-bold text-white leading-relaxed tracking-wide">
-            Register
+            Let's Go
           </button>
         </form>
         <p className="my-3 text-center">
