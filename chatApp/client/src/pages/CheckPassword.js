@@ -6,10 +6,13 @@ import axios from "axios";
 import toast from "react-hot-toast";
 // import { FaRegCircleUser } from "react-icons/fa6";
 import Avatar from "../components/Avatar";
+import { useDispatch } from "react-redux";
+import { setToken, setUser } from "../redux/userSlice";
 
 const CheckPassword = () => {
    const navigate = useNavigate();
    const location = useLocation();
+   const dispatch = useDispatch()
   const [data, setData] = useState({
     password: "",
     userid: location?.state?._id,
@@ -45,6 +48,10 @@ const CheckPassword = () => {
       console.log("response", response);
       console.log("DATA:", response.data);
       toast.success(response.data.message);
+
+      if(response.data.success){
+        dispatch(setToken(response?.data?.token))
+      }
       if (response.data.success) {
         setData({
           password: "",

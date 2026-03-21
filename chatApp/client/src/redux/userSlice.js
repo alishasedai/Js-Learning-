@@ -33,6 +33,6 @@ export const userSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { } = counterSlice.actions;
+export const { setUser,setToken,logout} = counterSlice.actions;
 
 export default userSlice.reducer;
