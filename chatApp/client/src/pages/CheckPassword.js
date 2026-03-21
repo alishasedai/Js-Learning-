@@ -48,12 +48,14 @@ const CheckPassword = () => {
   return (
     <div className="mt-5">
       <div className="bg-white w-full max-w-sm rounded overflow-hidden p-4 mx-auto">
-        <div className="w-fit mx-auto mb-2">
+        <div className="w-fit mx-auto mb-2 flex justify-center items-center flex-col">
           {/* <FaRegCircleUser size={50} /> */}
           <Avatar width={70}
           height={70}
-          name={"Alisha Sedai"}/>
-
+          name={location?.state?.name}
+          // imageUrl={location?.state?.profile_pic}
+          />
+        <h2 className="font-semibold text-lg mt-2">{location?.state?.name}</h2>
         </div>
         <h3>Welcome to Chat App!</h3>
         <form className="grid gap-4 mt-3" onSubmit={handleSubmit}>
@@ -76,9 +78,9 @@ const CheckPassword = () => {
           </button>
         </form>
         <p className="my-3 text-center">
-          New User?{" "}
+          
           <Link to={"/register"} className="hover:text-blue-400  font-semibold">
-            Register
+            Forgot Password
           </Link>
         </p>
       </div>
