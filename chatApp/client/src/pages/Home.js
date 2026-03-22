@@ -1,11 +1,18 @@
 import axios from 'axios'
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { Outlet } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux'
+import { Outlet, useNavigate } from 'react-router'
+import { logout, setUser } from '../redux/userSlice'
+import Sidebar from '../components/Sidebar'
+
 
 const Home = () => {
   const user = useSelector(state => state.user);
+  const dispatch = useDispatch()
+  const naviagate = useNavigate()
+
   console.log("Redux user",user)
+
 
   const fetchUserDetails = async () => {
     try{
@@ -15,6 +22,11 @@ const Home = () => {
         url : URL,
         withCredentials : true
       })
+      dispatch(setUser(response.data.data))
+      if(response.data.logout){
+        dispatch(logout)
+        naviagate("/email")
+      }
       console.log("Current user details",response)
 
     }catch(err){
@@ -26,8 +38,10 @@ const Home = () => {
     fetchUserDetails()
   },[])
   return (
-    <div>
-      Home Page
+    <div className='grid lg:grid-cols-[300px,1fr] h-screen max-h-screen'>
+      <section className='bg-white'>
+        <Sidebar/>
+      </section>
       {/* message components*/}
       <section>
     <Outlet/>

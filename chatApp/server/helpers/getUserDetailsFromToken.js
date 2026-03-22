@@ -4,7 +4,7 @@ const getUserDetailsFromToken = async (token) => {
     if(!token){
         return {
             message : "Session Out",
-            error : true
+            logout : true
         }
     }
     const decode =   jwt.verify(token,process.env.JWT_SECRET_KEY)
