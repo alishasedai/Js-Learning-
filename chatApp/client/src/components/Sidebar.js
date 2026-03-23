@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { IoChatbubbleEllipses } from "react-icons/io5";
 import { FaUserPlus } from "react-icons/fa";
 import { CgLogOut } from "react-icons/cg";
 import { NavLink } from 'react-router-dom';
 import Avatar from "./Avatar"
 import { useDispatch, useSelector } from "react-redux";
+import EditUserDetails from './EditUserDetails';
 
 
 const Sidebar = () => {
-  const user = useSelector(state => state?.user)
+  const user = useSelector(state => state?.user);
+  const [editUserOpen, setEditUserOpen] = useState(true)
   return (
     <div className="w-full h-full">
       <div className="bg-slate-200 flex flex-col justify-between rounded-tr-lg rounded-br-lg w-12 h-full py-5">
@@ -29,7 +31,11 @@ const Sidebar = () => {
           </NavLink>
         </div>
         <div>
-          <button className="font-normal">
+          <button
+            className="font-normal"
+            title={user.name}
+            onClick={() => setEditUserOpen(true)}
+          >
             <Avatar width={50} height={50} name={user.name} />
           </button>
           <button
@@ -42,6 +48,13 @@ const Sidebar = () => {
           </button>
         </div>
       </div>
+
+      {/*Edit user details*/}
+      {
+        editUserOpen && (
+          <EditUserDetails onClose={() => setEditUserOpen(false)} data={user}/>
+        )
+      }
     </div>
   );
 }
