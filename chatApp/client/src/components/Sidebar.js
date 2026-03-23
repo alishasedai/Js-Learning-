@@ -52,7 +52,7 @@ const Sidebar = () => {
       {/*Edit user details*/}
       {
         editUserOpen && (
-          <EditUserDetails onClose={() => setEditUserOpen(false)} data={user}/>
+          <EditUserDetails onClose={() => setEditUserOpen(true)} user={user}/>
         )
       }
     </div>
