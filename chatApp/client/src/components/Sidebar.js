@@ -10,7 +10,7 @@ import EditUserDetails from './EditUserDetails';
 
 const Sidebar = () => {
   const user = useSelector(state => state?.user);
-  const [editUserOpen, setEditUserOpen] = useState(true)
+  const [editUserOpen, setEditUserOpen] = useState(false)
   return (
     <div className="w-full h-full">
       <div className="bg-slate-200 flex flex-col justify-between rounded-tr-lg rounded-br-lg w-12 h-full py-5">
@@ -36,7 +36,7 @@ const Sidebar = () => {
             title={user.name}
             onClick={() => setEditUserOpen(true)}
           >
-            <Avatar width={50} height={50} name={user.name} />
+            <Avatar width={50} height={50} name={user.name} imageUrl={user?.profile_pic}/>
           </button>
           <button
             title="logout"
