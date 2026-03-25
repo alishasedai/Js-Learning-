@@ -12,7 +12,7 @@ const Sidebar = () => {
   const user = useSelector(state => state?.user);
   const [editUserOpen, setEditUserOpen] = useState(false)
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full grid grid-cols-[48px,1fr]">
       <div className="bg-slate-200 flex flex-col justify-between rounded-tr-lg rounded-br-lg w-12 h-full py-5">
         <div>
           <div
@@ -48,7 +48,9 @@ const Sidebar = () => {
           </button>
         </div>
       </div>
-
+            <div className='w-full bg-red-500'>
+              Sidebar details
+            </div>
       {/*Edit user details*/}
       {
         editUserOpen && (
