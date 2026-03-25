@@ -14,7 +14,7 @@ const Sidebar = () => {
   const user = useSelector(state => state?.user);
   const [editUserOpen, setEditUserOpen] = useState(false)
   const [allUser,setAllUser] = useState([])
-  const [openSearchUser,setOpenSearchUser] = useState(false)
+  const [openSearchUser,setOpenSearchUser] = useState(true)
   return (
     <div className="w-full h-full grid grid-cols-[48px,1fr] bg-white">
       <div className="bg-slate-200 flex flex-col justify-between rounded-tr-lg rounded-br-lg w-12 h-full py-5">
@@ -23,7 +23,7 @@ const Sidebar = () => {
             className="w-12 h-12 hover:bg-slate-300 rounded flex justify-center items-center cursor-pointer"
             title="chat"
           >
-            <IoChatbubbleEllipses size={20} />
+            <IoChatbubbleEllipses size={25} />
           </div>
           <NavLink
             title="add friend"
@@ -34,7 +34,7 @@ const Sidebar = () => {
               `w-12 h-12 hover:bg-slate-300 rounded flex justify-center items-center cursor-pointer ${isActive && "bg-slate-400"}`
             }
           >
-            <FaUserPlus size={20} />
+            <FaUserPlus size={25} />
           </NavLink>
         </div>
         <div>
@@ -55,7 +55,7 @@ const Sidebar = () => {
             className="w-12 h-12 hover:bg-slate-300 rounded flex justify-center items-center cursor-pointer"
           >
             <span className="-ml-2">
-              <CgLogOut size={20} />
+              <CgLogOut size={30} />
             </span>
           </button>
         </div>
