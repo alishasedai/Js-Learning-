@@ -4,7 +4,8 @@ const checkEmail = require("../controllers/checkEmail");
 const checkPassword = require("../controllers/checkPassword");
 const userDetails = require("../controllers/userDetails")
 const logout = require("../controllers/logout")
-const udpdateUserDetails = require("../controllers/updateUserDetails")
+const udpdateUserDetails = require("../controllers/updateUserDetails");
+const searchUser = require("../controllers/searchUser");
 
 const router = express.Router()
 
@@ -18,6 +19,8 @@ router.post("/password",checkPassword);
 router.get("/user-details",userDetails);
 //update User Details
 router.post("/update-details",udpdateUserDetails)
+//search user details
+router.post("search-user",searchUser)
 //logout
 router.get("/logout",logout)
 
