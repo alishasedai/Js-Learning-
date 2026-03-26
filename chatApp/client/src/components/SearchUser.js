@@ -10,8 +10,8 @@ const SearchUser = () => {
     const [loading,setLoading] = useState(true)
     const [search,setSearch] = useState("")
 
-    const handleSearchUser = async(e) => {
-        e.preventDefault();
+    const handleSearchUser = async() => {
+        
         const URL = `${process.env.REACT_APP_BACKEND_URL}/api/search-user`;
 
         try{
@@ -24,8 +24,10 @@ const SearchUser = () => {
         }
     }
     useEffect(() => {
+    if(search){
         handleSearchUser()
-    },[search])
+    }
+},[search])
 
     console.log("search user",searchUser)
   return (
