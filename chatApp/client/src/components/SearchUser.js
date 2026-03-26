@@ -38,6 +38,7 @@ const SearchUser = () => {
             searchUser.length !==0 && !loading && (
                 searchUser.map((user,index) => {
                     return(
+                        
                      <UserCard key={user._id} user={user}/>
                     )
                 }) 
