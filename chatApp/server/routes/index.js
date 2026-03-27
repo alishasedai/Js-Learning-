@@ -20,7 +20,7 @@ router.get("/user-details",userDetails);
 //update User Details
 router.post("/update-details",udpdateUserDetails)
 //search user details
-router.post("search-user",searchUser)
+router.post("/search-user",searchUser)
 //logout
 router.get("/logout",logout)
 

@@ -2,17 +2,19 @@ const UserModel = require("../models/userModel")
 
 async function searchUser(req,res) {
     try{
-        const {search} = req.body;
+        console.log("body",req.body)
+        const {search} = req.body?.search;
+        
         const query = new RegExp(search,"i","g")
         const user = await UserModel.find({
             "$or" : [
                 {name : query},
                 {email : query}
             ]
-        });
+        }).select("-password");
         return res.json({
             message : "All user",
-            data : user,
+            data : user || [],
             success : true
         })
     }
