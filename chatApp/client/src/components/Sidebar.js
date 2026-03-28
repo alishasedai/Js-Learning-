@@ -25,17 +25,14 @@ const Sidebar = () => {
           >
             <IoChatbubbleEllipses size={25} />
           </div>
-          <NavLink
-            title="add friend"
-            onClick={() => {
-              setOpenSearchUser(true)
-            }}
-            className={({ isActive }) =>
-              `w-12 h-12 hover:bg-slate-300 rounded flex justify-center items-center cursor-pointer ${isActive && "bg-slate-400"}`
-            }
-          >
-            <FaUserPlus size={25} />
-          </NavLink>
+         <button
+  type="button"
+  title="add friend"
+  onClick={() => setOpenSearchUser(true)}
+  className="w-12 h-12 hover:bg-slate-300 rounded flex justify-center items-center cursor-pointer"
+>
+  <FaUserPlus size={25} />
+          </button>
         </div>
         <div>
           <button

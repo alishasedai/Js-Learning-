@@ -3,7 +3,7 @@ const UserModel = require("../models/userModel")
 async function searchUser(req,res) {
     try{
         console.log("body",req.body)
-        const {search} = req.body?.search;
+        const {search} = req.body;
         
         const query = new RegExp(search,"i","g")
         const user = await UserModel.find({
