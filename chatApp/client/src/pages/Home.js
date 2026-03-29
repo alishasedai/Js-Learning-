@@ -5,6 +5,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router'
 import { logout, setUser } from '../redux/userSlice'
 import Sidebar from '../components/Sidebar'
 import logo from "../assets/images.png"
+import io from "socket.io-client"
 
 const Home = () => {
   const user = useSelector(state => state.user);
@@ -38,6 +39,25 @@ const Home = () => {
   useEffect(() => {
     fetchUserDetails()
   },[])
+
+  // socket connection
+useEffect(() => {
+  const socketConnection = io(process.env.REACT_APP_BACKEND_URL,{
+    auth : {
+      token : localStorage.getItem("token")
+    }
+  })
+  socketConnection.on("onlineUser", (data) => {
+    console.log(data)
+  });
+  return () => {
+    
+    socketConnection.disconnect()
+  }
+},[])
+
+
+
   
 console.log("location", location);
 const basepath = location.pathname === "/"
