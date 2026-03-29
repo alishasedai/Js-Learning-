@@ -53,7 +53,7 @@ const basepath = location.pathname === "/"
       </section>
 
 
-      <div className='flex justify-center items-center flex-col gap-2'>
+      <div className={`justify-center items-center flex-col gap-2 ${!basepath ? "hidden" : "lg:flex"} `}>
         <div>
           <img 
           src={logo}
