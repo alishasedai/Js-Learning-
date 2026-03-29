@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useLocation, useNavigate } from 'react-router'
-import { logout, setUser } from '../redux/userSlice'
+import { logout, setOnlineUser, setUser } from '../redux/userSlice'
 import Sidebar from '../components/Sidebar'
 import logo from "../assets/images.png"
 import io from "socket.io-client"
@@ -13,7 +13,9 @@ const Home = () => {
   const naviagate = useNavigate()
   const location = useLocation()
 
-  console.log("Redux user",user)
+  // console.log("Redux user",user)
+  console.log("user",user)
+
 
 
   const fetchUserDetails = async () => {
@@ -49,6 +51,7 @@ useEffect(() => {
   })
   socketConnection.on("onlineUser", (data) => {
     console.log(data)
+    dispatch(setOnlineUser(data))
   });
   return () => {
     

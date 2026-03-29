@@ -1,9 +1,11 @@
 import React from 'react'
 
 import { FaRegCircleUser } from "react-icons/fa6";
+import { useSelector } from 'react-redux';
 
 
 const Avatar = ({userId,name,imageUrl,width,height}) => {
+  const onlineUser = useSelector(state => state?.user?.onlineUser)
     console.log(name)
     let avatarName = "";
     if (name) {
@@ -25,10 +27,12 @@ const Avatar = ({userId,name,imageUrl,width,height}) => {
       "bg-pink-200",
     ];
     const randomNumber =Math.floor( Math.random() * 8)
-    console.log(randomNumber)
+    const isOnline = onlineUser.includes(userId) 
+    
+    console.log("randomNumber", randomNumber);
   return (
     <div
-      className={`overflow-hidden text-slate-800 rounded-full shadow border text-xl font-bold `}
+      className={` text-slate-800 rounded-full relative shadow border text-xl font-bold `}
       style={{ width: width + "px", height: height + "px" }}
     >
       {imageUrl ? (
@@ -49,6 +53,14 @@ const Avatar = ({userId,name,imageUrl,width,height}) => {
       ) : (
         <FaRegCircleUser size={50} />
       )}
+      {
+        isOnline && (
+           <div className='bg-green-600 p-1 absolute bottom-2 -right-1 rounded-full'>
+
+      </div>
+        )
+      }
+     
     </div>
   );
 }
