@@ -4,7 +4,8 @@ import Loading from './Loading';
 import toast from 'react-hot-toast';
 import axios from "axios"
 import UserCard from "./UserCard"
-const SearchUser = () => {
+import { IoClose } from "react-icons/io5";
+const SearchUser = ({onClose}) => {
   const [searchUser,setSearchUser] = useState([]);
   const [loading,setLoading] = useState(false)
   const [search,setSearch] = useState("")
@@ -29,7 +30,7 @@ const SearchUser = () => {
     handleSearchUser();
   }, [search]);
     console.log("search user",searchUser)
-  return (  
+  return (
     <div className="fixed top-0 bottom-0 left-0 right-0 bg-slate-700 bg-opacity-25">
       <div className="w-full max-w-md mx-auto mt-10">
         <div className="bg-white rounded h-14 overflow-hidden flex ">
@@ -64,10 +65,18 @@ const SearchUser = () => {
             {searchUser.length !== 0 &&
               !loading &&
               searchUser.map((user, index) => {
-                return <UserCard key={user._id} user={user} />;
+                return (
+                  <UserCard key={user._id} user={user} onClose={onClose} />
+                );
               })}
           </div>
         </div>
+      </div>
+      <div className='absolute top-0 right-0 text-lg p-3 lg:text-4xl hover:text-white '
+      onClick={onClose}>
+        <button>
+          <IoClose />
+        </button>
       </div>
     </div>
   );
