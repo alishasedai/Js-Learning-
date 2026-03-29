@@ -2,7 +2,8 @@ const express = require("express");
 const {Server} = require("socket.io")
 const http = require("http"); 
 const { Socket } = require("dgram");
-const getUserDetailsFromToken = require("../helpers/getUserDetailsFromToken")
+const getUserDetailsFromToken = require("../helpers/getUserDetailsFromToken");
+const userModel = require("../models/userModel");
 
 const app = express()
 
@@ -28,13 +29,25 @@ io.on("connection",async(socket) => {
     //current user details
 
     const user = await getUserDetailsFromToken(token);
-    console.log("user details",user)
+    // console.log("user details",user)
 
     //create a room
     socket.join(user?._id)
-    onlineUser.add(user?._id)
+    onlineUser.add(user?._id?.toString())
 
     io.emit("onlineUser",Array.from(onlineUser))
+    socket.on("message-page",async(userId) => {
+      console.log("user Id: ",userId)
+      const userDetails = await userModel.findById(userId).select("-password")
+      const payload = {
+        _id : userDetails._id,
+        name : userDetails?.name,
+        email : userDetails?.email,
+        profile_pic : userDetails?.profile_pic,
+        onlineUser : onlineUser.has(userId)
+      }
+      socket.emit("message-user",payload)
+    })
 
     // disconnect 
     socket.on("disconnect", () => {
