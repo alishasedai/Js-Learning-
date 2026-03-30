@@ -59,9 +59,6 @@ useEffect(() => {
     socketConnection.disconnect()
   }
 },[])
-
-
-
   
 console.log("location", location);
 const basepath = location.pathname === "/"
@@ -87,9 +84,7 @@ const basepath = location.pathname === "/"
         <p className='text-lg mt-2 text-slate-400'>Select user to send the message</p>
       </div>
     </div>
-  );
+  )
 }
-
-
 
 export default Home
