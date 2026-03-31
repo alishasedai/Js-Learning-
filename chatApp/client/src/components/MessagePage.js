@@ -10,6 +10,7 @@ import { FaPlus } from "react-icons/fa6";
 import { FaImage } from "react-icons/fa";
 import { FaVideo } from "react-icons/fa";
 import uploadFile from '../helpers/uploadFile';
+import { IoClose } from "react-icons/io5";
 
 
 const MessagePage = () => {
@@ -45,14 +46,15 @@ const MessagePage = () => {
       }
     })
     console.log("Upload photo", response);
-
-    
-
-    // setDataUser((prev) => ({
-    //   ...prev,
-    //   profile_pic: response?.url,
-    // }));
+   
   }
+  const handleClearUploadImage = () => {
+    setMessage((prev) => ({
+      ...prev,
+      imageUrl: "",
+    }));
+  }
+
   const handleUploadVideo = async(e) => {
     const file = e.target.files[0];
 
@@ -110,20 +112,27 @@ const MessagePage = () => {
         </div>
       </header>
       {/* Show all message here */}
-      <section className="h-[calc(100vh-128px)] overflow-x-hidden overflow-y-scroll ">
+      <section className="h-[calc(100vh-128px)] overflow-x-hidden overflow-y-scroll relative ">
         {/* upload Image display */}
-        <div className='w-full h-full bg-slate-700 bg-opacity-30 flex justify-center items-center rounded overflow-hidden'>
-          <div className='bg-white p-3'>
-            <img
-            src={message.imageUrl}
-            height={300}
-            width={300}
-            alt='uploadImage'/>
+        {message.imageUrl && (
+          <div className="w-full h-full bg-slate-700 bg-opacity-30 flex justify-center items-center rounded overflow-hidden">
+            <div
+              onClick={handleClearUploadImage}
+              className="absolute w-fit p-3 top-0 right-0 cursor-pointer hover:text-red-500"
+            >
+              <IoClose size={32} />
+            </div>
+            <div className="bg-white p-3 text-3xl ">
+              <img
+                src={message.imageUrl}
+                height={300}
+                width={300}
+                alt="uploadImage"
+              />
+            </div>
           </div>
-
-        </div>
+        )}
         Show all message
-
       </section>
       <section className="h-16 bg-white flex items-center px-4">
         {/* send message */}
@@ -156,8 +165,16 @@ const MessagePage = () => {
                   </div>
                   <p>Video</p>
                 </label>
-                <input type="file" id="uploadImage" onChange={handleUploadImage}/>
-                <input type="file" id="uploadVideo" onChange={handleUploadVideo} />
+                <input
+                  type="file"
+                  id="uploadImage"
+                  onChange={handleUploadImage}
+                />
+                <input
+                  type="file"
+                  id="uploadVideo"
+                  onChange={handleUploadVideo}
+                />
               </form>
             </div>
           )}
