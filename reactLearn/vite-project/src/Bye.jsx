@@ -13,9 +13,8 @@ function handleInput (event){
     // console.clear();
     console.log("value",event.target.value)
 }
-const handleMouseOver = () =>{
-    console.log("Mouse is over the text.");
-
+function handleMouseOver(){
+    console.log("Mouse is over..", new Date().getTime());
 }
 const  handleDoubleClick = () =>{
     console.log("Double click is done..")
@@ -31,7 +30,7 @@ const  handleDoubleClick = () =>{
       <h2 className={anju.testing}>Sanvi Sedai</h2>
       <h1>Hello {getName(name)}</h1>
       <h3>Hello {getName(name2)}</h3>
-      <p onMouseOver={handleMouseOver} onDoubleClick={handleDoubleClick}>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit error veritatis laboriosam deserunt. ut quos qui inventore.</p>
+      <p onMouseEnter={handleMouseOver} onDoubleClick={handleDoubleClick}>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit error veritatis laboriosam deserunt. ut quos qui inventore.</p>
       <button onClick={handleClick}>Click Me..</button><br />
       <button onClick={() => {alert("hello from inline function")}}>Hello</button><br />
       <input type="text" onChange={handleInput} placeholder='enter some text..' />
