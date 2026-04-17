@@ -2,6 +2,8 @@ import Counter from "./Counter"
 import ToggleText from "./ToggleText"
 import LikeButton from "./LikeButton"
 import UserProfile from "./UserProfile"
+import Student from "./Student"
+import Inputexample from "./Inputexample"
 
 
 function App() {
@@ -11,8 +13,10 @@ function App() {
      <Counter/>
      {/* <ToggleText/> */}
      {/* <LikeButton/> */}
-     <UserProfile/>
+     {/* <UserProfile/> */}
 
+     {/* <Student /> */}
+    <Inputexample />
     </>
   )
 }
