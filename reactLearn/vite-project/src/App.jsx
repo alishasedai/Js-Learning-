@@ -6,36 +6,42 @@ import './App.css'
 import Bye  from './Bye'
 import Hello from './Hello'
 import Rendering from './Rendering'
+import Properties from './Properties'
 
 function App() {
   // const [count, setCount] = useState(0)]
-  const headingStyle ={
-    color : "red",
-    textAlign : "center",
-    backgroundColor : "Green",
-    fontSize : "20px"
-  }
-  const isLoggedIn = false;
+  // const headingStyle ={
+  //   color : "red",
+  //   textAlign : "center",
+  //   backgroundColor : "Green",
+  //   fontSize : "20px"
+  // }
+  // const isLoggedIn = false;
 
-  if(isLoggedIn){
-  return (
-    <>
-        <div>
-          {/* <h1 style={{color:"red"}}>Alisha Sedai</h1> */}
-          <h1 className='test'>Alisha Sedai</h1>
-          {/* <Bye /> */}
-          {/* <Hello/> */}
-          {/* <Rendering/> */}
+  // if(isLoggedIn){
+  // return (
+  //   <>
+  //       <div>
+  //         {/* <h1 style={{color:"red"}}>Alisha Sedai</h1> */}
+  //         <h1 className='test'>Alisha Sedai</h1>
+  //         {/* <Bye /> */}
+  //         {/* <Hello/> */}
+  //         {/* <Rendering/> */}
          
-        </div>
+  //       </div>
         
-    </>
-  )}
-  else{
+  //   </>
+  // )}
+  // else{
     return (
-      <Bye/>
+      // <Bye/>
+      <>
+      
+      <Properties name="Alishaaa Sedai" age="20" city="Kathmandu"/>
+      <Properties name="Sonu Basnet"/>
+      </>
     )
   }
-}
+// }
 
 export default App
