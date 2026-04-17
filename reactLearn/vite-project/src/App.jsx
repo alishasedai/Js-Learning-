@@ -6,6 +6,7 @@ import './App.css'
 import Bye  from './Bye'
 import Hello from './Hello'
 import Rendering from './Rendering'
+import Button  from './Button';
 import Properties from './Properties'
 
 function App() {
@@ -33,12 +34,20 @@ function App() {
   //   </>
   // )}
   // else{
+    function Message(){
+      alert("Hello from Message Box...")
+    }
+    function Bye(){
+      alert("Hello from Bye Messaage Box..")
+    }
+    const hobbies= ["Playing", "Reading", "Coding"];
     return (
       // <Bye/>
       <>
-      
-      <Properties name="Alishaaa Sedai" age="20" city="Kathmandu"/>
-      <Properties name="Sonu Basnet"/>
+      <Properties name="Alishaaa Sedai" age="20" city="Kathmandu" hobbies={hobbies}/>
+      <Properties age="23"/>
+      <Button label="Click Me" handleClick={Message}/>
+      <Button label="Just Click" handleClick={Bye} />
       </>
     )
   }
