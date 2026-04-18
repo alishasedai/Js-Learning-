@@ -3,6 +3,7 @@ import SimpleForm from './SimpleForm'
 import MultiInputForm from './MultiInputForm'
 import AdvanceForm from './AdvanceForm'
 import UncontrolledForm from './UncontrolledForm'
+import ValidationForm from './ValidationForm'
 
 const App = () => {
   return (
@@ -11,7 +12,8 @@ const App = () => {
       {/* <SimpleForm/> */}
       {/* <MultiInputForm /> */}
       {/* <AdvanceForm /> */}
-      <UncontrolledForm />
+      {/* <UncontrolledForm /> */}
+      <ValidationForm />
     </div>
   )
 }
