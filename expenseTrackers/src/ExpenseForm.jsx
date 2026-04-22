@@ -5,25 +5,38 @@ const ExpenseForm = ({onAddExpense}) => {
     const [amount, setAmount] =useState("");
     const titleRef = useRef();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if(!title || !amount) return "please fill all the fields";
-        const newExpenses = {
-            id : Date.now(),
-            title,
-            amount : parseFloat(amount)
-        }
-        onAddExpense(newExpenses);
-        setTitle("");
-        setAmount("")
-        titleRef.current.focus();
+    // const handleSubmits = (e) => {
+    //     e.preventDefault();
+    //     if(!title || !amount) return "please fill all the fields";
+    //     const newExpenses = {
+    //         id : Date.now(),
+    //         title,
+    //         amount : parseFloat(amount)
+    //     }
+    //     onAddExpense(newExpenses);
+    //     setTitle("");
+    //     setAmount("")
+    //     titleRef.current.focus();
+    // }
+    const handleSubmit = () => {
+      if(!title || !amount) return "Please fill out this all";
+
+      const newExpenses = {
+        id : Date.now(),
+        title ,
+        amount : parseFloat(amount)
+      }
+      onAddExpense(newExpenses);
+      setTitle("");
+      setAmount("");
+      titleRef.current.focus();
     }
   return (
     <div>
         <form action="" className="expense-form" onSubmit={handleSubmit}>
-          <input placeholder='Expense Title' type="text" name="" id="" value={title}
+          <input ref={titleRef} placeholder='Expense Title' type="text" name="" id="" value={title}
           onChange={(e) => setTitle(e.target.value)}/>
-          <input type="number" value={amount} placeholder='Amount Rs.' onChange={(e) => setAmount(e.target.value)} ref={titleRef} name="" id="" />
+          <input type="number" value={amount} placeholder='Amount Rs.' onChange={(e) => setAmount(e.target.value)}  name="" id="" />
           <button type='submit'>Add Expense</button>
         </form>
     </div>
