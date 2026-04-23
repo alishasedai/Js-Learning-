@@ -32,11 +32,9 @@ const App = () => {
   
   const total = exp.reduce((sum, item) => sum + item.amount, 0);
     console.log("Total expenses:", total);
-
-
   return (
    <>
-   
+  
    <ExpenseForm onAddExpense={addExpense}/>
    <ExpenseItem total={total}  />
    
