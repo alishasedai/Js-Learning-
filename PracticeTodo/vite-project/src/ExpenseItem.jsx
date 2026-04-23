@@ -1,10 +1,10 @@
 import React from 'react'
 
-const ExpenseItem = () => {
+const ExpenseItem = ({total}) => {
   return (
     <div>
         
-      <h2>Total Rs .1000</h2>
+      <h2>Total Rs .{total}</h2>
     </div>
   )
 }
