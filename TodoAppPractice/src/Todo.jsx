@@ -10,10 +10,7 @@ const Todo = () => {
             id : Date.now(),
             text : task
         }]);
-        setTask("")
-        
-        
-       
+        setTask("") 
     }
     const deleteTask = (id) => {
             console.log("delete sure??",id)
@@ -21,7 +18,6 @@ const Todo = () => {
         setTasks((prev) => {
             return prev.filter((item) => item.id !== id)
         })
-      
         }
    
   return (
