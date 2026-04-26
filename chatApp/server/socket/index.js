@@ -92,8 +92,8 @@ const updateConversation = await conversationModel.updateOne({
     ]
   }).populate("messages").sort({updatedAt : -1});
 
-  io.to(data?.sender).emit("message", getConversationMessage);
-  io.to(data?.receiver).emit("message", getConversationMessage);
+  io.to(data?.sender).emit("message", getConversationMessage.messages);
+  io.to(data?.receiver).emit("message", getConversationMessage.messages);
       console.log("New Message : ",data)
       console.log("Conversation : ",conversation)
     });
