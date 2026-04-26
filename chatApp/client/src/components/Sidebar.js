@@ -36,7 +36,7 @@ const Sidebar = () => {
         </div>
         <div>
           <button
-            className="font-normal"
+            className="font-normal"vb 
             title={user.name}
             onClick={() => setEditUserOpen(true)}
           >

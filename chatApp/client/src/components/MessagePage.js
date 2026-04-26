@@ -8,7 +8,8 @@ import { Link } from "react-router-dom";
 import { FaImage, FaVideo } from "react-icons/fa";
 import uploadFile from "../helpers/uploadFile";
 import { IoClose } from "react-icons/io5";
-
+import Loading from "./Loading";
+import download from "../assets/backgroundImage.jpeg";
 const MessagePage = () => {
   const params = useParams();
   const socketConnection = useSelector(
@@ -31,6 +32,7 @@ const MessagePage = () => {
     imageUrl: "",
     videoUrl: "",
   });
+  const [loading, setLoading] = useState(false);
 
   // ✅ OPEN DROPDOWN (no toggle issue)
   const handleUploadImageVideoOpen = () => {
@@ -44,9 +46,14 @@ const MessagePage = () => {
     const file = e.target.files[0];
     console.log("file:", file);
 
-    if (!file) return;
+    if (file.size > 50 * 1024 * 1024) {
+      alert("Video must be under 50MB");
+      return;
+    }
+    setLoading(true);
 
     const response = await uploadFile(file);
+    setLoading(false);
     console.log("response:", response);
 
     setMessage((prev) => ({
@@ -68,8 +75,9 @@ const MessagePage = () => {
       console.log("No file selected ❌");
       return;
     }
-
+    setLoading(true);
     const response = await uploadFile(file);
+    setLoading(false);
     console.log("response:", response);
 
     setMessage((prev) => {
@@ -111,7 +119,7 @@ const MessagePage = () => {
   }, [socketConnection, params?.userId, user]);
 
   return (
-    <div>
+    <div style={{ background: `url(${download})` }} className="bg-no-repeat bg-cover">
       {/* HEADER */}
       <header className="sticky top-0 h-16 bg-white flex justify-between items-center px-5">
         <div className="flex items-center gap-4">
@@ -143,7 +151,7 @@ const MessagePage = () => {
       </header>
 
       {/* MESSAGE AREA */}
-      <section className="h-[calc(100vh-128px)] overflow-y-scroll relative">
+      <section className="h-[calc(100vh-128px)] overflow-y-scroll relative bg-slate-200 bg-opacity-60">
         {/* IMAGE PREVIEW */}
         {message.imageUrl && (
           <div className="absolute inset-0 bg-black/40 flex justify-center items-center">
@@ -174,6 +182,11 @@ const MessagePage = () => {
             />
           </div>
         )}
+        {loading && (
+          <div className="w-full h-full flex justify-center it">
+            <Loading />
+          </div>
+        )}
         Show all messages
       </section>
 
@@ -198,13 +211,13 @@ const MessagePage = () => {
                 Image
               </label>
 
-              <label
-                htmlFor="uploadVideo"
-                className="flex items-center p-2 gap-3 hover:bg-slate-200 cursor-pointer"
+              <button
+                onClick={() => document.getElementById("uploadVideo").click()}
+                className="flex items-center p-2 gap-3 hover:bg-slate-200 w-full"
               >
                 <FaVideo />
                 Video
-              </label>
+              </button>
             </div>
           )}
         </div>
