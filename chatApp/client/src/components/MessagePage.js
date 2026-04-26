@@ -10,6 +10,7 @@ import uploadFile from "../helpers/uploadFile";
 import { IoClose } from "react-icons/io5";
 import Loading from "./Loading";
 import download from "../assets/backgroundImage.jpeg";
+import { IoMdSend } from "react-icons/io";
 const MessagePage = () => {
   const params = useParams();
   const socketConnection = useSelector(
@@ -118,8 +119,37 @@ const MessagePage = () => {
     }
   }, [socketConnection, params?.userId, user]);
 
+  const handleOnChange = (e) => {
+    const {name, value}  = e.target;
+    setMessage(prev => {
+      return {
+        ...prev,text : value
+      }
+    })
+  }
+  const handleSubmitMessage =(e) => {
+    e.preventDefault();
+    console.log("submit clicked...")
+    if(message.text || message.imageUrl || message.videoUrl){
+      if (socketConnection) {
+        socketConnection.emit("new message", {
+          sender: user._id,
+          receiver: params.userId,
+          text: message.text,
+          imageUrl: message.imageUrl,
+          videoUrl: message.videoUrl,
+          msgByUserId : user?._id
+        });
+      }
+    }
+
+  }
+
   return (
-    <div style={{ background: `url(${download})` }} className="bg-no-repeat bg-cover">
+    <div
+      style={{ background: `url(${download})` }}
+      className="bg-no-repeat bg-cover"
+    >
       {/* HEADER */}
       <header className="sticky top-0 h-16 bg-white flex justify-between items-center px-5">
         <div className="flex items-center gap-4">
@@ -221,6 +251,22 @@ const MessagePage = () => {
             </div>
           )}
         </div>
+
+        <form
+          className="h-full w-full flex gap-3"
+          onSubmit={handleSubmitMessage}
+        >
+          <input
+            type="text"
+            placeholder="Type here message...."
+            className="py-1 px-4 outline-none w-full h-full"
+            value={message.text}
+            onChange={handleOnChange}
+          />
+          <button className="hover:text-blue-600">
+            <IoMdSend size={30} />
+          </button>
+        </form>
       </section>
 
       {/* ✅ INPUTS OUTSIDE (VERY IMPORTANT) */}

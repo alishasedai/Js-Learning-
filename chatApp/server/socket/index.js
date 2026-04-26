@@ -4,6 +4,8 @@ const http = require("http");
 const { Socket } = require("dgram");
 const getUserDetailsFromToken = require("../helpers/getUserDetailsFromToken");
 const userModel = require("../models/userModel");
+const {conversationModel, messageModel} = require("../models/coversationModel");
+const { send } = require("process");
 
 const app = express()
 
@@ -32,7 +34,7 @@ io.on("connection",async(socket) => {
     // console.log("user details",user)
 
     //create a room
-    socket.join(user?._id)
+    socket.join(user?._id.toString())
     onlineUser.add(user?._id?.toString())
 
     io.emit("onlineUser",Array.from(onlineUser))
@@ -48,6 +50,53 @@ io.on("connection",async(socket) => {
       }
       socket.emit("message-user",payload)
     })
+    //new message
+    socket.on("new message",async(data) => {
+
+      //check conversation is available for both user
+      let conversation = await conversationModel.findOne({
+        $or: [
+          { sender: data?.sender, receiver: data?.receiver },
+          { sender: data?.receiver, receiver: data?.sender }
+        ],
+      });
+      console.log("Conversation : ", conversation);
+      //if conversation is not available
+if(!conversation){
+  const createConversation = await conversationModel({
+    sender : data?.sender,
+    receiver: data?.receiver
+  })
+  conversation = await createConversation.save()
+}
+const message = new messageModel({
+ 
+  text: data.text,
+  imageUrl: data.imageUrl,
+  videoUrl: data.videoUrl,
+  msgByUserId : data?.msgByUserId
+
+
+});
+const saveMessage = await message.save()
+const updateConversation = await conversationModel.updateOne({
+  _id : conversation?._id
+},
+{
+  "$push" : { messages : saveMessage?._id}
+})
+  const getConversationMessage = await conversationModel.findOne({
+    $or: [
+      { sender: data?.sender, receiver: data?.receiver },
+      { sender: data?.receiver, receiver: data?.sender },
+    ]
+  }).populate("messages").sort({updatedAt : -1});
+
+  io.to(data?.sender).emit("message", getConversationMessage);
+  io.to(data?.receiver).emit("message", getConversationMessage);
+      console.log("New Message : ",data)
+      console.log("Conversation : ",conversation)
+    });
 
     // disconnect 
     socket.on("disconnect", () => {
