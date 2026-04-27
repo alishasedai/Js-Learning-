@@ -34,6 +34,7 @@ const MessagePage = () => {
     videoUrl: "",
   });
   const [loading, setLoading] = useState(false);
+  const [allMessage, setAllMessage] =useState([]);
 
   // ✅ OPEN DROPDOWN (no toggle issue)
   const handleUploadImageVideoOpen = () => {
@@ -43,7 +44,6 @@ const MessagePage = () => {
   // ✅ IMAGE UPLOAD
   const handleUploadImage = async (e) => {
     console.log("Image selected");
-
     const file = e.target.files[0];
     console.log("file:", file);
 
@@ -109,18 +109,26 @@ const MessagePage = () => {
   };
 
   // SOCKET
-  useEffect(() => {
-    if (socketConnection) {
-      socketConnection.emit("message-page", params.userId);
+ useEffect(() => {
+   if (socketConnection) {
+     socketConnection.emit("message-page", params.userId);
 
-      socketConnection.on("message-user", (data) => {
-        setDataUser(data);
-      });
-      socketConnection.on("message", (data) => {
-        console.log("Message data",data)
-      })
-    }
-  }, [socketConnection, params?.userId, user]);
+     const handleUser = (data) => setDataUser(data);
+     const handleMessage = (data) => {
+       console.log("Message data", data);
+       setAllMessage(data);
+     };
+
+     socketConnection.on("message-user", handleUser);
+     socketConnection.on("message", handleMessage);
+
+     // cleanup
+     return () => {
+       socketConnection.off("message-user", handleUser);
+       socketConnection.off("message", handleMessage);
+     };
+   }
+ }, [socketConnection, params?.userId]);
 
   const handleOnChange = (e) => {
     const {name, value}  = e.target;
@@ -130,8 +138,13 @@ const MessagePage = () => {
       }
     })
   }
+ 
   const handleSubmitMessage =(e) => {
     e.preventDefault();
+     if (!params.userId) {
+       alert("Receiver not selected");
+       return;
+     }
     console.log("submit clicked...")
     if(message.text || message.imageUrl || message.videoUrl){
       if (socketConnection) {
@@ -142,6 +155,11 @@ const MessagePage = () => {
           imageUrl: message.imageUrl,
           videoUrl: message.videoUrl,
           msgByUserId : user?._id
+        });
+        setMessage({
+          text: "",
+          imageUrl: "",
+          videoUrl: "",
         });
       }
     }
@@ -220,7 +238,19 @@ const MessagePage = () => {
             <Loading />
           </div>
         )}
-        Show all messages
+
+        {/* All messages show here */}
+         {allMessage.map((msg,index) => {
+     
+       
+          return(
+             <div key={index}>
+            <p>{msg.text}</p>
+          </div>
+          )
+         
+        })}
+        
       </section>
 
       {/* INPUT SECTION */}

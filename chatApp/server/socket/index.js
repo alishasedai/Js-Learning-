@@ -12,6 +12,7 @@ const app = express()
 // socket connection
 const server = http.createServer(app)
 
+
 const io = new Server(server, {
   cors: {
     // origin: "http://localhost:3000",
@@ -37,7 +38,7 @@ io.on("connection",async(socket) => {
     socket.join(user?._id.toString())
     onlineUser.add(user?._id?.toString())
 
-    io.emit("onlineUser",Array.from(onlineUser))
+    io.emit("onlineUser",Array.from(onlineUser));
     socket.on("message-page",async(userId) => {
       console.log("user Id: ",userId)
       const userDetails = await userModel.findById(userId).select("-password")
@@ -52,6 +53,10 @@ io.on("connection",async(socket) => {
     })
     //new message
     socket.on("new message",async(data) => {
+       if (!data?.sender || !data?.receiver) {
+         console.log("❌ Invalid message data:", data);
+         return;
+       }
 
       //check conversation is available for both user
       let conversation = await conversationModel.findOne({
@@ -91,11 +96,14 @@ const updateConversation = await conversationModel.updateOne({
       { sender: data?.receiver, receiver: data?.sender },
     ]
   }).populate("messages").sort({updatedAt : -1});
+  console.log("USER FROM REDUX:", user);
+  console.log("USER ID:", user?._id);
 
   io.to(data?.sender).emit("message", getConversationMessage.messages);
   io.to(data?.receiver).emit("message", getConversationMessage.messages);
       console.log("New Message : ",data)
       console.log("Conversation : ",conversation)
+      
     });
 
     // disconnect 
