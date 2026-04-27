@@ -11,6 +11,7 @@ import { IoClose } from "react-icons/io5";
 import Loading from "./Loading";
 import download from "../assets/backgroundImage.jpeg";
 import { IoMdSend } from "react-icons/io";
+import moment from "moment"
 const MessagePage = () => {
   const params = useParams();
   const socketConnection = useSelector(
@@ -240,17 +241,16 @@ const MessagePage = () => {
         )}
 
         {/* All messages show here */}
-         {allMessage.map((msg,index) => {
-     
-       
-          return(
-             <div key={index}>
-            <p>{msg.text}</p>
-          </div>
-          )
-         
-        })}
-        
+        <div className="flex flex-col gap-2">
+          {allMessage.map((msg, index) => {
+            return (
+              <div className="bg-white py-2 p-2 rounded w-fit" key={index}>
+                <p className="px-2">{msg.text}</p>
+                <p>{moment(msg.createdAt).format('hh:mm')}</p>
+              </div>
+            );
+          })}
+        </div>
       </section>
 
       {/* INPUT SECTION */}
