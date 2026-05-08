@@ -243,7 +243,9 @@ const MessagePage = () => {
         <div className="flex flex-col gap-2">
           {allMessage.map((msg, index) => {
             return (
-              <div className="bg-white py-1 p-2 rounded w-fit" key={index}>
+              <div
+                className={`bg-white py-1 p-2 rounded w-fit ${user._id === msg.msgByUserId ? "ml-auto" : ""} `}
+              >
                 <p className="px-1">{msg.text}</p>
                 <p className="text-xs ml-auto w-fit">
                   {moment(msg.createdAt).format("hh:mm")}
