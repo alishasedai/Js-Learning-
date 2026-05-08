@@ -11,12 +11,11 @@ import { IoClose } from "react-icons/io5";
 import Loading from "./Loading";
 import download from "../assets/backgroundImage.jpeg";
 import { IoMdSend } from "react-icons/io";
-import moment from "moment"
+import moment from "moment";
+import socketConnection from "./Socket";
 const MessagePage = () => {
   const params = useParams();
-  const socketConnection = useSelector(
-    (state) => state?.user?.socketConnection,
-  );
+ 
   const user = useSelector((state) => state?.user);
 
   const [dataUser, setDataUser] = useState({
@@ -35,7 +34,7 @@ const MessagePage = () => {
     videoUrl: "",
   });
   const [loading, setLoading] = useState(false);
-  const [allMessage, setAllMessage] =useState([]);
+  const [allMessage, setAllMessage] = useState([]);
 
   // ✅ OPEN DROPDOWN (no toggle issue)
   const handleUploadImageVideoOpen = () => {
@@ -110,44 +109,45 @@ const MessagePage = () => {
   };
 
   // SOCKET
- useEffect(() => {
-   if (socketConnection) {
-     socketConnection.emit("message-page", params.userId);
+  useEffect(() => {
+    if (socketConnection) {
+      socketConnection.emit("message-page", params.userId);
 
-     const handleUser = (data) => setDataUser(data);
-     const handleMessage = (data) => {
-       console.log("Message data", data);
-       setAllMessage(data);
-     };
+      const handleUser = (data) => setDataUser(data);
+      const handleMessage = (data) => {
+        console.log("Message data", data);
+        setAllMessage(data);
+      };
 
-     socketConnection.on("message-user", handleUser);
-     socketConnection.on("message", handleMessage);
+      socketConnection.on("message-user", handleUser);
+      socketConnection.on("message", handleMessage);
 
-     // cleanup
-     return () => {
-       socketConnection.off("message-user", handleUser);
-       socketConnection.off("message", handleMessage);
-     };
-   }
- }, [socketConnection, params?.userId]);
+      // cleanup
+      return () => {
+        socketConnection.off("message-user", handleUser);
+        socketConnection.off("message", handleMessage);
+      };
+    }
+  }, [socketConnection, params?.userId]);
 
   const handleOnChange = (e) => {
-    const {name, value}  = e.target;
-    setMessage(prev => {
+    const { name, value } = e.target;
+    setMessage((prev) => {
       return {
-        ...prev,text : value
-      }
-    })
-  }
- 
-  const handleSubmitMessage =(e) => {
+        ...prev,
+        text: value,
+      };
+    });
+  };
+
+  const handleSubmitMessage = (e) => {
     e.preventDefault();
-     if (!params.userId) {
-       alert("Receiver not selected");
-       return;
-     }
-    console.log("submit clicked...")
-    if(message.text || message.imageUrl || message.videoUrl){
+    if (!params.userId) {
+      alert("Receiver not selected");
+      return;
+    }
+    console.log("submit clicked...");
+    if (message.text || message.imageUrl || message.videoUrl) {
       if (socketConnection) {
         socketConnection.emit("new message", {
           sender: user._id,
@@ -155,7 +155,7 @@ const MessagePage = () => {
           text: message.text,
           imageUrl: message.imageUrl,
           videoUrl: message.videoUrl,
-          msgByUserId : user?._id
+          msgByUserId: user?._id,
         });
         setMessage({
           text: "",
@@ -164,8 +164,7 @@ const MessagePage = () => {
         });
       }
     }
-
-  }
+  };
 
   return (
     <div
@@ -246,7 +245,9 @@ const MessagePage = () => {
             return (
               <div className="bg-white py-1 p-2 rounded w-fit" key={index}>
                 <p className="px-1">{msg.text}</p>
-                <p className="text-xs ml-auto w-fit">{moment(msg.createdAt).format('hh:mm')}</p>
+                <p className="text-xs ml-auto w-fit">
+                  {moment(msg.createdAt).format("hh:mm")}
+                </p>
               </div>
             );
           })}
