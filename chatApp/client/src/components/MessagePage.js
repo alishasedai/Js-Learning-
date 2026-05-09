@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import Avatar from "./Avatar";
@@ -35,6 +35,13 @@ const MessagePage = () => {
   });
   const [loading, setLoading] = useState(false);
   const [allMessage, setAllMessage] = useState([]);
+  const currentMessage = useRef(null)
+
+  useEffect(() => {
+    if(currentMessage.current){
+      currentMessage.current.scrollIntoView({behavior : "smooth", block : "end"})
+    }
+  },[allMessage])
 
   // ✅ OPEN DROPDOWN (no toggle issue)
   const handleUploadImageVideoOpen = () => {
@@ -240,11 +247,11 @@ const MessagePage = () => {
         )}
 
         {/* All messages show here */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 mx-2" ref={currentMessage}>
           {allMessage.map((msg, index) => {
             return (
               <div
-                className={`bg-white py-1 p-2 rounded w-fit ${user._id === msg.msgByUserId ? "ml-auto" : ""} `}
+                className={`bg-white py-1 p-3 mb-2 rounded w-fit  ${user._id === msg.msgByUserId ? "ml-auto bg-teal-100" : ""} `}
               >
                 <p className="px-1">{msg.text}</p>
                 <p className="text-xs ml-auto w-fit">
