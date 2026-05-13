@@ -26,109 +26,99 @@ const io = new Server(server, {
 const onlineUser = new Set()
 
 // socket running at http://localhost:8080/
-io.on("connection",async(socket) => {
-    console.log("connect User ",socket.id)
-    const token = socket.handshake.auth.token
-    //current user details
+io.on("connection", async (socket) => {
+  console.log("connect User ", socket.id);
 
-    const user = await getUserDetailsFromToken(token);
-    // console.log("user details",user)
+  const token = socket.handshake.auth.token;
 
-    //create a room
-    socket.join(user?._id.toString())
-    onlineUser.add(user?._id?.toString())
+  const user = await getUserDetailsFromToken(token);
 
-    io.emit("onlineUser",Array.from(onlineUser));
-    socket.on("message-page",async(userId) => {
-      console.log("user Id: ",userId)
-      const userDetails = await userModel.findById(userId).select("-password")
-      const payload = {
-        _id : userDetails._id,
-        name : userDetails?.name,
-        email : userDetails?.email,
-        profile_pic : userDetails?.profile_pic,
-        onlineUser : onlineUser.has(userId)
-      }
-      socket.emit("message-user",payload);
+  socket.join(user?._id.toString());
 
-       //get previous message
-        const getConversationMessage = await conversationModel.findOne({
-    $or: [
-      { sender: user?._id, receiver: userId },
-      { sender: userId, receiver: user?._id },
-    ]
-  }).populate("messages").sort({updatedAt : -1});
-  console.log("USER FROM REDUX:", user);
-  console.log("USER ID:", user?._id);
+  onlineUser.add(user?._id?.toString());
 
+  io.emit("onlineUser", Array.from(onlineUser));
 
-      
-    });
-    socket.emit("messasge", getConversationMessage.messages)
-    })
-   
+  // ================= MESSAGE PAGE =================
+  socket.on("message-page", async (userId) => {
+    const userDetails = await userModel.findById(userId).select("-password");
 
-    //new message
-    socket.on("new message",async(data) => {
-       if (!data?.sender || !data?.receiver) {
-         console.log("❌ Invalid message data:", data);
-         return;
-       }
+    const payload = {
+      _id: userDetails._id,
+      name: userDetails?.name,
+      email: userDetails?.email,
+      profile_pic: userDetails?.profile_pic,
+      onlineUser: onlineUser.has(userId),
+    };
 
-      //check conversation is available for both user
-      let conversation = await conversationModel.findOne({
+    socket.emit("message-user", payload);
+
+    const getConversationMessage = await conversationModel
+      .findOne({
         $or: [
-          { sender: data?.sender, receiver: data?.receiver },
-          { sender: data?.receiver, receiver: data?.sender }
+          { sender: user?._id, receiver: userId },
+          { sender: userId, receiver: user?._id },
         ],
-      });
-      console.log("Conversation : ", conversation);
-      //if conversation is not available
-if(!conversation){
-  const createConversation = await conversationModel({
-    sender : data?.sender,
-    receiver: data?.receiver
-  })
-  conversation = await createConversation.save()
-}
-const message = new messageModel({
- 
-  text: data.text,
-  imageUrl: data.imageUrl,
-  videoUrl: data.videoUrl,
-  msgByUserId : data?.msgByUserId
+      })
+      .populate("messages");
 
+    socket.emit("message", getConversationMessage?.messages || []);
+  });
 
-});
-const saveMessage = await message.save()
-const updateConversation = await conversationModel.updateOne({
-  _id : conversation?._id
-},
-{
-  "$push" : { messages : saveMessage?._id}
-})
-  const getConversationMessage = await conversationModel.findOne({
-    $or: [
-      { sender: data?.sender, receiver: data?.receiver },
-      { sender: data?.receiver, receiver: data?.sender },
-    ]
-  }).populate("messages").sort({updatedAt : -1});
-  console.log("USER FROM REDUX:", user);
-  console.log("USER ID:", user?._id);
+  // ================= NEW MESSAGE =================
+  socket.on("new message", async (data) => {
+    if (!data?.sender || !data?.receiver) {
+      console.log("Invalid message data", data);
+      return;
+    }
 
-  io.to(data?.sender).emit("message", getConversationMessage.messages);
-  io.to(data?.receiver).emit("message", getConversationMessage.messages);
-      console.log("New Message : ",data)
-      console.log("Conversation : ",conversation)
-      
+    let conversation = await conversationModel.findOne({
+      $or: [
+        { sender: data.sender, receiver: data.receiver },
+        { sender: data.receiver, receiver: data.sender },
+      ],
     });
 
-    // disconnect 
-    socket.on("disconnect", () => {
-        onlineUser.delete(user?._id)
-        console.log("disconnect user ",socket.id)
-    })
+    if (!conversation) {
+      conversation = await new conversationModel({
+        sender: data.sender,
+        receiver: data.receiver,
+      }).save();
+    }
 
+    const message = new messageModel({
+      text: data.text,
+      imageUrl: data.imageUrl,
+      videoUrl: data.videoUrl,
+      msgByUserId: data.msgByUserId,
+    });
+
+    const savedMessage = await message.save();
+
+    await conversationModel.updateOne(
+      { _id: conversation._id },
+      { $push: { messages: savedMessage._id } },
+    );
+
+    const updatedConversation = await conversationModel
+      .findOne({
+        $or: [
+          { sender: data.sender, receiver: data.receiver },
+          { sender: data.receiver, receiver: data.sender },
+        ],
+      })
+      .populate("messages");
+
+    io.to(data.sender).emit("message", updatedConversation.messages);
+    io.to(data.receiver).emit("message", updatedConversation.messages);
+  });
+
+  // ================= DISCONNECT =================
+  socket.on("disconnect", () => {
+    onlineUser.delete(user?._id);
+    console.log("disconnect user ", socket.id);
+  });
+});
 
 module.exports = {
     app,
