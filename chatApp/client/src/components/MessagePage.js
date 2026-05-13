@@ -210,9 +210,39 @@ const MessagePage = () => {
 
       {/* MESSAGE AREA */}
       <section className="h-[calc(100vh-128px)] overflow-y-scroll relative bg-slate-200 bg-opacity-60">
+        {/* All messages show here */}
+        <div className="flex flex-col gap-2 mx-2" ref={currentMessage}>
+          {allMessage.map((msg, index) => {
+            return (
+              <div
+                className={`bg-white py-1 p-3 mb-2 rounded w-fit max-w-[230px] md:max-w-sm lg:max-w-md  ${user._id === msg.msgByUserId ? "ml-auto bg-teal-300" : ""} `}
+              >
+                <div className="w-full ">
+                  {msg.imageUrl && (
+                    <img
+                      src={msg?.imageUrl}
+                      className="w-full h-full object-scale-down"
+                    />
+                  )}
+                  {msg.videoUrl && (
+                    <video
+                      src={msg?.videoUrl}
+                      className="w-full h-full object-scale-down"
+                      controls
+                    />
+                  )}
+                </div>
+                <p className="px-1">{msg.text}</p>
+                <p className="text-xs ml-auto w-fit">
+                  {moment(msg.createdAt).format("hh:mm")}
+                </p>
+              </div>
+            );
+          })}
+        </div>
         {/* IMAGE PREVIEW */}
         {message.imageUrl && (
-          <div className="absolute inset-0 bg-black/40 flex justify-center items-center">
+          <div className="w-full h-full sticky bottom-0 inset-0 bg-black/40 flex justify-center items-center">
             <IoClose
               onClick={handleClearUploadImage}
               className="absolute top-2 right-2 cursor-pointer text-white"
@@ -227,7 +257,7 @@ const MessagePage = () => {
         )}
         {/* VIDEO PREVIEW */}
         {message.videoUrl && (
-          <div className="absolute inset-0 bg-black/40 flex justify-center items-center">
+          <div className="sticky bottom-0 inset-0 bg-black/40 flex justify-center items-center">
             <IoClose
               onClick={handleClearUploadVideo}
               className="absolute top-2 right-2 cursor-pointer text-white"
@@ -241,26 +271,10 @@ const MessagePage = () => {
           </div>
         )}
         {loading && (
-          <div className="w-full h-full flex justify-center it">
+          <div className="w-full h-full sticky bottom-0 flex justify-center it">
             <Loading />
           </div>
         )}
-
-        {/* All messages show here */}
-        <div className="flex flex-col gap-2 mx-2" ref={currentMessage}>
-          {allMessage.map((msg, index) => {
-            return (
-              <div
-                className={`bg-white py-1 p-3 mb-2 rounded w-fit  ${user._id === msg.msgByUserId ? "ml-auto bg-teal-100" : ""} `}
-              >
-                <p className="px-1">{msg.text}</p>
-                <p className="text-xs ml-auto w-fit">
-                  {moment(msg.createdAt).format("hh:mm")}
-                </p>
-              </div>
-            );
-          })}
-        </div>
       </section>
 
       {/* INPUT SECTION */}

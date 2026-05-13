@@ -49,8 +49,25 @@ io.on("connection",async(socket) => {
         profile_pic : userDetails?.profile_pic,
         onlineUser : onlineUser.has(userId)
       }
-      socket.emit("message-user",payload)
+      socket.emit("message-user",payload);
+
+       //get previous message
+        const getConversationMessage = await conversationModel.findOne({
+    $or: [
+      { sender: user?._id, receiver: userId },
+      { sender: userId, receiver: user?._id },
+    ]
+  }).populate("messages").sort({updatedAt : -1});
+  console.log("USER FROM REDUX:", user);
+  console.log("USER ID:", user?._id);
+
+
+      
+    });
+    socket.emit("messasge", getConversationMessage.messages)
     })
+   
+
     //new message
     socket.on("new message",async(data) => {
        if (!data?.sender || !data?.receiver) {
@@ -111,7 +128,7 @@ const updateConversation = await conversationModel.updateOne({
         onlineUser.delete(user?._id)
         console.log("disconnect user ",socket.id)
     })
-})
+
 
 module.exports = {
     app,
