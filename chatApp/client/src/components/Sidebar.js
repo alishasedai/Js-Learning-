@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoChatbubbleEllipses } from "react-icons/io5";
 import { FaUserPlus } from "react-icons/fa";
 import { CgLogOut } from "react-icons/cg";
@@ -9,12 +9,21 @@ import EditUserDetails from './EditUserDetails';
 import Divider from './Divider';
 import { FiArrowUpLeft } from "react-icons/fi";
 import SearchUser from './SearchUser';
+import socketConnection from './Socket';
 
 const Sidebar = () => {
   const user = useSelector(state => state?.user);
   const [editUserOpen, setEditUserOpen] = useState(false)
   const [allUser,setAllUser] = useState([])
   const [openSearchUser,setOpenSearchUser] = useState(false)
+  
+useEffect(() => {
+  if (socketConnection && user?._id) {
+    console.log("sending user id:", user._id);
+    socketConnection.emit("sidebar", user._id);
+  }
+}, [socketConnection, user?._id]);
+
   return (
     <div className="w-full h-full grid grid-cols-[48px,1fr] bg-white">
       <div className="bg-slate-200 flex flex-col justify-between rounded-tr-lg rounded-br-lg w-12 h-full py-5">

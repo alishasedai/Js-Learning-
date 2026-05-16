@@ -41,6 +41,7 @@ io.on("connection", async (socket) => {
 
   // ================= MESSAGE PAGE =================
   socket.on("message-page", async (userId) => {
+    
     const userDetails = await userModel.findById(userId).select("-password");
 
     const payload = {
@@ -62,7 +63,10 @@ io.on("connection", async (socket) => {
       })
       .populate("messages");
 
+     
     socket.emit("message", getConversationMessage?.messages || []);
+    
+    
   });
 
   // ================= NEW MESSAGE =================
@@ -113,6 +117,10 @@ io.on("connection", async (socket) => {
     io.to(data.receiver).emit("message", updatedConversation.messages);
   });
 
+  //sidebar message
+  socket.on("sidebar",(currentUserId) => {
+    console.log("Current Users .. ->",currentUserId)
+  });
   // ================= DISCONNECT =================
   socket.on("disconnect", () => {
     onlineUser.delete(user?._id);

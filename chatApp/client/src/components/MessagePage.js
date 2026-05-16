@@ -37,6 +37,17 @@ const MessagePage = () => {
   const [allMessage, setAllMessage] = useState([]);
   const currentMessage = useRef(null)
 
+ useEffect(() => {
+   setAllMessage([]);
+   setDataUser({
+     name: "",
+     email: "",
+     profile_pic: "",
+     online: false,
+     _id: "",
+   });
+ }, [params?.userId]);
+
   useEffect(() => {
     if(currentMessage.current){
       currentMessage.current.scrollIntoView({behavior : "smooth", block : "end"})
@@ -50,9 +61,9 @@ const MessagePage = () => {
 
   // ✅ IMAGE UPLOAD
   const handleUploadImage = async (e) => {
-    console.log("Image selected");
+   
     const file = e.target.files[0];
-    console.log("file:", file);
+    
 
     if (file.size > 50 * 1024 * 1024) {
       alert("Video must be under 50MB");
@@ -62,7 +73,7 @@ const MessagePage = () => {
 
     const response = await uploadFile(file);
     setLoading(false);
-    console.log("response:", response);
+    
 
     setMessage((prev) => ({
       ...prev,
@@ -74,26 +85,25 @@ const MessagePage = () => {
 
   // ✅ VIDEO UPLOAD (FIXED)
   const handleUploadVideo = async (e) => {
-    console.log("Video selected");
+    
 
     const file = e.target.files[0];
-    console.log("file:", file);
 
     if (!file) {
-      console.log("No file selected ❌");
+      
       return;
     }
     setLoading(true);
     const response = await uploadFile(file);
     setLoading(false);
-    console.log("response:", response);
+    
 
     setMessage((prev) => {
       const updated = {
         ...prev,
         videoUrl: response.url,
       };
-      console.log("Updated videoUrl:", updated.videoUrl);
+      
       return updated;
     });
 
@@ -116,26 +126,27 @@ const MessagePage = () => {
   };
 
   // SOCKET
-  useEffect(() => {
-    if (socketConnection) {
-      socketConnection.emit("message-page", params.userId);
+useEffect(() => {
+  if (!socketConnection) return;
 
-      const handleUser = (data) => setDataUser(data);
-      const handleMessage = (data) => {
-        console.log("Message data", data);
-        setAllMessage(data);
-      };
+  socketConnection.emit("message-page", params.userId);
 
-      socketConnection.on("message-user", handleUser);
-      socketConnection.on("message", handleMessage);
+  const handleMessage = (data) => {
+    setAllMessage([...data]);
+  };
 
-      // cleanup
-      return () => {
-        socketConnection.off("message-user", handleUser);
-        socketConnection.off("message", handleMessage);
-      };
-    }
-  }, [socketConnection, params?.userId]);
+  const handleUser = (data) => {
+    setDataUser(data);
+  };
+
+  socketConnection.on("message", handleMessage);
+  socketConnection.on("message-user", handleUser);
+
+  return () => {
+    socketConnection.off("message", handleMessage);
+    socketConnection.off("message-user", handleUser);
+  };
+}, [socketConnection, params?.userId]);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -153,7 +164,7 @@ const MessagePage = () => {
       alert("Receiver not selected");
       return;
     }
-    console.log("submit clicked...");
+   
     if (message.text || message.imageUrl || message.videoUrl) {
       if (socketConnection) {
         socketConnection.emit("new message", {
@@ -215,6 +226,7 @@ const MessagePage = () => {
           {allMessage.map((msg, index) => {
             return (
               <div
+                key={msg._id || index}
                 className={`bg-white py-1 p-3 mb-2 rounded w-fit max-w-[230px] md:max-w-sm lg:max-w-md  ${user._id === msg.msgByUserId ? "ml-auto bg-teal-300" : ""} `}
               >
                 <div className="w-full ">

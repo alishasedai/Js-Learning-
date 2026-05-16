@@ -7,6 +7,8 @@ import Sidebar from '../components/Sidebar'
 import logo from "../assets/images.png"
 import io from "socket.io-client"
 
+
+
 const Home = () => {
   const user = useSelector(state => state.user);
   const dispatch = useDispatch()
@@ -14,7 +16,7 @@ const Home = () => {
   const location = useLocation()
 
   // console.log("Redux user",user)
-  console.log("user",user)
+ 
 
 
 
@@ -28,10 +30,10 @@ const Home = () => {
       })
       dispatch(setUser(response.data.data))
       if(response.data.data.logout){
-        dispatch(logout)
+        dispatch(logout())
         naviagate("/email")
       }
-      console.log("Current user details",response)
+      
 
     }catch(err){
       console.log("error",err)
@@ -42,25 +44,25 @@ const Home = () => {
     fetchUserDetails()
   },[])
 
-  // socket connection
 useEffect(() => {
-  const socketConnection = io(process.env.REACT_APP_BACKEND_URL,{
-    auth : {
-      token : localStorage.getItem("token")
-    }
-  })
-  socketConnection.on("onlineUser", (data) => {
-    console.log(data)
-    dispatch(setOnlineUser(data))
+  let socketInstance;
+
+  import("../components/Socket").then((module) => {
+    socketInstance = module.default;
+
+    socketInstance.on("onlineUser", (data) => {
+      dispatch(setOnlineUser(data));
+    });
   });
-  dispatch(setSocketConnection(socketConnection))
+
   return () => {
-    
-    socketConnection.disconnect()
-  }
-},[])
+    if (socketInstance) {
+      socketInstance.disconnect();
+    }
+  };
+}, [dispatch]);
   
-console.log("location", location);
+
 const basepath = location.pathname === "/"
   return (
     <div className="grid grid-cols-[300px,1fr] h-screen max-h-screen">

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 const Avatar = ({userId,name,imageUrl,width,height}) => {
   const onlineUser = useSelector(state => state?.user?.onlineUser)
-    console.log(name)
+  
     let avatarName = "";
     if (name) {
       const splitName = name?.split(" ");
@@ -29,7 +29,6 @@ const Avatar = ({userId,name,imageUrl,width,height}) => {
     const randomNumber =Math.floor( Math.random() * 8)
     const isOnline = onlineUser.includes(userId) 
     
-    console.log("randomNumber", randomNumber);
   return (
     <div
       className={` text-slate-800 rounded-full relative shadow border text-xl font-bold `}
