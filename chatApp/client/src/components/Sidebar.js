@@ -21,6 +21,9 @@ useEffect(() => {
   if (socketConnection && user?._id) {
     console.log("sending user id:", user._id);
     socketConnection.emit("sidebar", user._id);
+    socketConnection.on("conversation",(data) => {
+      console.log("Conversation ::::",data)
+    })
   }
 }, [socketConnection, user?._id]);
 

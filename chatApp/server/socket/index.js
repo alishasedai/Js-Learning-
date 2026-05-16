@@ -118,8 +118,26 @@ io.on("connection", async (socket) => {
   });
 
   //sidebar message
-  socket.on("sidebar",(currentUserId) => {
-    console.log("Current Users .. ->",currentUserId)
+  socket.on("sidebar",async (currentUserId) => {
+    console.log("Current Users .. ->",currentUserId);
+    const currentUserConversation = await conversationModel.find({
+      "$or" : [
+        { sender : currentUserId},
+        { receiver : currentUserId}
+      ]
+    }).sort({updatedAt : -1}).populate("messages")
+    console.log("Current user conversation =>",currentUserConversation)
+    const conversation = currentUserConversation.map((conv) => {
+      const countUnseenMsg = conv.messages.reduce((preve,curr )=> preve + (curr.seen ? 0: 1),0)
+      return {
+        _id : conv?._id,
+        sender : conv?.sender,
+        receiver : conv?.receiver,
+        unseenMsg : countUnseenMsg,
+        lastMsg : conv.messages[conv?.messages?.length - 1]
+      }
+    })
+    socket.emit("conversation",conversation)
   });
   // ================= DISCONNECT =================
   socket.on("disconnect", () => {
