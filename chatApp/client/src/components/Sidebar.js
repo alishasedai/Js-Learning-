@@ -114,7 +114,7 @@ useEffect(() => {
           {
             allUser.map((conv,index) => {
               return (
-                <div key={conv?._id} className="flex items-center gap-2 p-3 px-2 border border-transparent hover:border-blue-300 cursor-pointer rounded hover:bg-slate-200">
+                <NavLink to={"/"+conv?.userDetails?._id} key={conv?._id} className="flex items-center gap-2 p-3 px-2 border border-transparent hover:border-blue-300 cursor-pointer rounded hover:bg-slate-200">
                   <div>
                     <Avatar
                       imageUrl={conv?.userDetails?.profile_pic}
@@ -150,7 +150,7 @@ useEffect(() => {
                     </div>
                   </div>
                   <p className='text-sm ml-auto w-7 h-7 flex justify-center items-center p-1 bg-blue-300 font-semibold rounded-full text-white'>{conv.unseenMsg}</p>
-                </div>
+                </NavLink>
               );
             })
           }

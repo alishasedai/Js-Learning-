@@ -1,17 +1,18 @@
 const express = require("express");
-const {Server} = require("socket.io")
-const http = require("http"); 
+const { Server } = require("socket.io");
+const http = require("http");
 // const { Socket } = require("dgram");
 const getUserDetailsFromToken = require("../helpers/getUserDetailsFromToken");
 const userModel = require("../models/userModel");
-const {conversationModel, messageModel} = require("../models/coversationModel");
-const { send } = require("process");
-
-const app = express()
+const {
+  conversationModel,
+  messageModel,
+} = require("../models/conversationModel");
+const getConversation = require("../helpers/getConversation");
+const app = express();
 
 // socket connection
-const server = http.createServer(app)
-
+const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
@@ -19,11 +20,10 @@ const io = new Server(server, {
     origin: process.env.FRONTEND_URL,
     credentials: true,
   },
-
 });
 
 //online user
-const onlineUser = new Set()
+const onlineUser = new Set();
 
 // socket running at http://localhost:8080/
 io.on("connection", async (socket) => {
@@ -41,7 +41,6 @@ io.on("connection", async (socket) => {
 
   // ================= MESSAGE PAGE =================
   socket.on("message-page", async (userId) => {
-    
     const userDetails = await userModel.findById(userId).select("-password");
 
     const payload = {
@@ -63,10 +62,7 @@ io.on("connection", async (socket) => {
       })
       .populate("messages");
 
-     
     socket.emit("message", getConversationMessage?.messages || []);
-    
-    
   });
 
   // ================= NEW MESSAGE =================
@@ -118,33 +114,10 @@ io.on("connection", async (socket) => {
   });
 
   //sidebar message
-  socket.on("sidebar",async (currentUserId) => {
-    console.log("Current Users .. ->",currentUserId);
-    if(currentUserId){
-      const currentUserConversation = await conversationModel
-        .find({
-          $or: [{ sender: currentUserId }, { receiver: currentUserId }],
-        })
-        .sort({ updatedAt: -1 })
-        .populate("messages")
-        .populate("sender")
-        .populate("receiver");
-      console.log("Current user conversation =>", currentUserConversation);
-      const conversation = currentUserConversation.map((conv) => {
-        const countUnseenMsg = conv.messages.reduce(
-          (preve, curr) => preve + (curr.seen ? 0 : 1),
-          0,
-        );
-        return {
-          _id: conv?._id,
-          sender: conv?.sender,
-          receiver: conv?.receiver,
-          unseenMsg: countUnseenMsg,
-          lastMsg: conv.messages[conv?.messages?.length - 1],
-        };
-      });
-      socket.emit("conversation", conversation);
-    }
+  socket.on("sidebar", async (currentUserId) => {
+    console.log("Current Users .. ->", currentUserId);
+    const conversation = await getConversation(currentUserId);
+    socket.emit("conversation", conversation);
   });
   // ================= DISCONNECT =================
   socket.on("disconnect", () => {
@@ -154,6 +127,6 @@ io.on("connection", async (socket) => {
 });
 
 module.exports = {
-    app,
-    server
-}
+  app,
+  server,
+};
