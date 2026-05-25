@@ -10,6 +10,7 @@ import Divider from './Divider';
 import { FiArrowUpLeft } from "react-icons/fi";
 import SearchUser from './SearchUser';
 import socketConnection from './Socket';
+import { FaImage, FaVideo } from "react-icons/fa";
 
 const Sidebar = () => {
   const user = useSelector(state => state?.user);
@@ -22,7 +23,31 @@ useEffect(() => {
     console.log("sending user id:", user._id);
     socketConnection.emit("sidebar", user._id);
     socketConnection.on("conversation",(data) => {
+
       console.log("Conversation ::::",data)
+      const conversationUserData = data.map((conversationUser,index) => {
+        if(conversationUser?.sender?._id === conversationUser?.receiver?._id){
+           return {
+             ...conversationUser,
+             userDetails : conversationUser?.sender
+           };
+        }
+        else if(conversationUser?.receiver?._id !== user?._id){
+          return {
+            ...conversationUser,
+            userDetails: conversationUser?.receiver,
+          };
+        }
+        else{
+          return {
+            ...conversationUser,
+            userDetails: conversationUser?.sender,
+          };
+        }
+       
+      })
+
+      setAllUser(conversationUserData)
     })
   }
 }, [socketConnection, user?._id]);
@@ -48,7 +73,7 @@ useEffect(() => {
         </div>
         <div>
           <button
-            className="font-normal"vb 
+            className="font-normal"
             title={user.name}
             onClick={() => setEditUserOpen(true)}
           >
@@ -86,6 +111,48 @@ useEffect(() => {
               </p>
             </div>
           )}
+          {
+            allUser.map((conv,index) => {
+              return (
+                <div key={conv?._id} className="flex items-center gap-2 p-2">
+                  <div>
+                    <Avatar
+                      imageUrl={conv?.userDetails?.profile_pic}
+                      name={conv?.userDetails?.name}
+                      width={35}
+                      height={35}
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-ellipsis line-clamp-1 font-semibold text-base">
+                      {conv?.userDetails?.name}
+                    </h3>
+                    <div className="text-xs text-slate-500 flex items-center gap-1">
+                      <div>
+                        {conv?.lastMsg?.imageUrl && (
+                          <div className="flex items-center gap-2">
+                            <span>
+                              <FaImage />
+                            </span>
+                            {!conv.lastMsg.text && <span>Image</span>}
+                          </div>
+                        )}
+                        {conv?.lastMsg?.videoUrl && (
+                          <div className="flex items-center gap-2">
+                            <span>
+                              <FaVideo />
+                            </span>
+                            {!conv.lastMsg.text && <span>Video</span>}
+                          </div>
+                        )}
+                      </div>
+                      <p>{conv?.lastMsg?.text}</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          }
         </div>
       </div>
       {/*Edit user details*/}
