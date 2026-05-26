@@ -109,8 +109,14 @@ io.on("connection", async (socket) => {
       })
       .populate("messages");
 
-    io.to(data.sender).emit("message", updatedConversation?.messages || []);
-    io.to(data.receiver).emit("message", updatedConversation?.messages || []);
+    io.to(data?.sender).emit("message", updatedConversation?.messages || []);
+    io.to(data?.receiver).emit("message", updatedConversation?.messages || []);
+      //send  conversation
+    const conversationSender = await getConversation(data?.sender);
+    const conversationReceiver = await getConversation(data?.receiver);
+
+   io.to(data.sender).emit("conversation", conversationSender);
+   io.to(data.receiver).emit("conversation", conversationReceiver);
   });
 
   //sidebar message

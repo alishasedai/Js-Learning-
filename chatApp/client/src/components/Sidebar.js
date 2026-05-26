@@ -146,7 +146,7 @@ useEffect(() => {
                           </div>
                         )}
                       </div>
-                      <p>{conv?.lastMsg?.text}</p>
+                      <p className='text-ellipsis line-clamp-1'>{conv?.lastMsg?.text}</p>
                     </div>
                   </div>
                   <p className='text-sm ml-auto w-7 h-7 flex justify-center items-center p-1 bg-blue-300 font-semibold rounded-full text-white'>{conv.unseenMsg}</p>
