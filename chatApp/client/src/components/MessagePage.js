@@ -131,6 +131,8 @@ useEffect(() => {
 
   socketConnection.emit("message-page", params.userId);
 
+  socketConnection.emit("seen",params.userId)
+
   const handleMessage = (data) => {
     setAllMessage([...data]);
   };
@@ -140,6 +142,7 @@ useEffect(() => {
   };
 
   socketConnection.on("message", handleMessage);
+
   socketConnection.on("message-user", handleUser);
 
   return () => {
@@ -227,7 +230,7 @@ useEffect(() => {
             return (
               <div
                 key={msg._id || index}
-                className={`bg-white py-1 p-3 mb-2 rounded w-fit max-w-[230px] md:max-w-sm lg:max-w-md  ${user._id === msg.msgByUserId ? "ml-auto bg-teal-300" : ""} `}
+                className={` py-1 p-3 mb-2 rounded w-fit max-w-[230px] md:max-w-sm lg:max-w-md  ${user._id === msg.msgByUserId ? "ml-auto bg-teal-300" : "bg-white"} `}
               >
                 <div className="w-full ">
                   {msg.imageUrl && (

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { IoChatbubbleEllipses } from "react-icons/io5";
 import { FaUserPlus } from "react-icons/fa";
 import { CgLogOut } from "react-icons/cg";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Avatar from "./Avatar"
 import { useDispatch, useSelector } from "react-redux";
 import EditUserDetails from './EditUserDetails';
@@ -11,12 +11,15 @@ import { FiArrowUpLeft } from "react-icons/fi";
 import SearchUser from './SearchUser';
 import socketConnection from './Socket';
 import { FaImage, FaVideo } from "react-icons/fa";
+import { logout } from '../redux/userSlice';
 
 const Sidebar = () => {
   const user = useSelector(state => state?.user);
   const [editUserOpen, setEditUserOpen] = useState(false)
   const [allUser,setAllUser] = useState([])
   const [openSearchUser,setOpenSearchUser] = useState(false)
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
   
 useEffect(() => {
   if (socketConnection && user?._id) {
@@ -51,6 +54,12 @@ useEffect(() => {
     })
   }
 }, [socketConnection, user?._id]);
+const handleLogout = () => {
+  dispatch(logout());
+  navigate("/email");
+  localStorage.clear()
+  
+}
 
   return (
     <div className="w-full h-full grid grid-cols-[48px,1fr] bg-white">
@@ -88,6 +97,7 @@ useEffect(() => {
           <button
             title="logout"
             className="w-12 h-12 hover:bg-slate-300 rounded flex justify-center items-center cursor-pointer"
+            onClick={handleLogout}
           >
             <span className="-ml-2">
               <CgLogOut size={30} />
@@ -114,7 +124,11 @@ useEffect(() => {
           {
             allUser.map((conv,index) => {
               return (
-                <NavLink to={"/"+conv?.userDetails?._id} key={conv?._id} className="flex items-center gap-2 p-3 px-2 border border-transparent hover:border-blue-300 cursor-pointer rounded hover:bg-slate-200">
+                <NavLink
+                  to={"/" + conv?.userDetails?._id}
+                  key={conv?._id}
+                  className="flex items-center gap-2 p-3 px-2 border border-transparent hover:border-blue-300 cursor-pointer rounded hover:bg-slate-200"
+                >
                   <div>
                     <Avatar
                       imageUrl={conv?.userDetails?.profile_pic}
@@ -146,10 +160,17 @@ useEffect(() => {
                           </div>
                         )}
                       </div>
-                      <p className='text-ellipsis line-clamp-1'>{conv?.lastMsg?.text}</p>
+
+                      <p className="text-ellipsis line-clamp-1">
+                        {conv?.lastMsg?.text}
+                      </p>
                     </div>
                   </div>
-                  <p className='text-sm ml-auto w-7 h-7 flex justify-center items-center p-1 bg-blue-300 font-semibold rounded-full text-white'>{conv.unseenMsg}</p>
+                  {Boolean(conv.unseenMsg) && (
+                    <p className="text-sm ml-auto w-7 h-7 flex justify-center items-center p-1 bg-blue-300 font-semibold rounded-full text-white">
+                      {conv.unseenMsg}
+                    </p>
+                  )}
                 </NavLink>
               );
             })

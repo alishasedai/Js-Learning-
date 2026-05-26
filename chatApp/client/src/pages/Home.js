@@ -83,7 +83,7 @@ const basepath = location.pathname === "/"
           width={250}
           alt='logo'/>
         </div>
-        <p className='text-lg mt-2 text-slate-400'>Select user to send the message</p>
+        <p className='text-lg mt-2 text-slate-300'>Select user to send the message</p>
       </div>
     </div>
   )
