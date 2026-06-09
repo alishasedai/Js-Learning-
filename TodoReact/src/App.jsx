@@ -10,6 +10,12 @@ import MultiForm from './MultiForm';
 import AdvanceForm from './AdvanceForm';
 import Uncontrolled from './Uncontrolled';
 import Todo from './Todo';
+import Calculate from './Calculate';
+import SimpleCalulator from './SimpleCalulator';
+import ChangeBackground from './ChangeBackground';
+import ShoppingCart from './ShoppingCart';
+import PracticeEffect from './PracticeEffect'
+import SearchStudent from './SearchStudent';
 
 function App() {
  
@@ -125,15 +131,22 @@ const handleMessage = () => {
     <>
     {/* <Hello name="Alisha sedai" age="21" city="Kathmandu" hobbies = {hobbies}/>
     <Hello age="22" /> */}
-    {/* <Bye label="click me" handle={handleMessage}/>
-    <Bye label="Just Click me" handle={handleBye} /> */}
+    {/* <Bye label="click me" handle={handleMessage}/> /
+    <Bye label="Just Click me" handle={handleBye} /> 
     {/* <ToggleText /> */}
       {/* <LikeBtn /> */}
       {/* <UserProfile /> */}
       {/* <MultiForm /> */}
       {/* <AdvanceForm /> */}
       {/* <Uncontrolled /> */}
-      <Todo />
+      {/* <Todo /> */}
+      {/* <Calculate /> */}
+      {/* <SimpleCalulator /> */}
+      {/* <ChangeBackground /> */}
+      {/* <ShoppingCart /> */}
+      {/* <PracticeEffect /> */}
+      {/* <Bye label="Just Click me" handle={handleBye} /> */}
+      <SearchStudent />
       </>
   )
 }
