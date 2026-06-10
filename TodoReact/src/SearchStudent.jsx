@@ -13,7 +13,7 @@ const SearchStudent = () => {
         setLate(search);
     },2000)
     return () => clearTimeout(timer);
-    console.log("work")
+    
   },[search])
   
   return (
