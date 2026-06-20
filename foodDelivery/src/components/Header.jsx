@@ -4,22 +4,24 @@ import { assets } from '../assets/assests'
 const Header = () => {
   return (
     <div
-      className="h-[70vh] w-1/2 mx-auto my-10  flex items-center justify-center bg-red-900 md:mx-auto mx:mt-10"
+      className="h-[70vh] w-full flex items-center justify-center"
     //   style={{ backgroundImage: `url(${assets.bg})` }}
     >
-      <div className="text-white h-[60vh] w-1/2 flex flex-col items-center justify-center text-center bg-black/50 p-6 rounded-xl ">
+      <div style={{ backgroundImage: `url(${assets.bg})` }} className="text-white h-[60vh] w-[85%] bg-black/50 p-6 rounded-xl bg-cover  ">
 
-        <h2 className="text-4xl font-bold">
+       <div className=' h-full flex flex-col gap-6 justify-center w-full rounded-xl mt-20'>
+         <h2 className="text-4xl font-bold">
           Order your favourite food here
         </h2>
 
-        <p className="mt-40">
+        <p className="mt-40 text-xl">
           Choose from a diverse menu featuring a delectable array of dishes created with fresh food.
         </p>
 
-        <button className="h-8 w-30 font-bold  bg-red-700 text-gray-200 rounded-md">
+        <button className="h-12 w-30 font-bold  bg-gray-200 text-gray-600 rounded-full">
           View Menu
         </button>
+       </div>
 
       </div>
     </div>
