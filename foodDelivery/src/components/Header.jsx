@@ -7,14 +7,14 @@ const Header = () => {
       className="h-[70vh] w-full flex items-center justify-center"
     //   style={{ backgroundImage: `url(${assets.bg})` }}
     >
-      <div style={{ backgroundImage: `url(${assets.bg})` }} className="text-white h-[60vh] w-[85%] bg-black/50 p-6 rounded-xl bg-cover  ">
+      <div style={{ backgroundImage: `url(${assets.bg})` }} className="text-white h-[60vh] w-full bg-black/50 p-6 rounded-xl bg-cover  ">
 
-       <div className=' h-full flex flex-col gap-6 justify-center w-full rounded-xl mt-20'>
+       <div className=' h-full flex flex-col gap-6 justify-center w-full rounded-xl mt-0'>
          <h2 className="text-4xl font-bold">
           Order your favourite food here
         </h2>
 
-        <p className="mt-40 text-xl">
+        <p className="mt-10 text-xl">
           Choose from a diverse menu featuring a delectable array of dishes created with fresh food.
         </p>
 

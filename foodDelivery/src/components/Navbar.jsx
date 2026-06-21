@@ -4,9 +4,9 @@ import { FaSearch, FaShoppingCart } from "react-icons/fa";
 const Navbar = () => {
 const [menu,setMenu] =useState("home");
   return (
-    <div className='flex flex-row justify-around  items-center'>
+    <div className='flex w-full flex-row justify-between  items-center'>
       <img src={assets.logo} className='h-20 w-40' alt="" />
-      <ul className='flex flex-row text-lg -mt-0 gap-10 text-[#49557e]'>
+      <ul className='flex flex-row text-lg gap-10 text-[#49557e]'>
         <li onClick={() => setMenu("home")} className={`cursor-pointer ${menu === "home" ? "border-b-2 border-gray-600 text-red-800" : ""}`}>Home</li>
         <li onClick={() => setMenu("menu")} className={`cursor-pointer ${menu === "menu" ? "border-b-2 border-gray-600 text-red-800" : ""}`} >Menu</li>
         <li onClick={() => setMenu("mobile-app")} className={`cursor-pointer ${menu === "mobile-app" ? "border-b-2 border-gray-600 text-red-800" : ""}`}>Mobile-app</li>

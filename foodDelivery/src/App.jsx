@@ -7,12 +7,12 @@ import PlaceOrder from './pages/PlaceOrder/PlaceOrder'
 
 const App = () => {
   return (
-  <div className=''>
+  <div className='w-[90%] mx-auto'>
       <Navbar />
     <Routes>
       <Route path='/' element={<Home />}/>
       <Route path='/cart' element={<Cart />}/>
-      <Route path='/' element={<PlaceOrder />}/>
+      <Route path='/place_order' element={<PlaceOrder />}/>
     </Routes>
     </div>
   )
