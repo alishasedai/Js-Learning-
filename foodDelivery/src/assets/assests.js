@@ -1,6 +1,6 @@
 import logo from "./logo_food1.png";
 import bg from "./bg.jpeg";
-import desserts from "./desserts.jpeg";
+import dessert from "./desserts.jpeg";
 import rolls from "./rolls.jpeg";
 import salad from "./salad.jpeg";
 import sandwich from "./sandwich.jpeg";
@@ -26,11 +26,23 @@ import spaghetti_bolognese from "./spaghetti_bolognese.jpeg";
 import veg_burger from "./veg_burger.jpeg";
 import chicken_burger from "./chicken_burger.jpeg";
 import caesar_salad from "./caesar_salad.jpeg";
+import seatle_roll from "./seatle_roll.jpeg"
+import orange_juice from "./orange.jpeg";
+import grilled_cheese_sandwich from "./grilled_Sandwhich.jpeg";
 
+//icons
+import plus from "./plus.png";
+import remove from "./remove.png";
+import add_green from "./add_green.png";
 
 export const assets = {
   logo,
   bg,
+};
+export const icons = {
+  plus,
+  remove,
+  add_green
 };
 
 export const menu_list = [
@@ -43,8 +55,8 @@ export const menu_list = [
     menu_image: rolls,
   },
   {
-    menu_name: "Desserts",
-    menu_image: desserts,
+    menu_name: "Dessert",
+    menu_image: dessert,
   },
   {
     menu_name: "Sandwich",
@@ -192,4 +204,28 @@ export const food_list = [
     description: "Cold and creamy dessert with various flavors",
     category: "Dessert",
   },
+  {
+    _id: "13",
+    name: "Seattle Roll",
+    image: seatle_roll,
+    price: 11,
+    description: "Fresh sushi roll filled with salmon, avocado, and cucumber",
+    category: "Rolls",
+  },
+  {
+    _id: "14",
+    name: "Fresh Orange Juice",
+    image: orange_juice,
+    price: 5,
+    description: "Refreshing juice made from freshly squeezed oranges",
+    category: "Drinks",
+  },
+  {
+    _id: "15",
+    name: "Grilled Cheese Sandwich",
+    image: grilled_cheese_sandwich,
+    price: 6,
+    description: "Toasted bread filled with melted cheese",
+    category: "Sandwich",
+  }
 ];
