@@ -1,8 +1,11 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { StoreContext } from '../../context/StoreContext'
 
 const PlaceOrder = () => {
-  const {getTotalCartAmount} = useContext(StoreContext)
+  const {getTotalCartAmount,token,food_list,cartItems,url} = useContext(StoreContext)
+  const [date,setData] = useState({
+    
+  })
   return (
     <form action="" className='place-order mt-3 flex items-start gap-50 justify-between ' >
       <div className="left flex flex-col ">
