@@ -38,6 +38,7 @@ import plus from "./plus.png";
 import remove from "./remove.png";
 import add_green from "./add_green.png";
 import closeIcon from "./closeIcon.jpeg";
+import parcel from "./parcel.png";
 
 export const assets = {
   logo,
@@ -50,7 +51,8 @@ export const icons = {
   closeIcon,
   profile_icon,
   logout,
-  bag_icon
+  bag_icon,
+  parcel
 };
 
 export const menu_list = [

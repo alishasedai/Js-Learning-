@@ -104,7 +104,7 @@ const logout = () => {
           <div className="relative group bg-green-800 ">
             <img className="w-10 h-10" src={icons.profile_icon} alt="" />
             <ul className="absolute border-2 border-red-300 hidden right-0 z-[1] group-hover:flex items-start flex-col bg-white shadow-lg rounded-md mt-1 px-8 py-3 ">
-              <li className="flex gap-1 cursor-pointer mr-3 hover:text-red-800">
+              <li onClick={() => navigate("//myorders")} className="flex gap-1 cursor-pointer mr-3 hover:text-red-800">
                 <img className="w-8 h-8" src={icons.bag_icon} alt="" />
                 <p>Orders</p>
               </li>

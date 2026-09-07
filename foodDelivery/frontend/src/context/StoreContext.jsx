@@ -43,7 +43,20 @@ const StoreContextProvider = (props) => {
       );
     }
   };
+  const userOrder = async () => {
+    console.log("TOKEN IN STORE CONTEXT:", token);
+    const response = await axios.post(
+        `${url}/api/order/userOrder`,
+        {},
+        {
+            headers: {
+                token: token
+            }
+        }
+    );
 
+    console.log(response.data);
+};
   const getTotalCartAmount = () => {
     let totalAmount = 0;
     for (const items in cartItems) {
@@ -92,6 +105,7 @@ const StoreContextProvider = (props) => {
     url,
     token,
     setToken,
+    userOrder
   };
   return (
     <StoreContext.Provider value={contextValue}>

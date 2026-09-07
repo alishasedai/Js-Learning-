@@ -1,8 +1,14 @@
+import { log } from "console";
 import foodModel from "../models/foodModel.js";
 import fs from "fs/promises"
 const addFood = async (req, res) => {
   try {
+    console.log("BODY:", req.body);
+    console.log("FILE:", req.file);
+
     const image_file = req.file.filename;
+    console.log(image_file);
+    
 
     const food = new foodModel({
       name: req.body.name,
@@ -22,7 +28,7 @@ const addFood = async (req, res) => {
     console.log(error);
     res.json({
       success: false,
-      message: "Error Adding",
+      message: error.message,
     });
   }
 };

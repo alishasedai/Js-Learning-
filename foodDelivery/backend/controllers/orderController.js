@@ -4,18 +4,21 @@ import crypto from "crypto";
 
 // Place user order
 const placeOrder = async (req, res) => {
+  
   try {
+    console.log("USER ID WHILE PLACING ORDER:", req.userId);
     const newOrder = new orderModel({
-      userId: req.body.userId,
+      userId: req.userId,
       items: req.body.items,
       amount: req.body.amount,
       address: req.body.address,
       payment: false,
     });
 
-    await newOrder.save();
+   const savedOrder = await newOrder.save();
+   console.log(savedOrder);
 
-    await userModel.findByIdAndUpdate(req.body.userId, {
+    await userModel.findByIdAndUpdate(req.userId, {
       cartData: {},
     });
 
@@ -70,4 +73,43 @@ const placeOrder = async (req, res) => {
   }
 };
 
-export { placeOrder };
+//user order for frontend
+const userOrder =  async (req,res) => {
+  console.log("USER ID FROM TOKEN:", req.userId);
+
+  try{
+    const orders = await orderModel.find({ userId: req.userId });
+    console.log("Orders list : ", orders);
+    res.json({ success: true, data: orders });
+    console.log("ORDERS FOR THIS USER:", orders);
+
+    const allOrders = await orderModel.find({});
+    console.log("ALL ORDERS:", allOrders);
+    //6a9b6cb3c122be1a4d96413b
+  }catch(error){
+    console.log(error);
+    res.json({success : false, message : error.message})
+
+  }
+}
+//listing orders from admin panel
+const listOrders = async (req,res) => {
+  try{
+    const orders = await orderModel.find({});
+    res.json({success : true , data :orders}) 
+  }catch(error){
+    console.log(error);
+    res.json({success : false, message : error.message})
+  }
+}
+// api for updating order status
+const updateStatus = async(req,res) => {
+    try{
+      await orderModel.findByIdAndUpdate(req.body.orderId, { status : req.body.status});
+      res.json({success : true , message : "Status Updated"})
+    }catch(error){
+      console.log("Error");
+      res.json({success : false, message : error.message})
+    }
+}
+export { placeOrder ,userOrder,listOrders, updateStatus};

@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 
 const authMiddleware = async (req,res,next) => {
+     console.log("HEADERS:", req.headers);
+     console.log("TOKEN:", req.headers.token);
     const {token }= req.headers;
     console.log(token);
     if(!token){
@@ -12,7 +14,7 @@ const authMiddleware = async (req,res,next) => {
         next();
     } catch (error) {
         console.log(error);
-        res.json({success : false, message : "Error i am of authMiddleware"}) 
+        res.json({success : false, message : error.message})
         
     }
 
