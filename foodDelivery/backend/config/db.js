@@ -12,5 +12,7 @@ export const connectDB = async () => {
     console.log("DB Connected");
   } catch (error) {
     console.log("error",error);
-  }
+  } 
 };
+//4p3vkktZMtF5ahfH password
+//alishasedai21_db_user username
