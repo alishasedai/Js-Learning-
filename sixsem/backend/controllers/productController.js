@@ -24,7 +24,8 @@ const getProduct = async(req, res,next) => {
 const createProduct =async (req,res) => {
     const p = await Product.create({
         name : req.body.name,
-        price : req.body.price
+        price : req.body.price,
+        userId : req.user.id
     })
     console.log(p);
     
@@ -71,7 +72,8 @@ const updateProduct = async(req,res) => {
 const updatePartial = async(req,res) => {
     const id = req.params.id;
     const p = await Product.findByIdAndUpdate(id,req.body,{new : true});
-
+   
+    
     res.json({
         success : true,
         message : "Partial updated successfully..",
@@ -80,7 +82,23 @@ const updatePartial = async(req,res) => {
 }
 const deleteProduct = async(req,res) => {
    const id = req.params.id;
-   const p =await Product.findByIdAndDelete(id);
+   console.log("Logged in user.id : ",req.user.id);
+   const product = await Product.findById(id);
+   console.log("Product : ",product);
+   
+   console.log("Product owner id : ", product?.userId);
+   const p =await Product.findOneAndDelete({
+    _id : id,
+    userId : req.user.id
+   });
+    if(!p){
+        return res.status(403).json({
+            succes : false,
+            message : "You are not allowed to delete this product"
+        })
+    }
+
+
     res.json({
         success : true,
         message : "Product deleted successfully..",

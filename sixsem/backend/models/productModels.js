@@ -9,6 +9,11 @@ const productSchema = new mongoose.Schema({
         type : Number,
         min : 1
     }
+    ,userId : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "User",
+        required : true
+    }
 })
 
 const Product = mongoose.model("Product",productSchema);

@@ -3,8 +3,8 @@ const express = require("express");
 const connectDB = require("./config/db") 
 const errorHandler = require("./middleware/errorMiddleware");
 const productRoutes = require("./routes/productRoutes");
-const userRoutes  = require("./controllers/userController")
-
+const userRoutes  = require("./routes/userRoutes")
+const authMiddleware = require("./middleware/authMiddleware")
 
 const app = express();
 app.use(express.json());
