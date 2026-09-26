@@ -69,7 +69,7 @@ const LoginForm = ({setShowLogIn}) => {
           <p className='mt-6'>By Continuing, I agree to the terms of use & privacy policy</p>
         </div>
        {currState === "Login" ?  <p>Create a new account? <span className='cursor-pointer text-[#ff6347] font-bold' onClick={() => setCurrState("Sign Up")}>Click here.</span></p> : <p>Alrready have an account? <span className='cursor-pointer text-[#ff6347] font-bold' onClick={() => setCurrState("Login")}>Login here</span></p>}
-       
+       <p>Login as google</p>
 
       </form>
     </div>
