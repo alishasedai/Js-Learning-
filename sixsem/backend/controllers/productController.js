@@ -14,7 +14,7 @@ const getProduct = async(req, res,next) => {
         error.status= 404;
         return next(error);
     }
-  console.log("Hellooooo");
+
 
   res.json({
     succes : true,
@@ -27,7 +27,7 @@ const createProduct =async (req,res) => {
         price : req.body.price,
         userId : req.user.id
     })
-    console.log(p);
+  
     
     res.status(201).json({
         succes : true,
@@ -38,7 +38,6 @@ const createProduct =async (req,res) => {
 const oneProduct = async (req, res) => {
   const name = req.params.name;
 
-  console.log("Name from URL:", name);
 
   const allProducts = await Product.find();
 
