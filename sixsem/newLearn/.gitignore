@@ -1,1 +1,3 @@
 node_modules/
+mongodb+srv://alishasedai21_db_user:<db_password>@cluster0.ripshjx.mongodb.net/?appName=Cluster0
+.env

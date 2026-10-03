@@ -1,18 +1,27 @@
 const express = require("express");
+const notes = require("./models/notes.model");
+const connectDb = require("./db/db")
 
 const app = express();
 app.use(express.json());
-const notes = [];
-app.get("/",(req,res) => {
+connectDb();
+
+app.get("/",async(req,res) => {
     
-    
+    const n = await notes.findOne({
+        title : "Title_1"
+    });
     res.json({
-        message : "I am working..",
-        notes : notes
+        message : "here are your notes",
+        notes : n
     })
 })
-app.post("/note",(req,res) => {
-    notes.push(req.body);
+app.post("/note",async(req,res) => {
+    const data = req.body;
+    await notes.create({
+        title : data.title,
+        description : data.description
+    })
     res.json({
         message : "created note successfully at here"
     })
