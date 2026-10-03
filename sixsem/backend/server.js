@@ -32,7 +32,7 @@ app.get(
   }),
 );
 
-app.get("/auth/google/callback",
+app.get("/auth/govogle/callback",
   passport.authenticate("google",{
     failureRedirect : "/login"
   }),
