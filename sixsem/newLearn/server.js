@@ -14,7 +14,7 @@ app.get("/",(req,res) => {
 app.post("/note",(req,res) => {
     notes.push(req.body);
     res.json({
-        message : "created note successfully"
+        message : "created note successfully at here"
     })
 })
 app.patch("/update/:index",(req,res) => {
