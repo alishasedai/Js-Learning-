@@ -25,6 +25,12 @@ app.post("/create-post",upload.single("image"),async(req,res) => {
     })
 })
 
+app.get("/getAllPost",(req,res) => {
+    res.json({
+        message : "Data fetch successfully"
+    })
+})
+
 app.listen(3000,(req,res) => {
     console.log("Server is running at port 3000");
     
