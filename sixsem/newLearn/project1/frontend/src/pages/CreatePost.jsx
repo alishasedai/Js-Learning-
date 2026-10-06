@@ -5,7 +5,6 @@ import {useNavigate} from "react-router-dom"
 const CreatePost = () => {
   const navigate = useNavigate();
     const [post,setPost] =useState([
-      
     ]);
 
     const handleSubmit =async(e) => {
@@ -18,11 +17,9 @@ const CreatePost = () => {
          navigate("/all-post")
         } catch (error) {
           console.log("Error creating the post : ",error); 
-        }  
-            
+        }         
     }
    
-    
   return (
     <div>
       hello i am creating post
