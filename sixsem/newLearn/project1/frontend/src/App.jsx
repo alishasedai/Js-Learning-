@@ -1,4 +1,4 @@
-import React from 'react'
+import {React} from 'react'
 import  CreatePost  from "./pages/CreatePost";
 import AllPost from "./pages/AllPost"
 import {BrowserRouter ,Route,Routes} from "react-router-dom"

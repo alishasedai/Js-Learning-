@@ -1,5 +1,5 @@
-import { React, useState } from "react";
-
+import { React, useState,useEffect } from "react";
+import axios from "axios"
 const AllPost = () => {
    const [getpost, setgetpost] = useState([
      {
@@ -9,6 +9,23 @@ const AllPost = () => {
        
      }
    ]);
+   useEffect(() => {
+    const fetchItems = async () => {
+        try {
+            const response = await axios.get(
+              "http://localhost:3000/getAllPost"
+            );
+            console.log(response.data);
+            
+            setgetpost(response.data.postss)
+        } catch (error) {
+            console.log("Error fetching data : "+error);
+            
+        }
+    }
+    fetchItems()
+   }, [])
+   
   return (
   <section>
     {
