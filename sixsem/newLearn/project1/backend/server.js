@@ -27,10 +27,9 @@ app.post("/create-post",upload.single("image"),async(req,res) => {
     })
 })
 
+
 app.get("/getAllPost",async(req,res) => {
-    const d = await PostModel.find();
-    
-    
+    const d = await PostModel.find();    
     res.json({
         message : "Data fetch successfully hahhah abccc",
         postss : d

@@ -4,7 +4,7 @@ import AllPost from "./pages/AllPost"
 import {BrowserRouter ,Route,Routes} from "react-router-dom"
 const App = () => {
   return (
-    <div>
+    <div className="h-screen ">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<CreatePost />} />
