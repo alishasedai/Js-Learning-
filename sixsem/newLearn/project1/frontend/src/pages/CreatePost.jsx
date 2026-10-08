@@ -2,10 +2,10 @@ import {React,useEffect,useState} from 'react'
 import axios from "axios";
 import {useNavigate} from "react-router-dom"
 
-const CreatePost = () => {
+const CreatePost = ({post,setPost}) => {
   const navigate = useNavigate();
-    const [post,setPost] =useState([
-    ]);
+    // const [post,setPost] =useState([
+    // ]);
 
     const handleSubmit =async(e) => {
         e.preventDefault();

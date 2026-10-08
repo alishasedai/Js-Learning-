@@ -35,7 +35,13 @@ app.get("/getAllPost",async(req,res) => {
         postss : d
     })
 })
-
+app.patch("/updatePost",async(req,res) => {
+    console.log("update post");
+    res.json({
+        message : "post is being updated"
+    })
+    
+})
 app.listen(3000,(req,res) => {
     console.log("Server is running at port 3000");
     
