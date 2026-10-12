@@ -1,11 +1,11 @@
-import {React , useContext} from 'react'
-import { UerContext } from '../context/UserContext'
+import {React ,useContext} from 'react'
+import { UserContext } from '../context/UserContext'
 const About = () => {
-   const {inputs,passwords} = useContext(UerContext)
+    const {name} = useContext(UserContext);
   return (
     <div>
-      {inputs}
-      <p>{passwords}</p>
+      hello i am from About component
+      I am Change : {name}
     </div>
   )
 }

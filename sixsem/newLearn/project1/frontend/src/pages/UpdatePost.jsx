@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import axios from "axios"
 import {useParams} from "react-router-dom"
+import { NoteContext } from '../context/NoteContext'
 
 
-const UpdatePost = ({getPost,setGetPost,updatePost,setUpdatePost,caption,setCaption}) => {
+const UpdatePost = () => {
 
-
+  const {getPost,setGetPost,updatePost,setUpdatePost,caption,setCaption} = useContext(NoteContext);
       const {id} = useParams();
       console.log("Id is getting from the URL : ",id);
       console.log("Get the post at here : ",getPost);
@@ -46,7 +47,7 @@ const UpdatePost = ({getPost,setGetPost,updatePost,setUpdatePost,caption,setCapt
         <div className='bg-blue-500 p-6  '>
          <form action="" className='bg-blue-200 rounded-2xl w-100  h-70 flex items-center justify-center flex-col gap-5 ' onSubmit={handleSubmit}>
         <input className='border-3 py-2 w-80 px-8  rounded-md bg-violet-200 border-amber-200' type="file" name='file' 
-        value={image}
+        value={selectedPost.image}
         onChange = {(e) => setCaption(e.target.value)}
         />
         <input  className='w-80 px-8  rounded-md bg-violet-200 py-2 border-amber-200 border-2' type="text" name="caption" value={caption}  onChange={(e) => setCaption(e.target.value)}  id="" />

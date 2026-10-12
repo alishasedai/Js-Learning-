@@ -1,8 +1,10 @@
-import {React,useEffect,useState} from 'react'
+import {React,useEffect,useState,useContext} from 'react'
 import axios from "axios";
 import {useNavigate} from "react-router-dom"
+import { NoteContext } from '../context/NoteContext';
 
-const CreatePost = ({post,setPost}) => {
+const CreatePost = () => {
+  const {setPost,post} = useContext(NoteContext)
   const navigate = useNavigate();
     // const [post,setPost] =useState([
     // ]);
