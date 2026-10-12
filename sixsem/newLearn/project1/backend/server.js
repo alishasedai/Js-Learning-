@@ -35,12 +35,23 @@ app.get("/getAllPost",async(req,res) => {
         postss : d
     })
 })
-app.patch("/updatePost",async(req,res) => {
-    console.log("update post");
-    res.json({
-        message : "post is being updated"
-    })
-    
+app.patch("/updatePost/:id",async(req,res) => {
+    try{
+        const id = req.params.id;
+        const update = await PostModel.findByIdAndUpdate(id, req.body, {
+          new: true
+        });
+        console.log("updates post : ",update)
+        res.json({
+          message: "Post is updated",
+        });
+    }catch(err){
+        res.status(500).json(
+            {
+                message : err.message
+            }
+        )      
+    }   
 })
 app.listen(3000,(req,res) => {
     console.log("Server is running at port 3000");

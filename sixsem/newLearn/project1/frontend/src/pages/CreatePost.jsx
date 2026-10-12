@@ -14,12 +14,18 @@ const CreatePost = ({post,setPost}) => {
           const formData = new FormData(e.target)
         const d = await axios.post("http://localhost:3000/create-post",formData)
          console.log(" dddddd: ", d);
+         setPost(d.data);
+         console.log("Post :: ",post);
+         
          navigate("/all-post")
         } catch (error) {
           console.log("Error creating the post : ",error); 
         }         
     }
-   
+   useEffect(() => {
+    console.log("post : ",post);
+    
+   },[post])
   return (
     <div className="w-full min-h-screen gap-10 flex flex-col justify-center items-center bg-blue-100">
       <div className="bg-blue-400 p-5 rounded-xl ">

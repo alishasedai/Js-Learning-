@@ -22,9 +22,7 @@ const PlaceOrder = () => {
   }
 const placeOrder = async (event) => {
     event.preventDefault();
-
     let orderItems = [];
-
     food_list.forEach((item) => {
         if (cartItems[item._id] > 0) {
             let itemInfo = { ...item };
@@ -32,14 +30,12 @@ const placeOrder = async (event) => {
             orderItems.push(itemInfo);
         }
     });
-
     let orderData = {
         address: data,
         items: orderItems,
         amount: getTotalCartAmount() + 2
     };
-
-    try {
+  try {
         const response = await axios.post(
             url + "/api/order/place",
             orderData,
@@ -49,14 +45,11 @@ const placeOrder = async (event) => {
                 }
             }
         );
-
         if (response.data.success) {
-
             const payment = response.data.payment;
-
             console.log("eSewa Payment:", payment);
 
-            // Create form
+        // Create form
             const form = document.createElement("form");
 
             form.method = "POST";

@@ -8,7 +8,7 @@ const Cart = () => {
 console.log(cartItems)
 const navigate = useNavigate();
   return (
-    <div className='cart mt-[100px] mb-[100px] '>
+    <div className='cart mt-25 mb-25 '>
       <div className='cart-items '>
         <div className="cart-items-title grid grid-cols-6 text-gray-600 h-6 items-center ">
           <p>Items</p>

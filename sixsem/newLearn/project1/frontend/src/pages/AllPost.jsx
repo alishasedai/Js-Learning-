@@ -1,7 +1,7 @@
 import { React, useState,useEffect } from "react";
 import axios from "axios"
 import {useNavigate} from "react-router-dom";
-const AllPost = ({getPost,setGetPost}) => {
+const AllPost = ({getPost,setGetPost,setUpdatePost}) => {
   const navigate = useNavigate();
   //  const [getpost, setgetpost] = useState([
   //    {
@@ -33,8 +33,12 @@ const AllPost = ({getPost,setGetPost}) => {
     
    }
    const editPost = (id) => {
-    navigate("/update-post")
+    
     console.log("Id of edit post : ",id);
+      // setUpdatePost(id);
+    navigate(`/update-post/${id}`);
+    // navigate("/update-post")
+  
     
    }
   return (
