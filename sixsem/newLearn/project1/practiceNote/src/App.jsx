@@ -1,83 +1,85 @@
 import {React ,useState,useEffect} from 'react'
 
 const App = () => {
-  const [ins,setIns] = useState({
+  const [getInput, setGetInput] = useState({
     task : "",
-    priority : ""
+    priority: ""
   })
+  const[getIndex,setGetIndex] = useState(null)
   const[notes,setNotes] = useState([]);
-  const [getIndex,setGetIndex] = useState(null);
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("I am clicked..");
-    console.log("Inputs : ",ins);
-    
+    console.log("Hello");
     if(getIndex !== null){
-      const updateNote = notes.map((value,index) => (index === getIndex ) ? ins : value) //this value variables make unchangeable to other codes hehhehe hahah
-      setNotes(updateNote)
-      setGetIndex(null);
+     const updateNotes = notes.map((val,index) => {
+      return index === getIndex ? getInput : val
+     })
+     setGetIndex(null);
+     setNotes(updateNotes)
     }
     else{
-      setNotes([...notes, ins]);
+       setNotes([...notes,getInput]);
     }
-    setIns({
+    setGetInput({
       task : "",
       priority : ""
     })
     
   }
-  const handleChange = (e) =>{
-    const {name,value} = e.target;
-    setIns({...ins,
-      [name] : value
-    })
+  const handleChange = (e) => {
+      const {name,value} = e.target;
+      setGetInput({
+        ...getInput,
+        [name] : value
+      })
   }
   const handleEdit = (index) => {
-    console.log("Index : ",index);
-    setIns({
-      ...ins,
+    console.log("Hello",index);
+    setGetInput({
+      ...getInput,
       task : notes[index].task,
       priority : notes[index].priority
     })
     setGetIndex(index)
-    
+  }
+  const handleDelete = (index) => {
+    console.log("Index : ",index);
+     const deletes = notes.filter((val,i) => {
+      return i !== index 
+    })
+    setNotes(deletes)
   }
   useEffect(() => {
-   console.log("Notes : ",notes)
+    console.log("Notes created : ",notes);
+   
+  
+    
   }, [notes])
   
   return (
     <div>
-      {getIndex !== null ? " Update task :" : "Create the task"}
-      <form action="" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="task"
-          value={ins.task}
-          onChange={handleChange}
-          id=""
-        />{" "}
-        <br />
-        <input
-          type="text"
-          name="priority"
-          value={ins.priority}
-          onChange={handleChange}
-        />{" "}
-        <br />
-        <button type="submit">Submit</button>
-      </form>
-      <h2>Task is shown here</h2>
-      {notes.map((value, index) => {
-        return (
-          <div key={index}>
-            <p>{value.task}</p>
-            <p>{value.priority}</p>
+      <div>
+        <h2>Create Note</h2>
+        <form action="" onSubmit={handleSubmit} >
+          <input type="text" name="task"
+          value={getInput.task} 
+          onChange={handleChange} id="" /><br />
+          <input type="text" name="priority"
+          value={getInput.priority}
+          onChange={handleChange} id="" /> <br />
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+      <div>
+        {notes.map((val,index) => {
+          return <div key={index}>
+            <p>{val.task}</p>
+            <p>{val.priority}</p>
             <button onClick={() => handleEdit(index)}>Edit</button>
-            <button>Delete</button>
+            <button onClick={() => handleDelete(index)}>Delete</button>
           </div>
-        );
-      })}
+        })}
+      </div>
     </div>
   );
 }
