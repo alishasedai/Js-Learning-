@@ -20,7 +20,7 @@ const AllPost = () => {
               "http://localhost:3000/getAllPost"
             );
             // console.log("response.data :",response.data);
-            
+            console.log("Posts from backend:", response.data.postss);
             setGetPost(response.data.postss)
         } catch (error) {
             console.log("Error fetching data : "+error);
@@ -34,6 +34,7 @@ const AllPost = () => {
     console.log("id : ",);
     
    }
+  
    const editPost = (id) => {
     
     console.log("Id of edit post : ",id);

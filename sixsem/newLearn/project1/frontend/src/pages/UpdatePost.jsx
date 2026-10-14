@@ -1,9 +1,12 @@
 import React, { useContext, useEffect } from 'react'
 import axios from "axios"
-import {useParams} from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom";
 import { NoteContext } from '../context/NoteContext'
 
+
 const UpdatePost = () => {
+  const navigate = useNavigate();
+
   const {getPost,setGetPost,updatePost,setUpdatePost,caption,setCaption} = useContext(NoteContext);
       const {id} = useParams();
       console.log("Id is getting from the URL : ",id);
@@ -17,18 +20,28 @@ const UpdatePost = () => {
           }
       }, [selectedPost,setCaption])
       
-      
         const handleSubmit =async(e) => {
         e.preventDefault();
-        console.log("i am clicked heheh hohoho hahahaha..");
-        const response = await axios.patch(
+          try{
+             const response = await axios.patch(
           `http://localhost:3000/updatePost/${id}`,
           {
             caption: caption,
           },
         );
-        console.log("Data Alisha : ",response.data);
         
+        console.log("Data Alisha : ",response.data);
+        setGetPost((oldPosts) => 
+          oldPosts.map((val) => {
+        return val._id === id ? {...val,caption : caption} : val 
+        }))
+         navigate("/all-post");
+          }
+          
+          catch(error){
+            console.log("Backend Error : ",error.response?.data);
+            
+          }
         // setGetPost((old) => 
         // old.map((p) => da))
     }
