@@ -4,13 +4,8 @@ import {  useNavigate } from "react-router-dom";
 
 const AllNote = () => {
     const navigate = useNavigate();
-  const { Notes ,setGetInput ,getInput ,handleEdit} = useContext(NoteContext);
+  const { Notes ,setGetInput ,getInput ,handleEdit,handleDelete} = useContext(NoteContext);
 
-  const handleDelete = (index) => {
-    console.log("Delete id is : ",index);
-
-    
-  }
   useEffect(() => {
     console.log("AllNote mounted");
     console.log("Notes received:", Notes);

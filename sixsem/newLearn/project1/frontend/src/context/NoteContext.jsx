@@ -45,9 +45,15 @@ export const NoteContextProvider = ({children}) => {
            });
            setIndex(index)
          };
+         const handleDelete = (index)=> {
+          setNotes((old) => 
+          old.filter((val,i) =>
+          i !== index 
+          ))
+         }
   
   const values = {
-    Notes,setNotes,getInput,setGetInput,handleSubmit,handleEdit
+    Notes,setNotes,getInput,setGetInput,handleSubmit,handleEdit,handleDelete
   }
 
   return (
