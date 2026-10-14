@@ -4,8 +4,13 @@ import {  useNavigate } from "react-router-dom";
 
 const AllNote = () => {
     const navigate = useNavigate();
-  const { Notes } = useContext(NoteContext);
+  const { Notes ,setGetInput ,getInput ,handleEdit} = useContext(NoteContext);
 
+  const handleDelete = (index) => {
+    console.log("Delete id is : ",index);
+
+    
+  }
   useEffect(() => {
     console.log("AllNote mounted");
     console.log("Notes received:", Notes);
@@ -24,8 +29,8 @@ const AllNote = () => {
             <p>{val.task}</p>
             <p>{val.priority}</p>
             <div className="flex gap-1">
-                <button className="bg-green-300 p-2 rounded-md"> Edit</button>
-                <button className="bg-red-600 p-2 rounded-md">Delete</button>
+                <button onClick={() => handleEdit(index)} className="bg-green-300 p-2 rounded-md"> Edit</button>
+                <button onClick={() => handleDelete(index)} className="bg-red-600 p-2 rounded-md">Delete</button>
             </div>
         </div>
 

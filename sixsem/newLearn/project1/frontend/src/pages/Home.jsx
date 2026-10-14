@@ -6,17 +6,17 @@ import { useNavigate } from 'react-router-dom';
 const Home = () => {
         const navigate = useNavigate();
 
-      const {getInput,setGetInput,setNotes ,Notes} = useContext(NoteContext);
-      const handleSubmit = (e) =>{
-        e.preventDefault();
-        console.log("I am clicked..");
-        setNotes((oldNotes ) => [...oldNotes,getInput]);
-        setGetInput({
-            task : "",
-            priority : ""
-        })
-        navigate("/all-post")
-      }
+      const {getInput,setGetInput,setNotes ,Notes,handleSubmit} = useContext(NoteContext);
+      // const handleSubmit = (e) =>{
+      //   e.preventDefault();
+      //   console.log("I am clicked..");
+      //   setNotes((oldNotes ) => [...oldNotes,getInput]);
+      //   setGetInput({
+      //       task : "",
+      //       priority : ""
+      //   })
+      //   navigate("/all-post")
+      // }
       const handleChange = (e) => {
        const {name,value} = e.target;
        setGetInput({
