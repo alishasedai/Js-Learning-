@@ -1,5 +1,5 @@
-import { createContext ,useState} from "react";
-
+import { createContext ,useState,useEffect} from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export const NoteContext = createContext();
@@ -16,24 +16,48 @@ export const NoteContextProvider = ({children}) => {
   const [Notes,setNotes] = useState([]);
   console.log("current notes : ",Notes);
       const navigate = useNavigate();
-       const handleSubmit = (e) => {
+
+  //fetch notes from mongodb
+  const API = "http://localhost:3000"
+
+    const fetchNotes = async() => {
+      try{
+        const response = await axios.get(API);
+        setNotes(response.data.data)
+      }
+      catch(err){
+        console.log("Error fetching notes : ",err.message);
+        
+      }
+    } 
+    useEffect(() => {
+      fetchNotes();
+    },[])
+
+       const handleSubmit = async(e) => {
          e.preventDefault();
          console.log("I am clicked..");
-         if(index !== null){
-          setNotes((old) => 
-            old.map((val,i) => (index === i) ? getInput : val )
-          )
-         }
-         else{
-          setNotes((oldNotes) => [...oldNotes, getInput]);
-         }
-         setGetInput({
+        // 
+          try{
+            await axios.post(`${API}/create-post`,{
+              task : getInput.task,
+              priority : getInput.priority
+            });
+            await fetchNotes();
+            setGetInput({
            task: "",
            priority: "",
          });
          setIndex(null)
          navigate("/all-post");
-       };
+          }
+          catch(err){
+            console.error("Error creatung notes : ",
+              err.response?.data || err.message
+            )
+          }
+         
+       }
          const handleEdit = (index) => {
            console.log("Handle Edit : ", index);
            navigate("/update-post");
@@ -45,11 +69,17 @@ export const NoteContextProvider = ({children}) => {
            });
            setIndex(index)
          };
-         const handleDelete = (index)=> {
-          setNotes((old) => 
-          old.filter((val,i) =>
-          i !== index 
-          ))
+
+         const handleDelete =async (index)=> {
+          console.log("Ibdex : ",index)
+          try{
+            const deletes = await axios.delete(`${API}/delete-note/${index}`);
+            await fetchNotes();
+          }
+          catch(err){
+            console.log("Error : ",err.message);
+            
+          }
          }
   
   const values = {

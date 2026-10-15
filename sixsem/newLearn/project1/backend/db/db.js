@@ -11,4 +11,6 @@ async function ConnectDB() {
         console.log("MongoDB Connection failed.");
       });
 }
+
 module.exports = ConnectDB;
+

@@ -1,63 +1,78 @@
 require("dotenv").config();
+const Db = require("./db/db");
+const cors = require("cors")
+const Notes = require("./models/Post.model");
+
+
 const express = require("express");
-const ConnectDB = require("./db/db")
-const PostModel = require("./models/Post.model")
-const multer = require("multer");
-const uploadFile = require("./services/storage.service.js")
-const cors = require("cors");
-
 const app = express();
-app.use(express.json())
+
 app.use(cors());
-const upload = multer({storage : multer.memoryStorage()})
-ConnectDB();
+app.use(express.json());
 
-app.post("/create-post",upload.single("image"),async(req,res) => {
-    console.log(req.file.buffer); 
-    const upload = await uploadFile(req.file.buffer);
-    console.log(upload);
-    const post = await PostModel.create({
-      image: upload.url,
-      caption: req.body.caption,
-    });
-    
-    res.json({
-        message : "Post created successfully......",
-        post : post
-    })
-})
-
-
-app.get("/getAllPost",async(req,res) => {
-    const d = await PostModel.find();    
-    res.json({
-        message : "Data fetch successfully hahhah abccc",
-        postss : d
-    })
-})
-app.patch("/updatePost/:id",async(req,res) => {
-    try{
-        const id = req.params.id;
-        const update = await PostModel.findByIdAndUpdate(
-          id,
-          { caption: req.body.caption },
-          { returnDocument: "after" }
-        );
-        console.log("updates post : ",update)
+Db();
+//fetch alll notes
+app.get("/",async(req,res) => {
+   try{
+        const result = await Notes.find();
         res.json({
-          message: "Post is updated",
-        });
-    }catch(err){
-        console.log("UPDATE ERROR : ",err.message);
-        
-        res.status(500).json(
-            {
-                message : err.message
-            }
-        )      
-    }   
+            message : "All Notes are shown",
+            data  : result
+        })
+
+   }
+   catch(err){
+    res.json({
+        message : err.message
+    })
+   } 
+   
 })
-app.listen(3000,(req,res) => {
-    console.log("Server is running at port 3000");
+
+
+app.post("/create-post",async(req,res) => {
+    try{
+        const {task,priority} = req.body;
+        console.log("body data :",req.body);
+    const create =await Notes.create({
+        task,priority
+    })
+    res.json({
+        success : true,
+        message : "Notes created successfully",
+        data : create
+    })
+    }
+    catch(err){
+        res.status(500).json({
+            success : false,
+            message : " Failed to create Notes.",
+            error : err.message
+        })
+    }
+})
+
+app.delete('/delete-note/:id',async(req,res) => {
+    try{
+        const {id} = req.params;
+    const deleteNote = await Notes.findByIdAndDelete(id)
+    res.json({
+        message : "Notes deleted successfully",
+        success : true,
+        data : deleteNote
+    })
+    
+    }
+    catch(err){
+        res.json({
+            success : false,
+            message : "Error deleting the notes",
+            error : err.message
+        })
+    }
+})
+
+app.listen(3000, () => {
+    console.log("Server is starting at port 3000");
     
 })

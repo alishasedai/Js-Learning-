@@ -1,10 +1,14 @@
 const mongoose = require("mongoose");
-
-const postSchema = new mongoose.Schema({
-    image : String,
-    caption : String
+const NoteSchema = new mongoose.Schema({
+    task : {
+        required: true,
+        type : String
+    },
+    priority : {
+        required: true,
+        type : String
+    }
 })
+const Notes = mongoose.model("Note",NoteSchema);
+module.exports = Notes
 
-const postModel = mongoose.model("post",postSchema)
-
-module.exports = postModel
