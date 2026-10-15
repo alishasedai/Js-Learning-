@@ -30,7 +30,7 @@ app.get("/",async(req,res) => {
 })
 
 
-app.post("/create-post",async(req,res) => {
+app.post("/create-note",async(req,res) => {
     try{
         const {task,priority} = req.body;
         console.log("body data :",req.body);
@@ -50,6 +50,16 @@ app.post("/create-post",async(req,res) => {
             error : err.message
         })
     }
+})
+
+app.patch('/update-note/:id',async(req,res) => {
+    const updateNote = await Notes.updateOne({
+        _id : req.params.id
+    },
+{$set : req.body})
+    res.json({
+        message : "Notes updated successfully"
+    })
 })
 
 app.delete('/delete-note/:id',async(req,res) => {

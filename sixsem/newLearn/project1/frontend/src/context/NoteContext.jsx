@@ -12,6 +12,7 @@ export const NoteContextProvider = ({children}) => {
     task : "",
     priority : ""
   })
+  // const [index,setIndex] = useState(null);
   const [index,setIndex] = useState(null);
   const [Notes,setNotes] = useState([]);
   console.log("current notes : ",Notes);
@@ -39,7 +40,7 @@ export const NoteContextProvider = ({children}) => {
          console.log("I am clicked..");
         // 
           try{
-            await axios.post(`${API}/create-post`,{
+            await axios.post(`${API}/create-note`,{
               task : getInput.task,
               priority : getInput.priority
             });
@@ -58,16 +59,31 @@ export const NoteContextProvider = ({children}) => {
           }
          
        }
-         const handleEdit = (index) => {
-           console.log("Handle Edit : ", index);
-           navigate("/update-post");
+         const handleEdit = async(index) => {
+         
+          try {
+            const getNote = await Notes.find((note) => note._id === index)
+            console.log("Get note hohoho : ",getNote);
+            
+            setGetInput({
+              ...getInput,
+              task : getNote.task,
+              priority :getNote.priority
+            })
+            setIndex(index)
+            navigate("/update-post")
+          } catch (error) {
+            console.log("Error getting notes : ",error.message);
+            
+          }
+         
 
-           setGetInput({
-             ...getInput,
-             task: Notes[index].task,
-             priority: Notes[index].priority,
-           });
-           setIndex(index)
+          //  setGetInput({
+          //    ...getInput,
+          //    task: Notes[index].task,
+          //    priority: Notes[index].priority
+          //  });
+          //  setIndex(index)
          };
 
          const handleDelete =async (index)=> {
@@ -82,8 +98,33 @@ export const NoteContextProvider = ({children}) => {
           }
          }
   
+         const handleUpdate =async(e)=> {
+          e.preventDefault();
+            if (!index) {
+              console.error("No note ID selected for updating!");
+              return;
+            }
+          try {
+              console.log("Index number : hohoho", index);
+              const updates = await axios.patch(`${API}/update-note/${index}`, {
+                task: getInput.task,
+                priority: getInput.priority,
+              });
+              await fetchNotes();
+              setGetInput({
+                task: "",
+                priority: "",
+              });
+              setIndex(null);
+              navigate("/all-post");
+          
+          } catch (error) {
+            console.log("Error updating notes : ",error.message);
+            
+          }
+         }
   const values = {
-    Notes,setNotes,getInput,setGetInput,handleSubmit,handleEdit,handleDelete
+    Notes,setNotes,getInput,setGetInput,handleSubmit,handleEdit,handleDelete,handleUpdate
   }
 
   return (
