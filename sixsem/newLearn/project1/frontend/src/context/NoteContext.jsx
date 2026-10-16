@@ -38,7 +38,9 @@ export const NoteContextProvider = ({children}) => {
        const handleSubmit = async(e) => {
          e.preventDefault();
          console.log("I am clicked..");
-        // 
+        if(getInput.task === "" || getInput.priority === ""){
+         return alert("Please fill all the fields")
+        }
           try{
             await axios.post(`${API}/create-note`,{
               task : getInput.task,
