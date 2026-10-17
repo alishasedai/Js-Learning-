@@ -88,8 +88,8 @@ app.delete('/delete-note/:id',async(req,res) => {
     }
 })
 
-app.listen(3000, () => {
-    console.log("Server is starting at port 3000");
+// app.listen(3000, () => {
+//     console.log("Server is starting at port 3000");
     
-})
-// module.exports = app
+// })
+module.exports = app
