@@ -20,7 +20,7 @@ export const NoteContextProvider = ({children}) => {
 
   //fetch notes from mongodb
   // const API = "http://localhost:3000"
-    const API = import.meta.env.VITE_API_URL;
+    const API = "https://note-backend-zeta.vercel.app/";
 
     const fetchNotes = async() => {
       try{
