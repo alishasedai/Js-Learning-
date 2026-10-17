@@ -7,7 +7,13 @@ const Notes = require("./models/Post.model");
 const express = require("express");
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://js-learning-rouge.vercel.app",
+    methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
 app.use(express.json());
 
 Db();
