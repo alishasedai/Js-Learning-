@@ -10,13 +10,13 @@ const Navbar = ({setShowLogIn}) => {
 const [menu,setMenu] =useState("home");
 const[open,setOpen] = useState(false);
 
-const {getTotalCartAmount,token,setToken}= useContext(StoreContext);
+const {getTotalCartAmount,token,setToken,logout}= useContext(StoreContext);
 const navigate = useNavigate();
-const logout = () => {
-    localStorage.removeItem("token");
-    setToken("");
-    navigate("/")
-}
+// const logout = () => {
+//     localStorage.removeItem("token");
+//     setToken("");
+//     navigate("/")
+// }
   return (
     <div className="flex sm:flex-row md:flex-row relative lg:flex-row w-full justify-between items-center">
       <Link to="/">
