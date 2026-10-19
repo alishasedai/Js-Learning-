@@ -115,7 +115,7 @@ const LoginForm = () => {
         <div className="login-popupCondition flex justify-center items-center gap-2 -mt-8">
           <input type="checkbox" required name="" id="" />
           <p className="mt-6">
-            By Continuing, I agree to the terms of use & privacy policy
+            By Continuing and I agree to the terms of use & privacy policy
           </p>
         </div>
         {currState === "Login" ? (
