@@ -59,7 +59,7 @@ const Home = () => {
             className="bg-blue-300 h-10 rounded-md text-white font-semibold text-xl"
             type="submit"
           >
-            Submit
+            Submit note
           </button>
         </form>
       </div>
