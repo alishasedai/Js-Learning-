@@ -109,10 +109,12 @@ export const NoteContextProvider = ({children}) => {
             }
           try {
               console.log("Index number : hohoho", index);
+              
               const updates = await axios.patch(`${API}/update-note/${index}`, {
                 task: getInput.task,
                 priority: getInput.priority,
               });
+
               await fetchNotes();
               setGetInput({
                 task: "",

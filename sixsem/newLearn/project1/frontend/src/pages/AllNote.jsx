@@ -12,7 +12,7 @@ const AllNote = () => {
 
   }, [Notes]);
   
-
+  
   return (
     <div className='flex flex-col justify-center items-center min-h-screen'>
         <h2 className="text-3xl mb-4 font-semibold text-blue-600">All Notes here...</h2>

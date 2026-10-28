@@ -35,7 +35,6 @@ app.get("/",async(req,res) => {
    
 })
 
-
 app.post("/create-note",async(req,res) => {
     try{
         const {task,priority} = req.body;
@@ -71,8 +70,8 @@ app.patch('/update-note/:id',async(req,res) => {
 app.delete('/delete-note/:id',async(req,res) => {
     try{
         const {id} = req.params;
-    const deleteNote = await Notes.findByIdAndDelete(id)
-    res.json({
+        const deleteNote = await Notes.findByIdAndDelete(id)
+        res.json({
         message : "Notes deleted successfully",
         success : true,
         data : deleteNote
