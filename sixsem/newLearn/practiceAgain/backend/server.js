@@ -18,6 +18,7 @@ app.get("/",async(req,res) =>{
     } catch (error) {
         res.json({
             message : "error fetching all the users"
+            
         })
     }
 })
@@ -38,8 +39,8 @@ app.post("/hel",async(req,res) => {
     })
   }  
 })
-
 app.patch("/updateUser/:id",async(req,res) => {
+  console.log("Updatedddd from the updated user..");    
    try {
      const id = req.params.id;
      const users = await User.findByIdAndUpdate(id, {
@@ -49,8 +50,7 @@ app.patch("/updateUser/:id",async(req,res) => {
        message: "User updated successfully",
      });
    } catch (error) {
-    console.log("error updating the data...",error.message);
-    
+    console.log("error updating the data...",error.message);    
    }
 })
 
