@@ -30,6 +30,34 @@ app.post("/createUser",async(req,res) => {
         data : userData
     })
 })
+app.patch("/updateUser/:id",async(req,res) => {
+    const id = req.params.id
+    const {name,address,email} = req.body;
+    const updateUsers = await Users.findByIdAndUpdate(
+      id,
+      {
+        name: name,
+        address: address,
+        email: email,
+      },
+      {
+        new: true,
+        runValidators: true,
+      },
+    ); 
+
+    res.json({
+        message : "User updated successfully",
+        user : updateUsers
+    })
+})
+app.delete("/deleteUser/:id",async(req,res) => {
+    const index = req.params.id
+    const deleteUser = await Users.findByIdAndDelete(index)
+    res.json({
+        message : "Message deleted successfully"
+    })
+})
 
 app.listen(3000,() => {
     console.log("Server is listening at port 3000...");

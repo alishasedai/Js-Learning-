@@ -5,6 +5,7 @@ import axios from 'axios';
 
 export const UserContextProvider = ({children}) => {
      const navigate = useNavigate();
+    const [getIndex,setGetIndex] = useState("");
 
        const fetchData =async() => {
         try {
@@ -71,15 +72,55 @@ export const UserContextProvider = ({children}) => {
         console.log("users is at herer..",users);
         
     },[])
-    const handleEdit =(index) => {
+    const handleEdit =async(index) => {
         console.log("Edit it hehehe");
         console.log("indx",index);
+        setGetIndex(index);
         navigate("/editData")
         
+             
+    }
+    const handleUpdate =async(e,data) => {
+        e.preventDefault();
+        console.log("Data .....",data);
+        
+      try {
+          const response = await axios.patch(
+            `http://localhost:3000/updateUser/${getIndex}`,
+            data
+          );
+          console.log("i dont know i am working or not ???");
+          
+          console.log("responses ===> ",response.data);
+             await fetchData();
+          
+          console.log("All the users : ",allTheUsers);
+          
+      } catch (error) {
+            console.log("error updating..");
+            
+      }
+      navigate("/showData")
+
+    }
+    const handleDelete = async(index) => {
+
+       try {
+         console.log("delete id :",index);
+        const deletes = await axios.delete(`http://localhost:3000/deleteUser/${index}`);
+
+        await fetchData();
+        console.log("deleted successfully");
+        
+        
+       } catch (error) {
+        console.log("Error deleting ...",error.message);
+        
+       }
         
     }
     return (
-        <UserContext.Provider value={{user,setUser,users,setUsers,handleChange,handleSubmit,handleEdit}}>
+        <UserContext.Provider value={{user,setUser,users,setUsers,handleChange,handleSubmit,handleEdit,getIndex,handleUpdate,handleDelete}}>
                 {children}
         </UserContext.Provider>
     )
