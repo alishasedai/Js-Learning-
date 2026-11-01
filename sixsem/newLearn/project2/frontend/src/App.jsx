@@ -16,7 +16,7 @@ const App = () => {
      <Routes>
       <Route path='/' element={<CreateUser />}/>
       <Route path='/allUser' element={<AllUser />} />
-      <Route path='/editUser' element={<EditUser />} />
+      <Route path='/editUser/:id' element={<EditUser />} />
      </Routes>
      </UserContextProvider>
      </BrowserRouter>

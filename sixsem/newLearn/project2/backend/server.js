@@ -17,6 +17,23 @@ app.get("/",async(req,res) => {
         data : allUsers
     })
 })
+app.get("/getUser/:id",async(req,res) => {
+  try {
+    const findUser = await Users.findById(req.params.id);
+    if(!findUser){
+      return res.status(404).json({
+        message : "User not found"
+      })
+    }
+    res.status(200).json({
+      findUser
+    })
+  } catch (error) {
+     res.status(500).json({
+       message: error.message,
+     });
+  }
+})
 
 app.post("/createData",async (req,res) => {
   try {
@@ -53,9 +70,11 @@ app.delete("/deleteData/:id",async(req,res) => {
 
 app.patch("/updateUser/:id",async(req,res) => {
     const id = req.params.id;
-    const {name,email,password} = req.body;
+    const {name,email,address} = req.body;
     const updateUser = await Users.findByIdAndUpdate(id,{
-        name ,email,password
+        name ,email,address
+    },{
+      new : true
     })
     res.json({
         message : "User updated successfully",

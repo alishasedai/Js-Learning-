@@ -45,6 +45,16 @@ const UserContextProvider = ({children}) => {
         })
 
     }
+    const handleUpdateChange = (e) => {
+      const { name, value } = e.target;
+
+      setUpdateData(
+        (prev) => ({
+          ...prev,
+          [name] : value
+        })
+      );
+    };
     const handleSubmit = async(e) => {
         e.preventDefault();
         console.log("user : ",user);
@@ -78,32 +88,54 @@ const UserContextProvider = ({children}) => {
         }   
     }
     const handleEdit  =(index) => {
-        console.log("data is : ",index);
-        const selectedUsers = users.find((u) => u._id === index);
-        console.log("Selected users ---->  ",selectedUsers);
-        setUpdateData(selectedUsers)
-        setGetIndex(index);
-        navigate("/editUser")
+        // console.log("data is : ",index);
+        // const selectedUsers = users.find((u) => u._id === index);
+        // console.log("Selected users ---->  ",selectedUsers);
+        // // setUpdateData(selectedUsers)
+        // setGetIndex(index);
+        navigate(`/editUser/${index}`);
     }
     
     // useEffect(() => {
     //    console.log("Data needs to be updated they are at here...",updateData);
     // },[updateData])
-    const handleUpdate = async(e) => {
+    const handleUpdate = async(e,id) => {
         e.preventDefault();
+         console.log("HANDLE UPDATE IS RUNNING");
       try {
-        const response = await axios.patch(`http://localhost:3000/updateUser/${getIndex}`,user);
+        const response = await axios.patch(`http://localhost:3000/updateUser/${id}`,updateData);
+        console.log("Resp,,,,, ==>",response.data.updatesUser);
+        setUser(response.data.updatesUser)
+
+        await fetchedData();
+
+        console.log("Navigating to all users...");
+        navigate("/allUser")
+        // setUser(user);
       } catch (error) {
-        console.log("Error updating the users..");
-        
+
+        console.log("Error updating the users.."); 
       }
-
-
     }
-  return(
-        <UserContext.Provider value={{user,setUser,users,setUsers,handleChange,handleSubmit,handleDelete,handleEdit,updateData,handleUpdate}}>
-            {children}
-        </UserContext.Provider>
-    )
+  return (
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+        users,
+        setUsers,
+        handleChange,
+        handleSubmit,
+        handleDelete,
+        handleEdit,
+        updateData,
+        handleUpdate,
+        handleUpdateChange,
+        setUpdateData
+      }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
 }
 export default UserContextProvider
