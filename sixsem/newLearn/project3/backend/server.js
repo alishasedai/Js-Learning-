@@ -2,7 +2,9 @@ const express = require("express");
 const ConnectDB = require("./db/db");
 const StudentModel = require("./models/UserModel");
 const cors = require("cors");
-
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const verifyToken = require("./middleware/authMiddleware")
 
 const app = express();
 
@@ -70,6 +72,61 @@ app.get("/getStudent/:id",async(req,res) => {
         message : "Single student fetched successfully",
         success : true,
         data : getSingleStudent
+    })
+})
+
+app.post("/register",async(req,res) => {
+    const {name,password,email} = req.body
+    const hashPass = await bcrypt.hash(password,10);
+
+    const regsiterUser = await StudentModel.create({
+        name ,
+        email,
+        password : hashPass
+    })
+    res.json({
+        message : "Registered successfully",
+        success : true,
+        data : regsiterUser
+    })
+
+})
+app.post("/login",async(req,res) => {
+    const {email,password,name} = req.body;
+
+    const student = await StudentModel.findOne({email});
+
+    if(!student){
+        return res.status(404).json({
+            message : "Student not found"
+        })
+
+    }
+    const isMatch = await bcrypt.compare(password,student.password);
+
+    if(!isMatch){
+        return res.status(401).json({
+            message : "Invalid password"
+        })
+    }
+    const token = jwt.sign({
+        id : student._id,name : student.name
+    },
+    "alisha",
+    {
+        expiresIn : "1d"
+    }
+    )
+    res.json({
+        message : "Login successfull",
+        token : token
+    })
+})
+
+app.get("/profile",verifyToken,(req,res) => {
+    res.json({
+        message : "Welcome to your profile",
+        data : req.user
     })
 })
 app.listen(3000,(req,res) => {

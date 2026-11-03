@@ -27,7 +27,7 @@ const UpdateStudent = () => {
           onChange={updateHandleChange}
           name="name"
           value={updateStudent.name}
-        />{" "}
+        />
         <br />
         <input
           type="text"
@@ -51,6 +51,7 @@ const UpdateStudent = () => {
           onChange={updateHandleChange}
           name="address"
           value={updateStudent.address}
+          
         />
         <br />
         <button type="submit">Update</button>
