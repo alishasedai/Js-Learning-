@@ -42,6 +42,36 @@ app.delete("/deleteStudent/:id",async(req,res) => {
     })
 })
 
+app.patch("/editStudent/:id",async(req,res)=> {
+    const id =req.params.id
+    console.log("Request params id ",req.params.id);
+    
+    const{name,email,address,password} = req.body
+    console.log("Request.bidy",req.body);
+    
+    const dataUpdate = await StudentModel.findByIdAndUpdate(id,{
+        name,email,address,password
+    },{
+        new : true
+    }
+    )
+    res.json({
+        message : "Student data updated successfully",
+        success : true,
+        updateData :dataUpdate
+    })
+})
+
+app.get("/getStudent/:id",async(req,res) => {
+    const id = req.params.id;
+
+    const getSingleStudent = await StudentModel.findById(id);
+    res.json({
+        message : "Single student fetched successfully",
+        success : true,
+        data : getSingleStudent
+    })
+})
 app.listen(3000,(req,res) => {
     console.log("Server is running at port 3000");
     

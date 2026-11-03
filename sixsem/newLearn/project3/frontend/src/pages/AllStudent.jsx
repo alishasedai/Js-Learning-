@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const AllStudent = () => {
     const navigate = useNavigate();
 
-    const {students,handleDelete} = useContext(StudentContext)
+    const { students, handleDelete, handleEdit } = useContext(StudentContext);
   return (
     <div>
       <h2>All Student List at here...</h2>
@@ -15,7 +15,7 @@ const AllStudent = () => {
             <p>Name : {s.name}</p>
             <p>Email : {s.email}</p>
             <p>Address : {s.address}</p>
-            <button>Edit</button>
+            <button onClick={() => handleEdit(s._id)}>Edit</button>
             <button onClick={() => handleDelete(s._id)}>Delete</button>
             <hr />
         </div>
