@@ -4,6 +4,7 @@ const EmployeeModel = require("./models/EmployeeModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const verifyToken = require("./middleware/authMiddleware");
+const authorizeRole = require("./middleware/roleMiddleware");
 
 
 ConnectDb();
@@ -14,6 +15,11 @@ app.get("/",(req,res) => {
     res.json({
         message : "helllo hehhe"
     })
+})
+app.get("/manager",verifyToken,authorizeRole("manager","admin"),(req,res)=> {
+    res.json({
+      message: "Welcome Manager",
+    });
 })
 
 app.post("/register",async(req,res) => {
