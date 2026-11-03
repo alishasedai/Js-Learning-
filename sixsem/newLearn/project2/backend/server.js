@@ -3,7 +3,6 @@ const connectDB = require("./db/db")
 const Users = require("./models/UserModel");
 const cors = require("cors");
 
-
 const app = express();
 app.use(express.json());
 app.use(cors());

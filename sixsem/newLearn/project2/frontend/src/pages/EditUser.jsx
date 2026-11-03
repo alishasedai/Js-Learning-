@@ -36,7 +36,7 @@ const EditUser = () => {
           value={updateData.name || ""}
           onChange={handleUpdateChange}
           id=""
-        />{" "}
+        />
         <br />
         <input
           type="text"
@@ -44,7 +44,7 @@ const EditUser = () => {
           value={updateData.email || ""}
           onChange={handleUpdateChange}
           id=""
-        />{" "}
+        />
         <br />
         <input
           type="text"
@@ -52,7 +52,7 @@ const EditUser = () => {
           value={updateData.address || ""}
           onChange={handleUpdateChange}
           id=""
-        />{" "}
+        />
         <br />
         <button type="submit">Update</button>
       </form>
