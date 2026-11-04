@@ -5,15 +5,19 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const verifyToken = require("./middleware/authMiddleware");
 const authorizeRole = require("./middleware/roleMiddleware");
-
+const cors = require("cors");
 
 ConnectDb();
 const app = express();
 app.use(express.json());
+app.use(cors());
 
-app.get("/",(req,res) => {
+app.get("/",async(req,res) => {
+    const emp_data = await EmployeeModel.find();
+
     res.json({
-        message : "helllo hehhe"
+        message : "Fetch employee data",
+        emp_data : emp_data
     })
 })
 app.get("/manager",verifyToken,authorizeRole("manager","admin"),(req,res)=> {
@@ -41,6 +45,12 @@ app.post("/login",async(req,res) => {
    try {
      const { emp_email, emp_password } = req.body;
      const employee = await EmployeeModel.findOne({ emp_email });
+
+        if (!employee) {
+        return res.status(404).json({
+            message: "Employee not found",
+        });
+        }
      const isMatched = await bcrypt.compare(
        emp_password,
        employee.emp_password,
