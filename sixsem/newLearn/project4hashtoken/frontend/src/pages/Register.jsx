@@ -13,7 +13,7 @@ const Register = () => {
           value={employee.emp_name}
           onChange={handleChange}
           placeholder="enter your name"
-        />{" "}
+        />
         <br />
         <input
           type="text"
