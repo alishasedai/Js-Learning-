@@ -94,8 +94,13 @@ app.post("/register",async(req,res) => {
 app.post("/login", async (req, res) => {
   try {
     const { emp_email, emp_password } = req.body;
-    const employee = await EmployeeModel.findOne({ emp_email });
+    if (!emp_email || !emp_password) {
+      return res.status(400).json({
+        message: "Email and password are required",
+      });
+    }
 
+    const employee = await EmployeeModel.findOne({ emp_email });
     if (!employee) {
       return res.status(404).json({
         message: "Employee not found",
@@ -103,8 +108,8 @@ app.post("/login", async (req, res) => {
     }
     const isMatched = await bcrypt.compare(emp_password, employee.emp_password);
     if (!isMatched) {
-      return res.json({
-        message: "Invalid password",
+      return res.status(401).json({
+        message: "Invalid email or password",
       });
     }
     const token = jwt.sign(
@@ -118,21 +123,21 @@ app.post("/login", async (req, res) => {
         expiresIn: "1D",
       },
     );
-    
-    
+
     //here sending our token in the cookies
-    res.cookie("token",token,{
-        httpOnly : true,
-        secure : false,
-        sameSite : "lax",
-        maxAge : 24*60*1000
-    })
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
 
     res.json({
-      message: "Employee login successfully"
+      message: "Employee login successfully",
     });
   } catch (error) {
-    console.log("Error : ", error.message);
+    console.log("Error:", error.message);
+
     return res.status(500).json({
       message: "Internal server error",
     });
@@ -145,6 +150,7 @@ app.post("/profile",verifyToken,(req,res) => {
         user : req.user
     })
 })
+
 app.listen(3000,() => {
     console.log("Server is running at port 3000");
     
