@@ -8,20 +8,27 @@ const Profile = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const token = localStorage.getItem("token");
-                if(!token) {
-                    navigate("/login");
-                    return ;
-                }
-                const response = await axios.post(
-                  `http://localhost:3000/profile`,
+                // const token = localStorage.getItem("token");
+                // if(!token) {
+                //     navigate("/login");
+                //     return ;
+                // }
+                // const response = await axios.post(
+                //   `http://localhost:3000/profile`,
+                //   {},
+                //   {
+                //     headers: {
+                //       Authorization: `Bearer ${token}`,
+                //     },
+                //   },
+                // );
+
+                const response = await axios.post("http://localhost:3000/profile",
                   {},
                   {
-                    headers: {
-                      Authorization: `Bearer ${token}`,
-                    },
-                  },
-                );
+                    withCredentials : true
+                  }
+                )
                 console.log("Profile : ",response.data.user);
                  setUser(response.data.user);
                 
@@ -31,7 +38,6 @@ const Profile = () => {
                    error.response?.data || error.message,
                  );
 
-                 localStorage.removeItem("token");
                  navigate("/login");
             }
         }
@@ -44,7 +50,7 @@ const Profile = () => {
   return (
     <div>
       
-      <h2>Welcome {user.name}</h2>
+      <h2>Welcome , {user.name}</h2>
       <hr />
         <p>Your id : {user.id}</p>
         <p>Your role : {user.role}</p>

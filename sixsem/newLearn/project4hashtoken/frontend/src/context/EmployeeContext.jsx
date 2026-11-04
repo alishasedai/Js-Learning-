@@ -5,9 +5,7 @@ import {useNavigate} from "react-router-dom"
 export const EmployeeContext = createContext();
 export const EmployeeContextProvider = ({children}) => {
     const navigate = useNavigate();
-    const [token,setToken] = useState(
-        localStorage.getItem("token") || ""
-    )
+    
     const [employees,setEmployees] = useState([]);
     const [employee,setEmployee] = useState({
         emp_name : "",
@@ -73,12 +71,12 @@ export const EmployeeContextProvider = ({children}) => {
       try {
           const loginEmp = await axios.post(
             `http://localhost:3000/login`,
-            emp_login
+            emp_login,{
+              withCredentials : true
+            }
           );
-          console.log("Employee login data ===> ", loginEmp.data.token);
-          const receivedToken = loginEmp.data.token;
-          localStorage.setItem("token",receivedToken);
-          setToken(receivedToken)
+          console.log("Employee login data ===> ",loginEmp);
+
           navigate("/profile");
             
       } catch (error) {

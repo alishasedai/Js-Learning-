@@ -6,11 +6,20 @@ const jwt = require("jsonwebtoken");
 const verifyToken = require("./middleware/authMiddleware");
 const authorizeRole = require("./middleware/roleMiddleware");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 ConnectDb();
 const app = express();
 app.use(express.json());
-app.use(cors());
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
+
+app.use(cookieParser())
 
 app.get("/",async(req,res) => {
     const emp_data = await EmployeeModel.find();
@@ -41,47 +50,94 @@ app.post("/register",async(req,res) => {
     })
 })
 
-app.post("/login",async(req,res) => {
-   try {
-     const { emp_email, emp_password } = req.body;
-     const employee = await EmployeeModel.findOne({ emp_email });
+// app.post("/login",async(req,res) => {
+//    try {
+//      const { emp_email, emp_password } = req.body;
+//      const employee = await EmployeeModel.findOne({ emp_email });
 
-        if (!employee) {
-        return res.status(404).json({
-            message: "Employee not found",
-        });
-        }
-     const isMatched = await bcrypt.compare(
-       emp_password,
-       employee.emp_password,
-     );
-     if (!isMatched) {
-       return res.json({
-         message: "Invalid password",
-       });
-     }
-     const token = jwt.sign({
-        id : employee._id,
-        name : employee.emp_name,
-        role : employee.emp_role
-     },
-    "alis",
-        {
-            expiresIn : "1D"
-        })
+//         if (!employee) {
+//         return res.status(404).json({
+//             message: "Employee not found",
+//         });
+//         }
+//      const isMatched = await bcrypt.compare(
+//        emp_password,
+//        employee.emp_password,
+//      );
+//      if (!isMatched) {
+//        return res.json({
+//          message: "Invalid password",
+//        });
+//      }
+//      const token = jwt.sign({
+//         id : employee._id,
+//         name : employee.emp_name,
+//         role : employee.emp_role
+//      },
+//     "alis",
+//         {
+//             expiresIn : "1D"
+//         })
 
-     res.json({
-       message: "Employee login successfully",
-       token : token
-     });
-   } catch (error) {
-    console.log("Error : ",error.message);
-        return res.status(500).json({
-          message: "Internal server error",
-        });
+//      res.json({
+//        message: "Employee login successfully",
+//        token : token
+//      });
+//    } catch (error) {
+//     console.log("Error : ",error.message);
+//         return res.status(500).json({
+//           message: "Internal server error",
+//         });
     
-   }
-})
+//    }
+// })
+app.post("/login", async (req, res) => {
+  try {
+    const { emp_email, emp_password } = req.body;
+    const employee = await EmployeeModel.findOne({ emp_email });
+
+    if (!employee) {
+      return res.status(404).json({
+        message: "Employee not found",
+      });
+    }
+    const isMatched = await bcrypt.compare(emp_password, employee.emp_password);
+    if (!isMatched) {
+      return res.json({
+        message: "Invalid password",
+      });
+    }
+    const token = jwt.sign(
+      {
+        id: employee._id,
+        name: employee.emp_name,
+        role: employee.emp_role,
+      },
+      "alis",
+      {
+        expiresIn: "1D",
+      },
+    );
+    
+    
+    //here sending our token in the cookies
+    res.cookie("token",token,{
+        httpOnly : true,
+        secure : false,
+        sameSite : "lax",
+        maxAge : 24*60*1000
+    })
+
+    res.json({
+      message: "Employee login successfully"
+    });
+  } catch (error) {
+    console.log("Error : ", error.message);
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+});
 
 app.post("/profile",verifyToken,(req,res) => {
     res.json({
