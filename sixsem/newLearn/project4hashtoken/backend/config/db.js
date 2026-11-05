@@ -10,7 +10,6 @@ async function ConnectDb()  {
         );
         console.log("Mongodb connected successfully");
         
-
     } catch (error) {
         console.log("Mongodb cannot be connected");
         
