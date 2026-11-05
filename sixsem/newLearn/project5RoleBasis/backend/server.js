@@ -23,9 +23,10 @@ app.get("/",(req,res) => {
         message : "hello i am running hehehe"
     })
 })
+
 app.post("/register",async(req,res) => {
 try {
-   const { std_name, std_email, std_gender, std_password } = req.body;
+   const { std_name, std_email, std_gender, std_password ,std_faculty} = req.body;
 
    if (!std_password) {
      return res.status(400).json({
@@ -38,6 +39,7 @@ try {
      std_email,
      std_gender,
      std_password: hashPass,
+     std_faculty
    });
 
    res.json({
@@ -55,9 +57,11 @@ try {
 app.post("/login", async (req, res) => {
   const { std_email, std_password } = req.body;
   const findStd = await stdModel.findOne({ std_email });
+
   if (!findStd) {
     return res.status(404).json({
-      message: "Student not found please register first",
+
+      message: "Student not found please register first"
     });
   }
   console.log("Find std : ", findStd);
@@ -73,7 +77,8 @@ app.post("/login", async (req, res) => {
   const token = await jwt.sign(
     {
       id: findStd._id,
-      name: findStd.std_email,
+      name: findStd.std_name,
+      faculty : findStd.std_faculty
     },
     "alishasecretKey",
     {
@@ -96,6 +101,17 @@ app.post("/profile",verifyLogin,(req,res) => {
         message :"your profile",
         user : req.user
     })
+})
+
+app.post("/logout",(req,res) => {
+  res.clearCookie("token",{
+    httpOnly : true,
+    secure : false,
+    sameSite : "lax"
+  })
+  res.json({
+    message : "Logout successfully"
+  })
 })
 app.listen(3000,(req,res) => {
     console.log("Server is running at port 3000");

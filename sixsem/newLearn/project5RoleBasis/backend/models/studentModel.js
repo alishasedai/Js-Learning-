@@ -17,6 +17,11 @@ const stdSchema = new mongoose.Schema({
   std_password : {
     type : String,
     required : true
+  },
+  std_faculty : {
+    type : String,
+    required : true,
+    enum : ["BBA","BCA","BBM","BIT"]
   }
 });
 

@@ -2,7 +2,7 @@ import React,{useContext} from 'react'
 import {UserContext} from "../context/UserContext"
 
 const Register = () => {
-    const {student,data,handleChange,handleCreate} = useContext(UserContext)
+    const {student,data,handleRegisterChange,handleCreate} = useContext(UserContext)
 
   return (
     <div>
@@ -13,7 +13,7 @@ const Register = () => {
           type="text"
           name="std_name"
           value={student.std_name}
-          onChange={handleChange}
+          onChange={handleRegisterChange}
         />
         <br />
 
@@ -22,7 +22,7 @@ const Register = () => {
           type="text"
           name="std_email"
           value={student.std_email}
-          onChange={handleChange}
+          onChange={handleRegisterChange}
         />
         <br />
 
@@ -31,7 +31,7 @@ const Register = () => {
           type="text"
           name="std_password"
           value={student.std_password}
-          onChange={handleChange}
+          onChange={handleRegisterChange}
         />
         <br />
 
@@ -40,7 +40,16 @@ const Register = () => {
           type="text"
           name="std_gender"
           value={student.std_gender}
-          onChange={handleChange}
+          onChange={handleRegisterChange}
+        />
+        <br />
+
+        <input
+          placeholder="enter your std_faculty"
+          type="text"
+          name="std_faculty"
+          value={student.std_faculty}
+          onChange={handleRegisterChange}
         />
         <br />
         <button type="submit">Create</button>
