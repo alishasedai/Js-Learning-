@@ -5,7 +5,7 @@ const verifyLogin = (req, res, next) => {
 
   if (!token) {
     return res.status(401).json({
-      message: "Token not found. Please login first.",
+      message: "Token not found. Please login first and then you will be redirected to the dashboard accroding to the faculty ",
     });
   }
 
