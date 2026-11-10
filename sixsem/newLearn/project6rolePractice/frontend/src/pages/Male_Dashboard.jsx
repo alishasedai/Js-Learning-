@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { UsersContext } from "../context/UsersContext";
 
 const Male_Dashboard = () => {
-  const { fetchAnnoucements, announcement } = useContext(UsersContext);
+  const { fetchAnnoucements, announcement,handleLogout } = useContext(UsersContext);
   console.log("annoucement", announcement);
 
   useEffect(() => {
@@ -12,6 +12,9 @@ const Male_Dashboard = () => {
   return (
     <div>
       Notice ..
+      <div>
+        <button onClick={handleLogout}>logout</button>
+      </div>
       {announcement.map((val, index) => {
         return (
           <div key={val._id}>

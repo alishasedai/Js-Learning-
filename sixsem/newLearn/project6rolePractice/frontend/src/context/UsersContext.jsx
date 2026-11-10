@@ -177,6 +177,25 @@ export const UsersContextProvider = ({children}) => {
         
       }
     }
+    const handleLogout = async()=> {
+      try {
+        const response = await axios.post(`http://localhost:3000/logout`,
+          {},{
+            withCredentials : true
+          }
+        )
+        setdashboard(null)
+        console.log("Response in logout : ",response.data.message);
+        
+           setloginUser({
+             email: "",
+             password: "",
+           });
+        navigate("/login")
+      } catch (error) {
+         console.log("Logout error:", error.response?.data || error.message);
+      }
+    }
 
     return (
       <UsersContext.Provider
@@ -201,6 +220,7 @@ export const UsersContextProvider = ({children}) => {
           fetchAdminAnnouncements,
           fetchAnnoucements,
           announcement,
+          handleLogout
         }}
       >
         {children}

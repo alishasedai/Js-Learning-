@@ -2,7 +2,8 @@ import React , {useContext} from 'react'
 import {UsersContext} from "../context/UsersContext"
 
 const AdminDashboard = () => {
-const {adminPost,handleAdminPost,handleChangeAdmin} = useContext(UsersContext)
+const { adminPost, handleAdminPost, handleChangeAdmin, handleLogout } =
+  useContext(UsersContext);
   return (
     <div>
       admin
@@ -42,6 +43,7 @@ const {adminPost,handleAdminPost,handleChangeAdmin} = useContext(UsersContext)
 
         <button value="submit">Create Annoucements</button>
       </form>
+      
     </div>
   );
 }

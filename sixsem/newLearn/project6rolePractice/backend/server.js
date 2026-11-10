@@ -163,6 +163,17 @@ app.get("/admin/annoucements", verifyToken, verifyAdmin, async (req, res) => {
     });
   }
 });
+
+app.post("/logout",(req,res) => {
+  res.clearCookie("token",{
+    httpOnly : true,
+    secure : false,
+    sameSite : "lax"
+  });
+  res.json({
+    message : "Logout successfully"
+  })
+})
 app.listen(3000,() => {
     console.log("server is listening at port 3000");
     
