@@ -28,6 +28,7 @@ const App = () => {
           ? <BBM_Dashboard />
           : <BBA_Dashboard />
         }/> */}
+        
       <Route path="/profile" element={<Faculty_Dashboard />}/>
       </Routes>   
     </div>

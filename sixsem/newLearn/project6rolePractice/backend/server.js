@@ -5,7 +5,10 @@ const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser")
 const connectDB = require("./db/db");
 const UserModel = require("./models/UserModel")
-const {verifyToken} = require("./middleware/authMiddleware")
+const {verifyToken,verifyAdmin} = require("./middleware/authMiddleware")
+const { hashPassword, comparePassword } = require("./utils/password");
+
+const AnnouncementModel = require("./models/AnnoucementSchema");
 
 const app = express();
 connectDB();
@@ -23,7 +26,8 @@ app.post("/register",async(req,res) => {
         const hashPass = await bcrypt.hash(password,10);
 
         const createUser = await UserModel.create({
-            name,email,password:hashPass,gender
+            name,email,password:hashPass,gender,
+            role : "student"
         })
          res.json({
            message: "User registered successfully",
@@ -44,6 +48,14 @@ app.post("/login",async(req,res) => {
     try {
         const {email,password} = req.body;
         const findUser = await UserModel.findOne({email});
+        console.log("Email received:", email);
+        console.log("User found:", findUser);
+        if (!findUser) {
+          return res.status(401).json({
+            message: "User not found",
+          });
+        }
+
 
         const matchPass = await bcrypt.compare(password,findUser.password);
         if(!matchPass){
@@ -53,7 +65,8 @@ app.post("/login",async(req,res) => {
         }
         const token = jwt.sign({
             email,
-            gender :findUser.gender
+            gender :findUser.gender,
+            role : findUser.role
         },
             "alisha123", //secret key
             {
@@ -61,18 +74,20 @@ app.post("/login",async(req,res) => {
             }
     )
     console.log("Token",token);
+
         res.cookie("token",token,{
             httpOnly : true,
             sameSite : "lax",
             secure : false,
             maxAge : 24*60*60*1000 
         })
+
         res.json({
             message : "Login successfully"
         })
 
     } catch (error) {
-        console.log("Error login");
+        console.log("Error login",error.message);
         res.status(400).json({
             message : "Login failed",
             error : error.message
@@ -87,6 +102,67 @@ app.post("/profile",verifyToken,(req,res) => {
         user : req.user
     })
 })
+
+app.post("/annoucements",verifyToken,verifyAdmin,async(req,res) => {
+    try {
+          const { title, description, gender } = req.body;
+
+          const annoucement = await AnnouncementModel.create({
+            title,
+            description,
+            gender,
+          });
+          res.status(201).json({
+            message : "Annoucement created successfully",
+            annoucement : annoucement
+          })
+    } catch (error) {
+         res.status(400).json({
+           message: "Failed to create announcement",
+           error: error.message,
+         });
+    }
+})
+
+app.get("/annoucements",verifyToken,async(req,res) => {
+    try {
+        const annoucements = await AnnouncementModel.find({
+          $or: [
+            { gender: req.user.gender },
+            {
+              gender: "all",
+            },
+          ]
+        });
+        console.log("Annoucements : ",annoucements);
+        
+        res.status(200).json({
+          message: "Announcements fetched successfully",
+          announcements: annoucements,
+        });
+    } catch (error) {
+        res.status(500).json({
+          message: "Failed to fetch announcements",
+          error: error.message,
+        }); 
+    }
+})
+
+app.get("/admin/annoucements", verifyToken, verifyAdmin, async (req, res) => {
+  try {
+    const announcements = await AnnouncementModel.find({});
+
+    res.status(200).json({
+      message: "All announcements fetched successfully",
+      announcements,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch announcements",
+      error: error.message,
+    });
+  }
+});
 app.listen(3000,() => {
     console.log("server is listening at port 3000");
     
